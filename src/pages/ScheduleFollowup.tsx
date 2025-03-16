@@ -29,7 +29,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Checkbox } from "@/components/ui/checkbox";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 
 const ScheduleFollowup = () => {
   const userName = "Matteo";
@@ -245,31 +245,31 @@ const ScheduleFollowup = () => {
                 <Repeat className="mr-2 h-5 w-5 text-gray-500" />
                 <label className="text-sm font-medium">Repeat</label>
               </div>
-              <div className="border border-gray-200 rounded-md overflow-hidden">
-                <button
-                  className={cn(
-                    "w-full px-4 py-2 text-left flex items-center justify-between",
-                    recurrenceType === "one-time" ? "bg-blue-500 text-white" : "bg-white text-gray-700"
-                  )}
-                  onClick={() => setRecurrenceType("one-time")}
+              <ToggleGroup
+                type="single"
+                defaultValue="one-time"
+                value={recurrenceType}
+                onValueChange={(value) => {
+                  if (value) setRecurrenceType(value);
+                }}
+                className="justify-start w-full border rounded-md overflow-hidden"
+              >
+                <ToggleGroupItem 
+                  value="one-time" 
+                  className="flex-1 data-[state=on]:bg-blue-500 data-[state=on]:text-white px-4 py-2 border-r"
                 >
-                  <span>One-time</span>
-                  {recurrenceType === "one-time" && <Check className="h-4 w-4" />}
-                </button>
-                <button
-                  className={cn(
-                    "w-full px-4 py-2 text-left flex items-center justify-between border-t border-gray-200",
-                    recurrenceType === "recurring" ? "bg-blue-500 text-white" : "bg-white text-gray-700"
-                  )}
-                  onClick={() => setRecurrenceType("recurring")}
+                  One-time
+                </ToggleGroupItem>
+                <ToggleGroupItem 
+                  value="recurring" 
+                  className="flex-1 data-[state=on]:bg-blue-500 data-[state=on]:text-white px-4 py-2"
                 >
-                  <span>Recurring</span>
-                  {recurrenceType === "recurring" && <Check className="h-4 w-4" />}
-                </button>
-              </div>
+                  Recurring
+                </ToggleGroupItem>
+              </ToggleGroup>
               
               {recurrenceType === "recurring" && (
-                <div className="pl-7 pt-2">
+                <div className="pt-2">
                   <Select value={recurrenceFrequency} onValueChange={setRecurrenceFrequency}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select frequency" />
