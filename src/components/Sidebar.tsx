@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FileText, Home, Calendar, BarChart3, ChevronRight, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -82,14 +82,12 @@ export const Sidebar = () => {
             >
               <Icon className={cn("w-5 h-5", isActive ? "text-hana-green" : "text-gray-500")} />
               {showExpanded && (
-                <>
-                  <span className="transition-opacity duration-300">{item.label}</span>
-                  {item.label === 'Health Journal' && (
-                    <div className="ml-auto">
-                      <div className="w-1.5 h-1.5 bg-hana-green rounded-full"></div>
-                    </div>
-                  )}
-                </>
+                <span className="transition-opacity duration-300">{item.label}</span>
+              )}
+              {showExpanded && item.label === 'Health Journal' && (
+                <div className="ml-auto">
+                  <div className="w-1.5 h-1.5 bg-hana-green rounded-full"></div>
+                </div>
               )}
             </Link>
           );

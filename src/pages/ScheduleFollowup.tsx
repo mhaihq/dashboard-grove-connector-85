@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardHeader } from '@/components/DashboardHeader';
@@ -38,7 +37,6 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { CalendarAppointment } from '@/components/CalendarAppointment';
 
-// Define appointment types
 interface Appointment {
   date: Date;
   time: string;
@@ -58,7 +56,6 @@ const ScheduleFollowup = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [timeInput, setTimeInput] = useState<string>("");
   
-  // Sample appointments data - in a real app, this would come from an API
   const [appointments, setAppointments] = useState<Appointment[]>([
     {
       date: new Date(new Date().setDate(new Date().getDate() - 3)),
@@ -95,7 +92,6 @@ const ScheduleFollowup = () => {
       return;
     }
     
-    // Add the new appointment to our list
     const newAppointment: Appointment = {
       date: date,
       time: selectedTime,
@@ -130,9 +126,7 @@ const ScheduleFollowup = () => {
     }
   };
 
-  // Function to render appointments on the calendar
   const renderCalendarContent = (day: Date) => {
-    // Filter appointments for this day
     const dayAppointments = appointments.filter(
       app => app.date.getDate() === day.getDate() && 
              app.date.getMonth() === day.getMonth() && 
@@ -161,7 +155,7 @@ const ScheduleFollowup = () => {
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar />
       
-      <div className="flex-1 ml-[240px]">
+      <div className="flex-1 ml-[70px] transition-all duration-300">
         <DashboardHeader 
           userName={userName} 
           userEmail={userEmail}
@@ -433,3 +427,4 @@ const ScheduleFollowup = () => {
 };
 
 export default ScheduleFollowup;
+
