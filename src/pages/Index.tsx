@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Users, Activity, Clock, Calendar, ClipboardList, Heart, Award } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardHeader } from '@/components/DashboardHeader';
@@ -8,10 +8,13 @@ import { AssessmentOverview } from '@/components/AssessmentOverview';
 import { HealthAssessmentChart } from '@/components/HealthAssessmentChart';
 import { EligibilityStatus } from '@/components/EligibilityStatus';
 import { UpcomingActions } from '@/components/UpcomingActions';
+import { CallTypeSelector } from '@/components/CallTypeSelector';
+import { CallbackPlanner } from '@/components/CallbackPlanner';
 
 const Index = () => {
   const userName = "Matteo";
   const userEmail = "matteo@matteowastaken.com";
+  const [selectedCallType, setSelectedCallType] = useState<string | null>(null);
   
   // Medicare program eligibility criteria data
   const eligibilityData = [
@@ -33,10 +36,10 @@ const Index = () => {
   
   // Next steps/actions
   const upcomingActions = [
-    { title: "Complete Sleep Assessment", description: "Additional sleep quality screening needed", dueDate: "3 days", priority: "high" },
-    { title: "Schedule Follow-up Call", description: "Review initial health coaching plan", dueDate: "1 week", priority: "medium" },
-    { title: "Begin Medication Log", description: "Track adherence to prescribed medications", dueDate: "2 days", priority: "high" },
-    { title: "Join Support Group", description: "Virtual heart health support group", dueDate: "2 weeks", priority: "low" }
+    { title: "Complete Sleep Assessment", description: "Additional sleep quality screening needed", dueDate: "3 days", priority: "high" as const },
+    { title: "Schedule Follow-up Call", description: "Review initial health coaching plan", dueDate: "1 week", priority: "medium" as const },
+    { title: "Begin Medication Log", description: "Track adherence to prescribed medications", dueDate: "2 days", priority: "high" as const },
+    { title: "Join Support Group", description: "Virtual heart health support group", dueDate: "2 weeks", priority: "low" as const }
   ];
   
   // Key health metrics
@@ -64,6 +67,15 @@ const Index = () => {
               <p className="text-gray-600 mt-1">
                 This assessment helps identify eligible Medicare programs while establishing your health baseline.
               </p>
+            </div>
+            
+            {/* Call Element Section - Added on top of assessment */}
+            <div className="mb-8">
+              <CallTypeSelector 
+                onSelect={(type) => setSelectedCallType(type)}
+                selectedType={selectedCallType}
+              />
+              <CallbackPlanner userName={userName} />
             </div>
             
             {/* Key Health Indicators */}
