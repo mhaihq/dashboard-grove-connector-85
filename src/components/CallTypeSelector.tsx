@@ -1,9 +1,11 @@
 
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Search, ArrowRight, MessageCircle, PhoneCall } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 
 interface CallTypeSelectorProps {
   onSelect: (type: string) => void;
@@ -14,6 +16,8 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
   onSelect,
   selectedType
 }) => {
+  const [phoneNumber, setPhoneNumber] = useState("+353877433002");
+  
   const handleSelect = (value: string) => {
     onSelect(value);
     
@@ -47,6 +51,25 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
       default:
         return "";
     }
+  };
+  
+  const handleCallNow = () => {
+    if (!selectedType) {
+      toast({
+        title: "Please select a call type",
+        description: "Choose the type of call you need before proceeding.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    toast({
+      title: "Initiating call",
+      description: `Calling ${phoneNumber} for a ${getCallTypeTitle(selectedType).toLowerCase()} call.`,
+    });
+    
+    // In a real application, this would initiate the call
+    console.log(`Calling ${phoneNumber} for a ${selectedType} call`);
   };
   
   return (
@@ -88,6 +111,25 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
             <p className="text-sm mt-1">{getCallTypeDescription(selectedType)}</p>
           </div>
         )}
+        
+        <div className="mt-6 flex items-center gap-3">
+          <div className="flex-1">
+            <Input 
+              type="tel" 
+              value={phoneNumber} 
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              placeholder="Enter phone number"
+              className="w-full"
+            />
+          </div>
+          <Button 
+            onClick={handleCallNow} 
+            className="bg-hana-green hover:bg-hana-green/90 text-white"
+          >
+            <PhoneCall className="mr-2 h-4 w-4" />
+            Call Now
+          </Button>
+        </div>
       </CardContent>
     </Card>
   );
