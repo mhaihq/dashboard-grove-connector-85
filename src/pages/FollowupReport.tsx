@@ -26,7 +26,7 @@ const FollowupReport = () => {
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar />
       
-      <div className="flex-1 ml-[240px] transition-all duration-300">
+      <div className="flex-1 ml-[70px] transition-all duration-300">
         <DashboardHeader 
           userName={userName} 
           userEmail={userEmail}

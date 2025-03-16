@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils';
 
 export const Sidebar = () => {
   const location = useLocation();
-  const [isCollapsed, setIsCollapsed] = useState(false); // Default to expanded
+  const [isCollapsed, setIsCollapsed] = useState(true); // Default to collapsed
   const [isHovering, setIsHovering] = useState(false);
   
   const navItems = [
