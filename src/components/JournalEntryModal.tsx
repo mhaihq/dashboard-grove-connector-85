@@ -1,11 +1,11 @@
-
 import React from 'react';
 import { JournalEntryType } from '@/pages/FollowupReport';
 import { 
   Dialog, 
   DialogContent,
   DialogHeader,
-  DialogTitle
+  DialogTitle,
+  DialogDescription
 } from '@/components/ui/dialog';
 import { 
   Tabs, 
@@ -72,74 +72,59 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
     }
   };
 
-  // Mock data for the mood entry
-  const moodData = {
-    mood: {
-      score: "4/10",
-      weekend: "4/10",
-      weekday: "4/10",
-      notes: "User reports feeling depressed and stressed. Overall mood is low to moderate."
-    },
-    energy: {
-      level: "Low",
-      notes: "The user feels tired, possibly due to diet or the emotional toll of depression."
-    },
-    stress: {
-      level: "High",
-      notes: "Financial and job-search concerns contribute to elevated stress levels."
-    }
-  };
-  
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto p-0">
+      <DialogContent className="max-w-4xl w-full max-h-[90vh] overflow-y-auto p-0">
+        <DialogTitle className="sr-only">Journal Entry Details</DialogTitle>
+        <DialogDescription className="sr-only">Detailed view of the selected journal entry</DialogDescription>
+        
         <div className="bg-gray-50 p-4 flex items-center gap-2 text-blue-600">
-          <Calendar className="w-6 h-6" />
-          <span className="text-xl font-medium">{entry.date} {entry.timestamp}</span>
+          <Calendar className="w-5 h-5" />
+          <span className="text-base font-medium">{entry.date} {entry.timestamp}</span>
         </div>
         
         <div className="p-6">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <h1 className="text-3xl font-bold text-gray-800">Mental Health Journal</h1>
+              <h1 className="text-2xl font-bold text-gray-800">Mental Health Journal</h1>
               <p className="text-gray-500">{entry.date}</p>
             </div>
-            <Calendar className="w-6 h-6 text-gray-500" />
+            <Calendar className="w-5 h-5 text-gray-500" />
           </div>
           
           <Tabs defaultValue={entry.category} className="w-full">
-            <TabsList className="grid grid-cols-5 mb-8">
-              <TabsTrigger value="daily" className="flex items-center gap-2">
-                <Heart className="w-5 h-5" />
-                <span>Daily Reflection</span>
+            <TabsList className="mb-6 w-full grid grid-cols-5">
+              <TabsTrigger value="daily" className="flex items-center gap-1 text-sm py-2">
+                <Heart className="w-4 h-4" />
+                <span className="hidden sm:inline">Daily Reflection</span>
               </TabsTrigger>
-              <TabsTrigger value="mood" className="flex items-center gap-2">
-                <Award className="w-5 h-5" />
-                <span>Mood & Energy</span>
+              <TabsTrigger value="mood" className="flex items-center gap-1 text-sm py-2">
+                <Award className="w-4 h-4" />
+                <span className="hidden sm:inline">Mood & Energy</span>
               </TabsTrigger>
-              <TabsTrigger value="sleep" className="flex items-center gap-2">
-                <Moon className="w-5 h-5" />
-                <span>Sleep</span>
+              <TabsTrigger value="sleep" className="flex items-center gap-1 text-sm py-2">
+                <Moon className="w-4 h-4" />
+                <span className="hidden sm:inline">Sleep</span>
               </TabsTrigger>
-              <TabsTrigger value="achievement" className="flex items-center gap-2">
-                <Award className="w-5 h-5" />
-                <span>Achievements</span>
+              <TabsTrigger value="achievement" className="flex items-center gap-1 text-sm py-2">
+                <Award className="w-4 h-4" />
+                <span className="hidden sm:inline">Achievements</span>
               </TabsTrigger>
-              <TabsTrigger value="goals" className="flex items-center gap-2">
-                <Target className="w-5 h-5" />
-                <span>Goals</span>
+              <TabsTrigger value="goals" className="flex items-center gap-1 text-sm py-2">
+                <Target className="w-4 h-4" />
+                <span className="hidden sm:inline">Goals</span>
               </TabsTrigger>
             </TabsList>
             
             <TabsContent value="daily" className="text-left">
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">{entry.title}</h2>
-                <p className="text-gray-600 whitespace-pre-line">{entry.content}</p>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">{entry.title}</h2>
+                <p className="text-gray-600 whitespace-pre-line text-sm">{entry.content}</p>
               </div>
               
               {entry.highlight && (
-                <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-blue-700">
-                  <div className="font-medium text-sm text-blue-800 mb-2">Key Observation</div>
+                <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-blue-700 text-sm">
+                  <div className="font-medium text-xs text-blue-800 mb-1">Key Observation</div>
                   <div>{entry.highlight}</div>
                 </div>
               )}
@@ -147,42 +132,48 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
             
             <TabsContent value="mood">
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">Mood and Stress Check-In</h2>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">Mood and Stress Check-In</h2>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  <Card className="bg-[#FFF8E6] border-amber-100">
-                    <CardContent className="pt-6">
-                      <div className="text-4xl mb-4">😊</div>
-                      <h3 className="text-xl font-medium text-gray-800 mb-2">Mood: {moodData.mood.score}</h3>
-                      <div className="space-y-2 text-gray-700">
-                        <p>Weekend: {moodData.mood.weekend}</p>
-                        <p>Weekday: {moodData.mood.weekday}</p>
-                      </div>
-                      <p className="mt-4 text-gray-700">{moodData.mood.notes}</p>
-                    </CardContent>
-                  </Card>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                  {entry.mood && (
+                    <Card className="bg-[#FFF8E6] border-amber-100">
+                      <CardContent className="pt-4 p-4">
+                        <div className="text-3xl mb-2">😊</div>
+                        <h3 className="text-lg font-medium text-gray-800 mb-1">Mood: {entry.mood.score}</h3>
+                        <div className="space-y-1 text-sm text-gray-700">
+                          <p>Weekend: {entry.mood.weekend}</p>
+                          <p>Weekday: {entry.mood.weekday}</p>
+                        </div>
+                        <p className="mt-3 text-sm text-gray-700">{entry.mood.notes}</p>
+                      </CardContent>
+                    </Card>
+                  )}
                   
-                  <Card className="bg-[#E5F0FF] border-blue-100">
-                    <CardContent className="pt-6">
-                      <div className="text-4xl mb-4">⚡</div>
-                      <h3 className="text-xl font-medium text-gray-800 mb-2">Energy: {moodData.energy.level}</h3>
-                      <p className="mt-4 text-gray-700">{moodData.energy.notes}</p>
-                    </CardContent>
-                  </Card>
+                  {entry.energy && (
+                    <Card className="bg-[#E5F0FF] border-blue-100">
+                      <CardContent className="pt-4 p-4">
+                        <div className="text-3xl mb-2">⚡</div>
+                        <h3 className="text-lg font-medium text-gray-800 mb-1">Energy: {entry.energy.level}</h3>
+                        <p className="mt-3 text-sm text-gray-700">{entry.energy.notes}</p>
+                      </CardContent>
+                    </Card>
+                  )}
                   
-                  <Card className="bg-[#FFDEE2] border-pink-100">
-                    <CardContent className="pt-6">
-                      <div className="text-4xl mb-4">😓</div>
-                      <h3 className="text-xl font-medium text-gray-800 mb-2">Stress: {moodData.stress.level}</h3>
-                      <p className="mt-4 text-gray-700">{moodData.stress.notes}</p>
-                    </CardContent>
-                  </Card>
+                  {entry.stress && (
+                    <Card className="bg-[#FFDEE2] border-pink-100">
+                      <CardContent className="pt-4 p-4">
+                        <div className="text-3xl mb-2">😓</div>
+                        <h3 className="text-lg font-medium text-gray-800 mb-1">Stress: {entry.stress.level}</h3>
+                        <p className="mt-3 text-sm text-gray-700">{entry.stress.notes}</p>
+                      </CardContent>
+                    </Card>
+                  )}
                 </div>
               </div>
               
               {entry.highlight && (
-                <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-blue-700 mt-6">
-                  <div className="font-medium text-sm text-blue-800 mb-2">Key Observation</div>
+                <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-blue-700 text-sm">
+                  <div className="font-medium text-xs text-blue-800 mb-1">Key Observation</div>
                   <div>{entry.highlight}</div>
                 </div>
               )}
@@ -190,13 +181,13 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
             
             <TabsContent value="sleep" className="text-left">
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">{entry.title}</h2>
-                <p className="text-gray-600 whitespace-pre-line">{entry.content}</p>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">{entry.title}</h2>
+                <p className="text-gray-600 whitespace-pre-line text-sm">{entry.content}</p>
               </div>
               
               {entry.highlight && (
-                <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-blue-700">
-                  <div className="font-medium text-sm text-blue-800 mb-2">Key Observation</div>
+                <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-blue-700 text-sm">
+                  <div className="font-medium text-xs text-blue-800 mb-1">Key Observation</div>
                   <div>{entry.highlight}</div>
                 </div>
               )}
@@ -204,13 +195,13 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
             
             <TabsContent value="achievement" className="text-left">
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">{entry.title}</h2>
-                <p className="text-gray-600 whitespace-pre-line">{entry.content}</p>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">{entry.title}</h2>
+                <p className="text-gray-600 whitespace-pre-line text-sm">{entry.content}</p>
               </div>
               
               {entry.highlight && (
-                <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-blue-700">
-                  <div className="font-medium text-sm text-blue-800 mb-2">Key Observation</div>
+                <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-blue-700 text-sm">
+                  <div className="font-medium text-xs text-blue-800 mb-1">Key Observation</div>
                   <div>{entry.highlight}</div>
                 </div>
               )}
@@ -218,13 +209,13 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
             
             <TabsContent value="goals" className="text-left">
               <div className="mb-6">
-                <h2 className="text-2xl font-semibold text-gray-700 mb-4">{entry.title}</h2>
-                <p className="text-gray-600 whitespace-pre-line">{entry.content}</p>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">{entry.title}</h2>
+                <p className="text-gray-600 whitespace-pre-line text-sm">{entry.content}</p>
               </div>
               
               {entry.highlight && (
-                <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 text-blue-700">
-                  <div className="font-medium text-sm text-blue-800 mb-2">Key Observation</div>
+                <div className="bg-blue-50 border border-blue-100 rounded-lg p-3 text-blue-700 text-sm">
+                  <div className="font-medium text-xs text-blue-800 mb-1">Key Observation</div>
                   <div>{entry.highlight}</div>
                 </div>
               )}
