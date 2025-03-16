@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { JournalEntryType } from '@/pages/FollowupReport';
+import { JournalEntryType } from '@/types/journal';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Calendar, Heart, Moon, Award, Target, Filter, Search, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';

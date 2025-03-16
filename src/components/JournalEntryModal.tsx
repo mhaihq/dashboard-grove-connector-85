@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { JournalEntryType } from '@/pages/FollowupReport';
+import { JournalEntryType } from '@/types/journal';
 import { 
   Dialog, 
   DialogContent,
