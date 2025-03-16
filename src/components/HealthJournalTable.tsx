@@ -18,7 +18,7 @@ export const HealthJournalTable: React.FC<HealthJournalTableProps> = ({
   onViewEntry
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState<string>("");
+  const [categoryFilter, setCategoryFilter] = useState<string>("all");
   
   const getCategoryIcon = (category: string) => {
     switch(category) {
@@ -57,7 +57,7 @@ export const HealthJournalTable: React.FC<HealthJournalTableProps> = ({
   const filteredEntries = journalEntries.filter(entry => {
     const matchesSearch = entry.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          entry.content.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = categoryFilter ? entry.category === categoryFilter : true;
+    const matchesCategory = categoryFilter === "all" || entry.category === categoryFilter;
     
     return matchesSearch && matchesCategory;
   });
@@ -83,7 +83,7 @@ export const HealthJournalTable: React.FC<HealthJournalTableProps> = ({
                 <SelectValue placeholder="All Categories" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 <SelectItem value="daily">Daily Reflection</SelectItem>
                 <SelectItem value="mood">Mood & Energy</SelectItem>
                 <SelectItem value="sleep">Sleep</SelectItem>
