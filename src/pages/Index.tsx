@@ -8,6 +8,7 @@ import { HealthMetrics } from '@/components/HealthMetrics';
 import { JournalEntry } from '@/components/JournalEntry';
 import { AppointmentScheduler } from '@/components/AppointmentScheduler';
 import { ProgressSection } from '@/components/ProgressSection';
+import { CallbackPlanner } from '@/components/CallbackPlanner';
 
 const Index = () => {
   const userName = "Matteo";
@@ -128,6 +129,8 @@ const Index = () => {
             />
             
             <HealthMetrics metrics={metrics} />
+            
+            <CallbackPlanner userName={userName} />
             
             <div className="mt-8">
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Journal Entries</h2>
