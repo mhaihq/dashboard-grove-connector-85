@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Users, Activity, Clock, Calendar, ClipboardList, Heart, Award } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
@@ -58,7 +59,7 @@ const Index = () => {
         "You've been drinking more water throughout the day",
         "You reached out to a friend for coffee this week"
       ],
-      type: 'joy'
+      type: 'joy' as const
     },
     {
       title: "Areas of Progress",
@@ -67,7 +68,7 @@ const Index = () => {
         "You've had 2 alcohol-free days this week compared to none last week",
         "Your mood has been more stable on days when you've eaten regular meals"
       ],
-      type: 'notable'
+      type: 'notable' as const
     },
     {
       title: "What's On Your Mind",
@@ -76,7 +77,7 @@ const Index = () => {
         "Finding time for self-care while managing daily responsibilities",
         "Difficulty maintaining social connections"
       ],
-      type: 'weighing'
+      type: 'weighing' as const
     }
   ];
 
