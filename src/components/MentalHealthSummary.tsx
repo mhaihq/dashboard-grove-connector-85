@@ -26,16 +26,16 @@ export const MentalHealthSummary: React.FC<MentalHealthSummaryProps> = ({
     <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm animate-slide-up">
       <div className="flex items-center gap-2 mb-2">
         <TrendingUp className="h-5 w-5 text-hana-green" />
-        <h2 className="text-xl font-semibold text-gray-900">Progress Summary</h2>
+        <h2 className="text-xl font-semibold text-gray-900">Your Journey So Far</h2>
       </div>
       
       <div className="text-sm text-gray-500 mb-3">{date}</div>
       
-      <h1 className="text-3xl font-semibold text-gray-900 mb-1">Hello {userName}!</h1>
+      <h1 className="text-3xl font-semibold text-gray-900 mb-1">Hi there, {userName}!</h1>
       {userEmail && <div className="text-gray-500 mb-6">{userEmail}</div>}
       
       <p className="text-gray-700 mb-8 max-w-2xl">
-        Here's a summary of your recent progress based on our health coaching sessions and your journal entries. We're seeing some positive trends in key areas.
+        I've noticed some really positive changes in your health journey! Here's what I'm seeing from our conversations and your journal. I'm so proud of the progress you're making.
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

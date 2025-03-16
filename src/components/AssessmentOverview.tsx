@@ -11,37 +11,37 @@ export const AssessmentOverview: React.FC<AssessmentOverviewProps> = ({ userName
     {
       title: "Physical Health",
       icon: <HeartPulse className="w-5 h-5 text-red-500" />,
-      summary: "Managing hypertension with medication. Family history of heart disease presents increased risk. Regular exercise needed.",
+      summary: "I see you're taking medication for your blood pressure – that's a great start! Your family history means we should keep an eye on this together. Would you like to explore some gentle movement options that might help?",
       status: "needs-attention"
     },
     {
       title: "Mental Wellbeing",
       icon: <Brain className="w-5 h-5 text-violet-500" />,
-      summary: "Showing signs of mild depression with decreased interest in activities. Reports feeling down and tired frequently.",
+      summary: "It seems like you've been feeling down lately, and that's absolutely okay. Many people go through this. Would you like to try a 5-minute mood-boosting activity together this week?",
       status: "needs-attention"
     },
     {
       title: "Social Connection",
       icon: <Users className="w-5 h-5 text-blue-500" />,
-      summary: "Strong relationship with spouse provides good support. Has withdrawn from some friendships and community activities.",
+      summary: "I'm so glad to hear your spouse is such a rock for you! I noticed you've stepped back from some social activities though – would reconnecting with just one friend this week feel doable?",
       status: "moderate"
     },
     {
       title: "Sleep Quality",
       icon: <Moon className="w-5 h-5 text-indigo-500" />,
-      summary: "Averaging 5-6 hours per night with frequent waking. Reports difficulty falling asleep and inconsistent bedtime.",
+      summary: "Those 5-6 hours of interrupted sleep must be leaving you tired. That's tough! Would you like to try a simple bedtime routine together tonight? Even small changes can make a big difference.",
       status: "concerning"
     },
     {
       title: "Nutrition",
       icon: <UtensilsCrossed className="w-5 h-5 text-orange-500" />,
-      summary: "Skips meals frequently, especially breakfast. Limited vegetable intake and reliance on convenience foods.",
+      summary: "Skipping breakfast happens to the best of us! What if we found one super quick morning option you might enjoy? No pressure – just something to make your day a bit easier.",
       status: "moderate"
     },
     {
       title: "Hydration",
       icon: <GlassWater className="w-5 h-5 text-cyan-500" />,
-      summary: "Primary fluid intake is coffee. Estimated water consumption below recommended levels throughout the day.",
+      summary: "I see coffee is your go-to drink – it does taste amazing, doesn't it? Could we try adding just one extra glass of water with each coffee? Small steps make big differences!",
       status: "concerning"
     }
   ];
@@ -49,8 +49,7 @@ export const AssessmentOverview: React.FC<AssessmentOverviewProps> = ({ userName
   return (
     <div>
       <p className="text-gray-700 mb-4">
-        Based on your initial assessment, we've identified key areas of focus for your health journey.
-        This overview will help guide your Medicare-eligible care programs.
+        Hi {userName}, here's what I've noticed about how you're doing. Remember, we're in this together, and even small changes can make a real difference in how you feel day-to-day.
       </p>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">

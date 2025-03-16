@@ -25,8 +25,8 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
     }
     
     toast({
-      title: "Callback scheduled",
-      description: `We'll call you at ${phoneNumber} for a ${callType} session`,
+      title: "Chat scheduled!",
+      description: `I'll call you at ${phoneNumber} for a ${callType} conversation. Looking forward to it!`,
     });
     
     setCallType(null);
@@ -37,17 +37,17 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
       <CardContent className="p-6">
         <div className="flex items-center justify-center text-hana-green mb-2">
           <PhoneCall className="w-5 h-5 mr-2" />
-          <h2 className="text-xl font-medium">Schedule a Callback</h2>
+          <h2 className="text-xl font-medium">Want to chat with me?</h2>
         </div>
         
         <p className="text-gray-600 mb-5 text-center">
-          Let us reach out to check on your progress
+          I'd love to check in on how you're doing - let's schedule a call
         </p>
         
         <div className="space-y-4">
           <div className="space-y-2">
             <label className="block text-center font-medium text-gray-700">
-              Phone Number
+              Your Phone Number
             </label>
             <div className="flex">
               <div className="relative w-[100px]">
@@ -69,7 +69,7 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
           
           <div className="space-y-2">
             <label className="block text-center font-medium text-gray-700">
-              Select Call Type
+              What would you like to chat about?
             </label>
             <div className="grid grid-cols-3 gap-2">
               <Button
@@ -83,7 +83,7 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
                 onClick={() => setCallType("Intake")}
               >
                 <ClipboardList className="mr-2 h-4 w-4" />
-                Intake
+                First Chat
               </Button>
               
               <Button
@@ -97,7 +97,7 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
                 onClick={() => setCallType("Follow Up")}
               >
                 <Phone className="mr-2 h-4 w-4" />
-                Follow Up
+                Check-in
               </Button>
               
               <Button
@@ -121,7 +121,7 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
             className="w-full bg-hana-green hover:bg-hana-green/90 text-white"
           >
             <PhoneCall className="mr-2 h-4 w-4" />
-            Schedule Callback
+            Schedule Our Call
           </Button>
         </div>
       </CardContent>

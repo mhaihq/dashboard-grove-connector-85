@@ -44,7 +44,7 @@ const Index = () => {
   const healthIndicators = [
     { title: "Chronic Conditions", value: "3", change: "unchanged", icon: <Activity className="w-5 h-5 text-blue-500" /> },
     { title: "Risk Score", value: "Medium", change: "improving", icon: <Heart className="w-5 h-5 text-red-500" /> },
-    { title: "Last Assessment", value: "Feb 13", change: "recent", icon: <ClipboardList className="w-5 h-5 text-violet-500" /> },
+    { title: "Last Check-in", value: "Feb 13", change: "recent", icon: <ClipboardList className="w-5 h-5 text-violet-500" /> },
     { title: "Medicare Status", value: "Enrolled", change: "active", icon: <Award className="w-5 h-5 text-emerald-500" /> }
   ];
 
@@ -61,9 +61,9 @@ const Index = () => {
         <main className="p-6">
           <div className="max-w-6xl mx-auto">
             <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Comprehensive Health Assessment</h1>
+              <h1 className="text-2xl font-bold text-gray-900">👋 Welcome back, {userName}!</h1>
               <p className="text-gray-600 mt-1">
-                This assessment helps identify eligible Medicare programs while establishing your health baseline.
+                Let's check in on your health and build a plan together. I'm here to support you every step of the way!
               </p>
             </div>
             
@@ -89,7 +89,9 @@ const Index = () => {
                       indicator.change === "worsening" ? "text-red-600" : 
                       "text-blue-600"
                     }`}>
-                      {indicator.change}
+                      {indicator.title === "Medicare Status" 
+                        ? "Great news! You're covered for our support program" 
+                        : indicator.change}
                     </p>
                   </CardContent>
                 </Card>
@@ -102,10 +104,10 @@ const Index = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Activity className="w-5 h-5 text-hana-green mr-2" />
-                    Health Assessment Overview
+                    Your Health Snapshot
                   </CardTitle>
                   <CardDescription>
-                    Baseline measurements across key health dimensions
+                    Here's what we're seeing across different areas of your wellbeing
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -118,10 +120,10 @@ const Index = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Award className="w-5 h-5 text-hana-green mr-2" />
-                    Medicare Program Eligibility
+                    Programs You Qualify For
                   </CardTitle>
                   <CardDescription>
-                    Based on your initial assessment
+                    These programs can help support your health journey
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -136,10 +138,10 @@ const Index = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <ClipboardList className="w-5 h-5 text-hana-green mr-2" />
-                    Assessment Summary
+                    Let's Talk About Your Health
                   </CardTitle>
                   <CardDescription>
-                    Comprehensive overview of health status
+                    Here's what I've noticed and how we can support you
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -147,7 +149,7 @@ const Index = () => {
                 </CardContent>
                 <CardFooter>
                   <button className="text-hana-green hover:text-green-700 text-sm font-medium flex items-center">
-                    View detailed assessment report
+                    See your full health story
                   </button>
                 </CardFooter>
               </Card>
@@ -157,10 +159,10 @@ const Index = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Calendar className="w-5 h-5 text-hana-green mr-2" />
-                    Next Steps
+                    Small Steps Forward
                   </CardTitle>
                   <CardDescription>
-                    Recommended actions based on assessment
+                    Little actions that can make a big difference
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -168,7 +170,7 @@ const Index = () => {
                 </CardContent>
                 <CardFooter>
                   <button className="text-hana-green hover:text-green-700 text-sm font-medium flex items-center">
-                    View all recommendations
+                    See all your personalized suggestions
                   </button>
                 </CardFooter>
               </Card>
