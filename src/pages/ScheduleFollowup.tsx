@@ -5,7 +5,7 @@ import { DashboardHeader } from '@/components/DashboardHeader';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Clock, Calendar as CalendarIcon, CheckCircle, Repeat, Check } from 'lucide-react';
+import { Clock, Calendar as CalendarIcon, CheckCircle, Repeat, Check, X } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
@@ -16,6 +16,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const ScheduleFollowup = () => {
   const userName = "Matteo";
@@ -25,6 +39,8 @@ const ScheduleFollowup = () => {
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [recurrenceType, setRecurrenceType] = useState<string>("one-time");
   const [recurrenceFrequency, setRecurrenceFrequency] = useState<string>("weekly");
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [timeInput, setTimeInput] = useState<string>("");
   
   const availableTimes = [
     '09:00 AM', '10:00 AM', '11:00 AM', 
@@ -55,6 +71,12 @@ const ScheduleFollowup = () => {
         </Button>
       ),
     });
+    setIsModalOpen(false);
+  };
+
+  const handleDateClick = (selectedDate: Date) => {
+    setDate(selectedDate);
+    setIsModalOpen(true);
   };
 
   return (
@@ -71,60 +93,6 @@ const ScheduleFollowup = () => {
           <div className="max-w-6xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-900 mb-6">Schedule Follow-up</h1>
             
-            <Card className="shadow-sm mb-6">
-              <CardHeader>
-                <CardTitle>Appointment Type</CardTitle>
-                <CardDescription>Choose between one-time or recurring appointment</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-wrap gap-3">
-                  <Button
-                    variant={recurrenceType === "one-time" ? "default" : "outline"}
-                    onClick={() => setRecurrenceType("one-time")}
-                    className={cn(
-                      "flex gap-2 px-4",
-                      recurrenceType === "one-time" && "bg-hana-green hover:bg-hana-green/90"
-                    )}
-                  >
-                    <Calendar className="h-4 w-4" />
-                    <span>One-time</span>
-                    {recurrenceType === "one-time" && <Check className="h-4 w-4 ml-1" />}
-                  </Button>
-                  <Button
-                    variant={recurrenceType === "recurring" ? "default" : "outline"}
-                    onClick={() => setRecurrenceType("recurring")}
-                    className={cn(
-                      "flex gap-2 px-4",
-                      recurrenceType === "recurring" && "bg-hana-green hover:bg-hana-green/90"
-                    )}
-                  >
-                    <Repeat className="h-4 w-4" />
-                    <span>Recurring</span>
-                    {recurrenceType === "recurring" && <Check className="h-4 w-4 ml-1" />}
-                  </Button>
-                </div>
-                
-                {recurrenceType === "recurring" && (
-                  <div className="mt-4">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Recurrence Frequency
-                    </label>
-                    <Select value={recurrenceFrequency} onValueChange={setRecurrenceFrequency}>
-                      <SelectTrigger className="w-full sm:w-[250px]">
-                        <SelectValue placeholder="Select frequency" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="daily">Daily</SelectItem>
-                        <SelectItem value="weekly">Weekly</SelectItem>
-                        <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
-                        <SelectItem value="monthly">Monthly</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-            
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="shadow-sm">
                 <CardHeader>
@@ -136,7 +104,7 @@ const ScheduleFollowup = () => {
                     <Calendar
                       mode="single"
                       selected={date}
-                      onSelect={setDate}
+                      onSelect={handleDateClick}
                       disabled={(date) => date < new Date() || date > new Date(new Date().setMonth(new Date().getMonth() + 2))}
                       className="rounded-md border pointer-events-auto"
                     />
@@ -146,49 +114,188 @@ const ScheduleFollowup = () => {
               
               <Card className="shadow-sm">
                 <CardHeader>
-                  <CardTitle>Select a Time</CardTitle>
-                  <CardDescription>Available time slots for {date ? format(date, 'MMMM d, yyyy') : 'your selected date'}</CardDescription>
+                  <CardTitle>Appointment Information</CardTitle>
+                  <CardDescription>Your scheduled follow-up details</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {date ? (
-                      availableTimes.map((time) => (
-                        <Button
-                          key={time}
-                          variant={selectedTime === time ? "default" : "outline"}
-                          className={cn(
-                            "h-12",
-                            selectedTime === time && "border-hana-green bg-hana-lightGreen text-hana-green hover:bg-hana-lightGreen hover:text-hana-green"
-                          )}
-                          onClick={() => setSelectedTime(time)}
-                        >
-                          <Clock className="mr-2 h-4 w-4" />
-                          {time}
-                        </Button>
-                      ))
-                    ) : (
-                      <div className="col-span-3 text-center py-8 text-gray-500">
-                        <CalendarIcon className="mx-auto h-12 w-12 opacity-30 mb-3" />
-                        <p>Please select a date first</p>
+                  {date ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon className="h-5 w-5 text-gray-500" />
+                        <span className="text-lg font-medium">{format(date, 'MMMM d, yyyy')}</span>
                       </div>
-                    )}
-                  </div>
+                      
+                      {selectedTime && (
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-5 w-5 text-gray-500" />
+                          <span className="text-lg font-medium">{selectedTime}</span>
+                        </div>
+                      )}
+                      
+                      {recurrenceType === "recurring" && (
+                        <div className="flex items-center gap-2">
+                          <Repeat className="h-5 w-5 text-gray-500" />
+                          <span className="text-lg font-medium">Recurring {recurrenceFrequency}</span>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-500">
+                      <CalendarIcon className="mx-auto h-12 w-12 opacity-30 mb-3" />
+                      <p>Please select a date to schedule your follow-up</p>
+                    </div>
+                  )}
                 </CardContent>
-                <CardFooter className="flex justify-end gap-2">
-                  <Button variant="ghost">Cancel</Button>
-                  <Button 
-                    onClick={handleSchedule}
-                    disabled={!date || !selectedTime}
-                    className="bg-hana-green hover:bg-hana-green/90 text-white"
-                  >
-                    Schedule Follow-up
-                  </Button>
-                </CardFooter>
+                {date && (
+                  <CardFooter className="flex justify-end gap-2">
+                    <Button variant="ghost" onClick={() => {
+                      setDate(undefined);
+                      setSelectedTime(null);
+                    }}>
+                      Cancel
+                    </Button>
+                    <Button 
+                      onClick={() => setIsModalOpen(true)}
+                      className="bg-hana-green hover:bg-hana-green/90 text-white"
+                    >
+                      {selectedTime ? 'Edit Appointment' : 'Schedule Appointment'}
+                    </Button>
+                  </CardFooter>
+                )}
               </Card>
             </div>
           </div>
         </main>
       </div>
+
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <div className="absolute right-4 top-4">
+            <Button 
+              variant="ghost" 
+              className="h-6 w-6 p-0" 
+              onClick={() => setIsModalOpen(false)}
+            >
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+          
+          <DialogHeader>
+            <DialogTitle className="text-xl">New Event</DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-6 py-4">
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <CalendarIcon className="mr-2 h-5 w-5 text-gray-500" />
+                <label className="text-sm font-medium">Date</label>
+              </div>
+              <div className="flex">
+                <input
+                  type="text"
+                  className="w-full rounded-md border border-gray-300 p-2"
+                  value={date ? format(date, 'dd/MM/yyyy') : ''}
+                  readOnly
+                />
+                <Button className="ml-1 p-2" variant="outline" onClick={() => setIsModalOpen(false)}>
+                  <CalendarIcon className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <Clock className="mr-2 h-5 w-5 text-gray-500" />
+                <label className="text-sm font-medium">Start Time</label>
+              </div>
+              <div className="flex">
+                <input
+                  type="text"
+                  className="w-full rounded-md border border-gray-300 p-2"
+                  placeholder="--:--"
+                  value={timeInput}
+                  onChange={(e) => setTimeInput(e.target.value)}
+                />
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button className="ml-1 p-2" variant="outline">
+                      <Clock className="h-5 w-5" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56">
+                    {availableTimes.map((time) => (
+                      <DropdownMenuItem 
+                        key={time}
+                        onClick={() => {
+                          setSelectedTime(time);
+                          setTimeInput(time);
+                        }}
+                      >
+                        {time}
+                      </DropdownMenuItem>
+                    ))}
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+              <div className="pl-7 text-sm text-gray-500">(15 min duration)</div>
+            </div>
+            
+            <div className="space-y-2">
+              <div className="flex items-center">
+                <Repeat className="mr-2 h-5 w-5 text-gray-500" />
+                <label className="text-sm font-medium">Repeat</label>
+              </div>
+              <div className="border border-gray-200 rounded-md overflow-hidden">
+                <button
+                  className={cn(
+                    "w-full px-4 py-2 text-left flex items-center justify-between",
+                    recurrenceType === "one-time" ? "bg-blue-500 text-white" : "bg-white text-gray-700"
+                  )}
+                  onClick={() => setRecurrenceType("one-time")}
+                >
+                  <span>One-time</span>
+                  {recurrenceType === "one-time" && <Check className="h-4 w-4" />}
+                </button>
+                <button
+                  className={cn(
+                    "w-full px-4 py-2 text-left flex items-center justify-between border-t border-gray-200",
+                    recurrenceType === "recurring" ? "bg-blue-500 text-white" : "bg-white text-gray-700"
+                  )}
+                  onClick={() => setRecurrenceType("recurring")}
+                >
+                  <span>Recurring</span>
+                  {recurrenceType === "recurring" && <Check className="h-4 w-4" />}
+                </button>
+              </div>
+              
+              {recurrenceType === "recurring" && (
+                <div className="pl-7 pt-2">
+                  <Select value={recurrenceFrequency} onValueChange={setRecurrenceFrequency}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select frequency" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="daily">Daily</SelectItem>
+                      <SelectItem value="weekly">Weekly</SelectItem>
+                      <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
+                      <SelectItem value="monthly">Monthly</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </div>
+          </div>
+          
+          <DialogFooter>
+            <Button 
+              className="bg-green-700 hover:bg-green-800 text-white"
+              onClick={handleSchedule}
+            >
+              Save
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
