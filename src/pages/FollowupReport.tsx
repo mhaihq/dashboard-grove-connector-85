@@ -3,7 +3,7 @@ import React from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { JournalEntry } from '@/components/JournalEntry';
-import { CallbackPlanner } from '@/components/CallbackPlanner';
+import MentalHealthSummary from '@/components/MentalHealthSummary';
 
 const FollowupReport = () => {
   const userName = "Matteo";
@@ -42,6 +42,37 @@ const FollowupReport = () => {
     }
   ];
 
+  // Mental health summary items for high-level overview
+  const summaryItems = [
+    {
+      title: "Progress Summary",
+      content: [
+        "Mood has shown consistent improvement over the last 2 weeks",
+        "Sleep quality significantly better with new evening routine",
+        "Social engagement increasing with reduced anxiety"
+      ],
+      type: "notable"
+    },
+    {
+      title: "Areas of Joy",
+      content: [
+        "Reported feeling genuinely happy during social coffee meetings",
+        "Finding joy in morning walks and better sleep quality",
+        "Expressed satisfaction with health coaching progress"
+      ],
+      type: "joy"
+    },
+    {
+      title: "Areas to Focus On",
+      content: [
+        "Continue monitoring alcohol consumption patterns",
+        "Develop more strategies for financial stress management",
+        "Further build daily structure to support mental health"
+      ],
+      type: "weighing"
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar />
@@ -54,14 +85,19 @@ const FollowupReport = () => {
         
         <main className="p-6">
           <div className="max-w-6xl mx-auto">
-            <h1 className="text-2xl font-bold text-gray-900 mb-6">Health Journal</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-6">Followup Health Report</h1>
             
-            <CallbackPlanner userName={userName} />
+            {/* High-level summary overview */}
+            <MentalHealthSummary
+              userName={userName}
+              date="March 15, 2025"
+              summaryItems={summaryItems}
+            />
             
             <div className="mt-8">
-              <h2 className="text-xl font-semibold text-gray-900 mb-4">Journal History</h2>
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">Recent Journal Entries</h2>
               
-              {journalEntries.map((entry, index) => (
+              {journalEntries.slice(0, 2).map((entry, index) => (
                 <JournalEntry
                   key={index}
                   date={entry.date}
