@@ -2,6 +2,7 @@
 import React from 'react';
 import { ChevronDown, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 
 interface DashboardHeaderProps {
   userName: string;
@@ -28,16 +29,15 @@ export const DashboardHeader: React.FC<DashboardHeaderProps> = ({
         </div>
         
         <div className="flex items-center gap-3">
-          <div className={cn(
-            "w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center overflow-hidden",
-            userImage ? "" : "bg-hana-green text-white"
-          )}>
-            {userImage ? (
-              <img src={userImage} alt={userName} className="w-full h-full object-cover" />
-            ) : (
-              <span className="font-semibold">{userName.charAt(0)}</span>
-            )}
-          </div>
+          <Avatar className="w-8 h-8">
+            <AvatarImage 
+              src="https://media.licdn.com/dms/image/v2/D4E03AQEF64y0nluvpw/profile-displayphoto-shrink_800_800/B4EZSgI1mgHcAc-/0/1737853459711?e=1747872000&v=beta&t=3713WkmjpsNYWB0H9Qxg7HrdB3RTyK5bZuLfj-EccRo" 
+              alt={userName} 
+            />
+            <AvatarFallback className="bg-hana-green text-white">
+              {userName.charAt(0)}
+            </AvatarFallback>
+          </Avatar>
           <div>
             <div className="text-sm font-medium">{userName}</div>
             {userEmail && <div className="text-xs text-gray-500">{userEmail}</div>}

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Users, Activity, Clock, Calendar, ClipboardList, Heart, Award } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
@@ -13,6 +12,7 @@ import { CallElement } from '@/components/CallElement';
 const Index = () => {
   const userName = "Matteo";
   const userEmail = "matteo@matteowastaken.com";
+  const userImage = "https://media.licdn.com/dms/image/v2/D4E03AQEF64y0nluvpw/profile-displayphoto-shrink_800_800/B4EZSgI1mgHcAc-/0/1737853459711?e=1747872000&v=beta&t=3713WkmjpsNYWB0H9Qxg7HrdB3RTyK5bZuLfj-EccRo";
   
   // Medicare program eligibility criteria data
   const eligibilityData = [
@@ -56,6 +56,7 @@ const Index = () => {
         <DashboardHeader 
           userName={userName} 
           userEmail={userEmail}
+          userImage={userImage}
         />
         
         <main className="p-6">

@@ -17,11 +17,12 @@ export const Sidebar = () => {
   return (
     <div className="w-[240px] h-screen bg-white border-r border-gray-100 flex flex-col fixed left-0 top-0 z-10">
       <div className="p-4 border-b border-gray-100">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-hana-green text-white flex items-center justify-center">
-            <span className="font-semibold">H</span>
-          </div>
-          <span className="text-xl font-semibold text-gray-900">hana</span>
+        <div className="flex items-center justify-center">
+          <img 
+            src="https://cdn.prod.website-files.com/66d8df543029dd65661ce227/67ac8c50f043cf48b1a2116d_logoHana-p-500.png" 
+            alt="Hana Logo" 
+            className="h-10 object-contain" 
+          />
         </div>
       </div>
       
