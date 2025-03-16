@@ -8,13 +8,11 @@ import { AssessmentOverview } from '@/components/AssessmentOverview';
 import { HealthAssessmentChart } from '@/components/HealthAssessmentChart';
 import { EligibilityStatus } from '@/components/EligibilityStatus';
 import { UpcomingActions } from '@/components/UpcomingActions';
-import { CallTypeSelector } from '@/components/CallTypeSelector';
-import { CallbackPlanner } from '@/components/CallbackPlanner';
+import { CallElement } from '@/components/CallElement';
 
 const Index = () => {
   const userName = "Matteo";
   const userEmail = "matteo@matteowastaken.com";
-  const [selectedCallType, setSelectedCallType] = useState<string | null>(null);
   
   // Medicare program eligibility criteria data
   const eligibilityData = [
@@ -69,13 +67,9 @@ const Index = () => {
               </p>
             </div>
             
-            {/* Call Element Section - Added on top of assessment */}
+            {/* Consolidated Call Element Section */}
             <div className="mb-8">
-              <CallTypeSelector 
-                onSelect={(type) => setSelectedCallType(type)}
-                selectedType={selectedCallType}
-              />
-              <CallbackPlanner userName={userName} />
+              <CallElement userName={userName} />
             </div>
             
             {/* Key Health Indicators */}
