@@ -18,7 +18,7 @@ export const MetricCard: React.FC<MetricProps> = ({ title, status, icon, descrip
   const [expanded, setExpanded] = React.useState(false);
   
   return (
-    <div className="bg-white rounded-lg border border-gray-100 p-3 hover-scale">
+    <div className="bg-white rounded-lg border border-gray-100 p-3 hover-scale text-left">
       <div className="flex items-center justify-between mb-2">
         <div className="flex items-center gap-2">
           {icon}
