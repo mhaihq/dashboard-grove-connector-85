@@ -32,27 +32,30 @@ export const EligibilityStatus: React.FC<EligibilityStatusProps> = ({ programs }
   return (
     <div className="space-y-3">
       {programs.map((program, index) => (
-        <div key={index} className="border rounded-lg p-3 hover-scale">
-          <div className="flex items-center justify-between mb-1">
-            <span className="font-medium text-gray-900">{program.program}</span>
+        <div 
+          key={index} 
+          className="border border-gray-200 rounded-lg p-4 transition-all hover:border-gray-300 bg-white"
+        >
+          <div className="flex items-center justify-between mb-2">
+            <span className="font-medium text-gray-900 text-sm">{program.program}</span>
             {program.eligible === true ? (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                 <Check className="w-3.5 h-3.5 mr-1" />
                 Perfect Match
               </span>
             ) : program.eligible === "potential" ? (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
                 <HelpCircle className="w-3.5 h-3.5 mr-1" />
                 Possible
               </span>
             ) : (
-              <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                 <X className="w-3.5 h-3.5 mr-1" />
                 Not a Match
               </span>
             )}
           </div>
-          <p className="text-xs text-gray-600">{getPersonalizedMessage(program)}</p>
+          <p className="text-xs text-gray-600 leading-snug">{getPersonalizedMessage(program)}</p>
         </div>
       ))}
     </div>
