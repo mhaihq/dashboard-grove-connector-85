@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FileText, Home, Calendar, BarChart3, ChevronRight, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -18,21 +18,30 @@ export const Sidebar = () => {
 
   // Expand sidebar when hovering
   const handleMouseEnter = () => {
-    setIsHovering(true);
+    if (isCollapsed) {
+      setIsHovering(true);
+    }
   };
 
   // Collapse sidebar when not hovering
   const handleMouseLeave = () => {
-    setIsHovering(false);
+    if (isCollapsed) {
+      setIsHovering(false);
+    }
   };
 
   // Toggle sidebar collapsed state
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
+    // Reset hover state when explicitly toggling
+    setIsHovering(false);
   };
 
   // Determine if sidebar should be expanded
-  const showExpanded = isHovering || !isCollapsed;
+  const showExpanded = !isCollapsed || isHovering;
+  
+  // Calculate width for main content adjustment
+  const sidebarWidth = showExpanded ? "240px" : "70px";
 
   return (
     <div 
@@ -42,6 +51,7 @@ export const Sidebar = () => {
       )}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      style={{ width: sidebarWidth }}
     >
       <div className={cn(
         "p-4 border-b border-gray-100 flex items-center justify-center"
