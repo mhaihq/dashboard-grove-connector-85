@@ -9,8 +9,6 @@ import IntakeReport from "./pages/IntakeReport";
 import ScheduleFollowup from "./pages/ScheduleFollowup";
 import FollowupReport from "./pages/FollowupReport";
 import NotFound from "./pages/NotFound";
-import { WalkthroughProvider } from "./context/WalkthroughContext";
-import { WalkthroughTooltip } from "./components/walkthrough/WalkthroughTooltip";
 import './App.css'; // Keep styles
 
 const queryClient = new QueryClient();
@@ -18,19 +16,16 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <Toaster />
+      <Sonner />
       <BrowserRouter>
-        <WalkthroughProvider>
-          <Toaster />
-          <Sonner />
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/intake-report" element={<IntakeReport />} />
-            <Route path="/schedule-followup" element={<ScheduleFollowup />} />
-            <Route path="/followup-report" element={<FollowupReport />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-          <WalkthroughTooltip />
-        </WalkthroughProvider>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/intake-report" element={<IntakeReport />} />
+          <Route path="/schedule-followup" element={<ScheduleFollowup />} />
+          <Route path="/followup-report" element={<FollowupReport />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Activity, Heart, ClipboardList, Award } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
@@ -93,45 +92,35 @@ const Index = () => {
         
         <main className="p-6 text-left">
           <div className="max-w-6xl mx-auto">
-            <div id="welcome-section">
-              <DashboardWelcome userName={userName} />
-            </div>
+            <DashboardWelcome userName={userName} />
             
             {/* Consolidated Call Element Section - Moved to the top */}
-            <div className="mb-8 mt-8" id="call-element">
+            <div className="mb-8 mt-8">
               <CallElement userName={userName} />
             </div>
             
             {/* Journal Summary Section */}
-            <div id="journal-summary">
-              <MentalHealthSummary 
-                userName={userName}
-                userEmail={userEmail}
-                date="Updated: March 15, 2025"
-                summaryItems={journalSummaryItems}
-              />
-            </div>
+            <MentalHealthSummary 
+              userName={userName}
+              userEmail={userEmail}
+              date="Updated: March 15, 2025"
+              summaryItems={journalSummaryItems}
+            />
             
             {/* Key Health Indicators */}
-            <div id="health-indicators">
-              <KeyHealthIndicators healthIndicators={healthIndicators} />
-            </div>
+            <KeyHealthIndicators healthIndicators={healthIndicators} />
             
             {/* Health Assessment Section */}
-            <div id="health-assessment">
-              <HealthAssessmentSection 
-                assessmentData={assessmentData}
-                eligibilityData={eligibilityData}
-              />
-            </div>
+            <HealthAssessmentSection 
+              assessmentData={assessmentData}
+              eligibilityData={eligibilityData}
+            />
             
             {/* Detailed Assessment Section */}
-            <div id="health-overview">
-              <DetailedAssessmentSection
-                userName={userName}
-                upcomingActions={upcomingActions}
-              />
-            </div>
+            <DetailedAssessmentSection
+              userName={userName}
+              upcomingActions={upcomingActions}
+            />
           </div>
         </main>
       </div>
