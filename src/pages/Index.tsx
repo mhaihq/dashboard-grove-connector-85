@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { Moon, BatteryFull, Brain, Heart, Users, Activity } from 'lucide-react';
+import React, { useState } from 'react';
+import { Moon, BatteryFull, Brain, Heart, Users, Activity, PhoneCall, Search, ArrowRight, MessageCircle } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { MentalHealthSummary } from '@/components/MentalHealthSummary';
@@ -9,10 +9,14 @@ import { JournalEntry } from '@/components/JournalEntry';
 import { AppointmentScheduler } from '@/components/AppointmentScheduler';
 import { ProgressSection } from '@/components/ProgressSection';
 import { CallbackPlanner } from '@/components/CallbackPlanner';
+import { CallTypeSelector } from '@/components/CallTypeSelector';
 
 const Index = () => {
   const userName = "Matteo";
   const userEmail = "matteo@matteowastaken.com";
+  
+  // Call type state
+  const [selectedCallType, setSelectedCallType] = useState<string | null>(null);
   
   // Mental health summary data
   const summaryItems = [
@@ -121,6 +125,8 @@ const Index = () => {
         
         <main className="p-6">
           <div className="max-w-6xl mx-auto">
+            <CallTypeSelector onSelect={setSelectedCallType} selectedType={selectedCallType} />
+            
             <MentalHealthSummary
               userName={userName}
               userEmail={userEmail}
