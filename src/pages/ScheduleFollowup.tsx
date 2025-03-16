@@ -5,10 +5,17 @@ import { DashboardHeader } from '@/components/DashboardHeader';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Clock, Calendar as CalendarIcon, CheckCircle } from 'lucide-react';
+import { Clock, Calendar as CalendarIcon, CheckCircle, Repeat, Check } from 'lucide-react';
 import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const ScheduleFollowup = () => {
   const userName = "Matteo";
@@ -16,6 +23,8 @@ const ScheduleFollowup = () => {
   
   const [date, setDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
+  const [recurrenceType, setRecurrenceType] = useState<string>("one-time");
+  const [recurrenceFrequency, setRecurrenceFrequency] = useState<string>("weekly");
   
   const availableTimes = [
     '09:00 AM', '10:00 AM', '11:00 AM', 
@@ -32,9 +41,13 @@ const ScheduleFollowup = () => {
       return;
     }
     
+    const recurrenceMessage = recurrenceType === "recurring" 
+      ? ` (${recurrenceFrequency} recurring appointment)`
+      : "";
+    
     toast({
       title: "Appointment scheduled",
-      description: `Your follow-up has been scheduled for ${format(date, 'MMMM d, yyyy')} at ${selectedTime}`,
+      description: `Your follow-up has been scheduled for ${format(date, 'MMMM d, yyyy')} at ${selectedTime}${recurrenceMessage}`,
       action: (
         <Button size="sm" variant="outline" className="gap-1">
           <CheckCircle className="h-4 w-4" />
@@ -58,6 +71,60 @@ const ScheduleFollowup = () => {
           <div className="max-w-6xl mx-auto">
             <h1 className="text-2xl font-bold text-gray-900 mb-6">Schedule Follow-up</h1>
             
+            <Card className="shadow-sm mb-6">
+              <CardHeader>
+                <CardTitle>Appointment Type</CardTitle>
+                <CardDescription>Choose between one-time or recurring appointment</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-3">
+                  <Button
+                    variant={recurrenceType === "one-time" ? "default" : "outline"}
+                    onClick={() => setRecurrenceType("one-time")}
+                    className={cn(
+                      "flex gap-2 px-4",
+                      recurrenceType === "one-time" && "bg-hana-green hover:bg-hana-green/90"
+                    )}
+                  >
+                    <Calendar className="h-4 w-4" />
+                    <span>One-time</span>
+                    {recurrenceType === "one-time" && <Check className="h-4 w-4 ml-1" />}
+                  </Button>
+                  <Button
+                    variant={recurrenceType === "recurring" ? "default" : "outline"}
+                    onClick={() => setRecurrenceType("recurring")}
+                    className={cn(
+                      "flex gap-2 px-4",
+                      recurrenceType === "recurring" && "bg-hana-green hover:bg-hana-green/90"
+                    )}
+                  >
+                    <Repeat className="h-4 w-4" />
+                    <span>Recurring</span>
+                    {recurrenceType === "recurring" && <Check className="h-4 w-4 ml-1" />}
+                  </Button>
+                </div>
+                
+                {recurrenceType === "recurring" && (
+                  <div className="mt-4">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Recurrence Frequency
+                    </label>
+                    <Select value={recurrenceFrequency} onValueChange={setRecurrenceFrequency}>
+                      <SelectTrigger className="w-full sm:w-[250px]">
+                        <SelectValue placeholder="Select frequency" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="daily">Daily</SelectItem>
+                        <SelectItem value="weekly">Weekly</SelectItem>
+                        <SelectItem value="bi-weekly">Bi-weekly</SelectItem>
+                        <SelectItem value="monthly">Monthly</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+            
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="shadow-sm">
                 <CardHeader>
@@ -71,7 +138,7 @@ const ScheduleFollowup = () => {
                       selected={date}
                       onSelect={setDate}
                       disabled={(date) => date < new Date() || date > new Date(new Date().setMonth(new Date().getMonth() + 2))}
-                      className="rounded-md border"
+                      className="rounded-md border pointer-events-auto"
                     />
                   </div>
                 </CardContent>
