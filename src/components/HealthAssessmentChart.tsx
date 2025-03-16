@@ -19,7 +19,7 @@ interface HealthAssessmentChartProps {
 
 export const HealthAssessmentChart: React.FC<HealthAssessmentChartProps> = ({ data }) => {
   return (
-    <div className="w-full h-[380px] mt-4 mb-6">
+    <div className="w-full h-[300px] mt-2 mb-0">
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
           <PolarGrid 
