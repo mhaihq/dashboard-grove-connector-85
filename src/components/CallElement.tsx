@@ -11,7 +11,7 @@ interface CallElementProps {
 }
 
 export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("0877433002");
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   
   const availableTimes = [
@@ -57,8 +57,8 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
               <div className="relative w-[100px]">
                 <button className="flex items-center justify-between w-full border border-r-0 rounded-l-md px-3 py-2 bg-white">
                   <span className="flex items-center">
-                    <span className="mr-2">🇺🇸</span>
-                    <span>+1</span>
+                    <span className="mr-2">🇮🇪</span>
+                    <span>+353</span>
                   </span>
                 </button>
               </div>
