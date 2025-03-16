@@ -3,15 +3,41 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { PhoneCall, Calendar } from 'lucide-react';
+import { PhoneCall, Calendar, Globe } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface CallbackPlannerProps {
   userName: string;
 }
 
+// Country codes with flags for the selector
+const countryCodes = [
+  { code: "+1", flag: "🇺🇸", name: "United States" },
+  { code: "+44", flag: "🇬🇧", name: "United Kingdom" },
+  { code: "+33", flag: "🇫🇷", name: "France" },
+  { code: "+49", flag: "🇩🇪", name: "Germany" },
+  { code: "+39", flag: "🇮🇹", name: "Italy" },
+  { code: "+34", flag: "🇪🇸", name: "Spain" },
+  { code: "+1", flag: "🇨🇦", name: "Canada" },
+  { code: "+61", flag: "🇦🇺", name: "Australia" },
+  { code: "+91", flag: "🇮🇳", name: "India" },
+  { code: "+81", flag: "🇯🇵", name: "Japan" },
+  { code: "+86", flag: "🇨🇳", name: "China" },
+  { code: "+7", flag: "🇷🇺", name: "Russia" },
+  { code: "+55", flag: "🇧🇷", name: "Brazil" },
+  { code: "+52", flag: "🇲🇽", name: "Mexico" },
+];
+
 export const CallbackPlanner: React.FC<CallbackPlannerProps> = ({ userName }) => {
-  const [phone, setPhone] = useState('');
+  const [countryCode, setCountryCode] = useState("+1");
+  const [phoneNumber, setPhoneNumber] = useState('');
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   
   const availableTimes = [
@@ -21,7 +47,7 @@ export const CallbackPlanner: React.FC<CallbackPlannerProps> = ({ userName }) =>
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
-    if (!phone || !selectedTime) {
+    if (!phoneNumber || !selectedTime) {
       toast({
         title: "Missing information",
         description: "Please enter your phone number and select a time",
@@ -30,14 +56,16 @@ export const CallbackPlanner: React.FC<CallbackPlannerProps> = ({ userName }) =>
       return;
     }
     
+    const fullPhoneNumber = `${countryCode} ${phoneNumber}`;
+    
     // Here you would handle the actual submission
     toast({
       title: "Callback scheduled",
-      description: `We'll call you at ${phone} at ${selectedTime} tomorrow`,
+      description: `We'll call you at ${fullPhoneNumber} at ${selectedTime} tomorrow`,
     });
     
     // Reset form
-    setPhone('');
+    setPhoneNumber('');
     setSelectedTime(null);
   };
   
@@ -57,14 +85,33 @@ export const CallbackPlanner: React.FC<CallbackPlannerProps> = ({ userName }) =>
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
                 Phone Number
               </label>
-              <Input
-                id="phone"
-                type="tel"
-                placeholder="Enter your phone number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="w-full"
-              />
+              <div className="flex gap-2">
+                <div className="w-[130px]">
+                  <Select value={countryCode} onValueChange={setCountryCode}>
+                    <SelectTrigger className="bg-white border-input focus-visible:ring-hana-green">
+                      <SelectValue placeholder="Select country" />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-[300px]">
+                      {countryCodes.map((country) => (
+                        <SelectItem key={`${country.code}-${country.name}`} value={country.code} className="flex items-center">
+                          <span className="mr-2">{country.flag}</span>
+                          <span>{country.code}</span>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="flex-1">
+                  <Input
+                    id="phone"
+                    type="tel"
+                    placeholder="Enter your phone number"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="w-full border-input focus-visible:ring-hana-green"
+                  />
+                </div>
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -76,7 +123,7 @@ export const CallbackPlanner: React.FC<CallbackPlannerProps> = ({ userName }) =>
                     key={time}
                     type="button"
                     variant={selectedTime === time ? "default" : "outline"}
-                    className={selectedTime === time ? "bg-hana-green hover:bg-hana-green/90" : ""}
+                    className={`${selectedTime === time ? "bg-hana-green hover:bg-hana-green/90" : "border-hana-green text-hana-green hover:bg-hana-lightGreen"} transition-all`}
                     onClick={() => setSelectedTime(time)}
                   >
                     <Calendar className="mr-2 h-4 w-4" />
