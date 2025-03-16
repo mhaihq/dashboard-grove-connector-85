@@ -47,7 +47,7 @@ export const AssessmentOverview: React.FC<AssessmentOverviewProps> = ({ userName
   ];
 
   return (
-    <div>
+    <div className="text-left">
       <p className="text-gray-700 mb-4">
         Hi {userName}, here's what I've noticed about how you're doing. Remember, we're in this together, and even small changes can make a real difference in how you feel day-to-day.
       </p>
@@ -56,7 +56,7 @@ export const AssessmentOverview: React.FC<AssessmentOverviewProps> = ({ userName
         {assessmentAreas.map((area, index) => (
           <div 
             key={index} 
-            className="border rounded-lg p-3 hover-scale"
+            className="border rounded-lg p-3 hover-scale text-left"
           >
             <div className="flex items-center gap-2 mb-2">
               {area.icon}

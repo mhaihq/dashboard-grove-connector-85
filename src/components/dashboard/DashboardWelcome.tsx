@@ -7,7 +7,7 @@ interface DashboardWelcomeProps {
 
 export const DashboardWelcome: React.FC<DashboardWelcomeProps> = ({ userName }) => {
   return (
-    <div className="mb-6">
+    <div className="mb-6 text-left">
       <h1 className="text-2xl font-bold text-gray-900">👋 Welcome back, {userName}!</h1>
       <p className="text-gray-600 mt-1">
         Let's check in on your health and build a plan together. I'm here to support you every step of the way!

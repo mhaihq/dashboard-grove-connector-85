@@ -28,7 +28,7 @@ export const HealthAssessmentSection: React.FC<HealthAssessmentSectionProps> = (
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
       {/* Health Assessment Chart */}
-      <Card className="lg:col-span-2">
+      <Card className="lg:col-span-2 text-left">
         <CardHeader>
           <CardTitle className="flex items-center">
             <Activity className="w-5 h-5 text-hana-green mr-2" />
@@ -44,7 +44,7 @@ export const HealthAssessmentSection: React.FC<HealthAssessmentSectionProps> = (
       </Card>
       
       {/* Medicare Program Eligibility */}
-      <Card>
+      <Card className="text-left">
         <CardHeader>
           <CardTitle className="flex items-center">
             <Award className="w-5 h-5 text-hana-green mr-2" />

@@ -19,7 +19,7 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {healthIndicators.map((indicator, i) => (
-        <Card key={i} className="hover-scale">
+        <Card key={i} className="hover-scale text-left">
           <CardHeader className="pb-2">
             <div className="flex justify-between items-center">
               <CardTitle className="text-sm font-medium text-gray-500">{indicator.title}</CardTitle>

@@ -23,7 +23,7 @@ export const MentalHealthSummary: React.FC<MentalHealthSummaryProps> = ({
   summaryItems,
 }) => {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm animate-slide-up">
+    <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm animate-slide-up text-left">
       <div className="flex items-center gap-2 mb-2">
         <TrendingUp className="h-5 w-5 text-hana-green" />
         <h2 className="text-xl font-semibold text-gray-900">Your Journey So Far</h2>
@@ -43,7 +43,7 @@ export const MentalHealthSummary: React.FC<MentalHealthSummaryProps> = ({
           <div 
             key={index} 
             className={cn(
-              "bg-white rounded-lg border p-5 hover-scale", 
+              "bg-white rounded-lg border p-5 hover-scale text-left", 
               item.type === 'notable' ? "border-blue-100" : 
               item.type === 'joy' ? "border-green-100" : 
               "border-amber-100"

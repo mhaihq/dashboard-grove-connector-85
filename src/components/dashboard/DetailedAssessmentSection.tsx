@@ -24,7 +24,7 @@ export const DetailedAssessmentSection: React.FC<DetailedAssessmentSectionProps>
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
       {/* Assessment Overview */}
-      <Card className="lg:col-span-2">
+      <Card className="lg:col-span-2 text-left">
         <CardHeader>
           <CardTitle className="flex items-center">
             <ClipboardList className="w-5 h-5 text-hana-green mr-2" />
@@ -37,7 +37,7 @@ export const DetailedAssessmentSection: React.FC<DetailedAssessmentSectionProps>
         <CardContent>
           <AssessmentOverview userName={userName} />
         </CardContent>
-        <CardFooter>
+        <CardFooter className="text-left">
           <button className="text-hana-green hover:text-green-700 text-sm font-medium flex items-center">
             See your full health story
           </button>
@@ -45,7 +45,7 @@ export const DetailedAssessmentSection: React.FC<DetailedAssessmentSectionProps>
       </Card>
       
       {/* Next Steps/Actions */}
-      <Card>
+      <Card className="text-left">
         <CardHeader>
           <CardTitle className="flex items-center">
             <Calendar className="w-5 h-5 text-hana-green mr-2" />
@@ -58,7 +58,7 @@ export const DetailedAssessmentSection: React.FC<DetailedAssessmentSectionProps>
         <CardContent>
           <UpcomingActions actions={upcomingActions} />
         </CardContent>
-        <CardFooter>
+        <CardFooter className="text-left">
           <button className="text-hana-green hover:text-green-700 text-sm font-medium flex items-center">
             See all your personalized suggestions
           </button>

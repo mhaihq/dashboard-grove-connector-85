@@ -90,7 +90,7 @@ const Index = () => {
           userImage={userImage}
         />
         
-        <main className="p-6">
+        <main className="p-6 text-left">
           <div className="max-w-6xl mx-auto">
             <DashboardWelcome userName={userName} />
             
