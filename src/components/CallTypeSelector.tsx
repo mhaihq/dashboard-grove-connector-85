@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, ArrowRight, MessageCircle, PhoneCall, Flag, FlagOff, Clipboard, Shield } from 'lucide-react';
+import { MessageCircle, PhoneCall, Flag, FlagOff, Clipboard, Shield, ArrowRight } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,9 +34,9 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
       case "comprehensive":
         return "Initial Health Assessment";
       case "followup":
-        return "Coaching Follow-up";
+        return "Follow-up";
       case "talk":
-        return "Check-in Conversation";
+        return "Quick Check-in";
       default:
         return "";
     }
@@ -111,50 +111,69 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
   };
   
   return (
-    <Card className="mb-8 shadow-sm animate-fade-in">
-      <CardHeader className="pb-3">
+    <Card className="mb-8 shadow-sm animate-fade-in border-0 rounded-lg">
+      <CardHeader className="pb-3 flex items-center">
         <div className="flex items-center gap-2">
           <PhoneCall className="w-5 h-5 text-hana-green" />
-          <CardTitle className="text-hana-green">Health Coaching Call</CardTitle>
+          <CardTitle className="text-hana-green text-2xl">Health Coaching Call</CardTitle>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-gray-600 mb-4">Select the purpose of your coaching call:</p>
+        <p className="text-gray-600 mb-6 text-center text-lg">Select the purpose of your coaching call:</p>
         
         <Tabs defaultValue={selectedType || undefined} onValueChange={handleSelect} className="w-full">
-          <TabsList className="grid grid-cols-3 w-full">
-            <TabsTrigger value="comprehensive" className="flex items-center gap-2">
-              <Clipboard className="h-4 w-4" />
-              <span>Assessment</span>
+          <TabsList className="grid grid-cols-3 w-full bg-gray-100 p-1 rounded-full mb-6">
+            <TabsTrigger 
+              value="comprehensive" 
+              className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-full py-3 px-4"
+            >
+              <div className="flex items-center gap-2 justify-center">
+                <Clipboard className="h-5 w-5" />
+                <span>Assessment</span>
+              </div>
             </TabsTrigger>
-            <TabsTrigger value="followup" className="flex items-center gap-2">
-              <ArrowRight className="h-4 w-4" />
-              <span>Follow-up</span>
+            <TabsTrigger 
+              value="followup" 
+              className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-full py-3 px-4"
+            >
+              <div className="flex items-center gap-2 justify-center">
+                <ArrowRight className="h-5 w-5" />
+                <span>Follow-up</span>
+              </div>
             </TabsTrigger>
-            <TabsTrigger value="talk" className="flex items-center gap-2">
-              <MessageCircle className="h-4 w-4" />
-              <span>Quick Check-in</span>
+            <TabsTrigger 
+              value="talk" 
+              className="data-[state=active]:bg-white data-[state=active]:shadow-sm rounded-full py-3 px-4"
+            >
+              <div className="flex items-center gap-2 justify-center">
+                <MessageCircle className="h-5 w-5" />
+                <span>Quick Check-in</span>
+              </div>
             </TabsTrigger>
           </TabsList>
         </Tabs>
         
         {selectedType && (
-          <div className="mt-4 p-4 bg-hana-lightGreen rounded-md text-gray-700">
-            <h3 className="font-medium flex items-center gap-2">
-              {selectedType === "comprehensive" && <Clipboard className="h-4 w-4 text-hana-green" />}
-              {selectedType === "followup" && <ArrowRight className="h-4 w-4 text-hana-green" />}
-              {selectedType === "talk" && <MessageCircle className="h-4 w-4 text-hana-green" />}
-              {getCallTypeTitle(selectedType)}
-            </h3>
-            <p className="text-sm mt-1">{getCallTypeDescription(selectedType)}</p>
+          <div className="my-6 p-6 bg-hana-lightGreen rounded-lg">
+            <div className="flex items-start gap-3 mb-2">
+              <div className="mt-1">
+                {selectedType === "comprehensive" && <Clipboard className="h-5 w-5 text-hana-green" />}
+                {selectedType === "followup" && <ArrowRight className="h-5 w-5 text-hana-green" />}
+                {selectedType === "talk" && <MessageCircle className="h-5 w-5 text-hana-green" />}
+              </div>
+              <div>
+                <h3 className="font-medium text-xl text-gray-800">{getCallTypeTitle(selectedType)}</h3>
+                <p className="text-gray-600 mt-1">{getCallTypeDescription(selectedType)}</p>
+              </div>
+            </div>
             
-            <div className="mt-3 pt-3 border-t border-green-100">
-              <h4 className="text-xs font-medium text-gray-600 mb-2">This call will cover:</h4>
-              <ul className="text-xs space-y-1">
+            <div className="mt-5 pt-4 border-t border-green-100">
+              <h4 className="text-sm font-medium text-gray-700 mb-3 text-center">This call will cover:</h4>
+              <ul className="space-y-2">
                 {getCallTypeDetails(selectedType).map((detail, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <div className="w-1 h-1 rounded-full bg-hana-green mt-1.5"></div>
-                    <span>{detail}</span>
+                  <li key={index} className="flex items-start gap-3">
+                    <span className="text-hana-green">•</span>
+                    <span className="text-gray-700">{detail}</span>
                   </li>
                 ))}
               </ul>
@@ -162,44 +181,45 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
           </div>
         )}
         
-        <div className="mt-6 space-y-4">
+        <div className="mt-8 space-y-5">
           <div className="space-y-2">
-            <Label htmlFor="phoneNumber">Patient Phone Number</Label>
+            <Label htmlFor="phoneNumber" className="text-center block text-lg font-medium text-gray-700">Patient Phone Number</Label>
             <Input 
               id="phoneNumber"
               type="tel" 
               value={phoneNumber} 
               onChange={(e) => setPhoneNumber(e.target.value)}
               placeholder="Enter phone number"
+              className="text-center py-6 text-lg border-gray-200"
             />
           </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex gap-4 mt-6">
             <Button 
               onClick={handleCallNow} 
-              className="flex-1 bg-hana-green hover:bg-hana-green/90 text-white"
+              className="flex-1 bg-hana-green hover:bg-hana-green/90 text-white py-6 rounded-lg"
             >
-              <PhoneCall className="mr-2 h-4 w-4" />
+              <PhoneCall className="mr-3 h-5 w-5" />
               Start Coaching Call
             </Button>
             
             <Button
               variant="outline"
               onClick={toggleFlag}
-              className={`${isFlagged ? 'bg-amber-50 border-amber-400' : ''}`}
+              className={`${isFlagged ? 'bg-amber-50 border-amber-400' : ''} rounded-lg p-3`}
               title={isFlagged ? "Unmark this call for special follow-up" : "Mark this call for special follow-up"}
             >
               {isFlagged ? (
-                <Flag className="h-4 w-4 text-amber-500" />
+                <Flag className="h-5 w-5 text-amber-500" />
               ) : (
-                <FlagOff className="h-4 w-4" />
+                <FlagOff className="h-5 w-5" />
               )}
               <span className="sr-only">{isFlagged ? 'Flagged' : 'Flag Call'}</span>
             </Button>
           </div>
           
-          <div className="text-xs text-gray-500 flex items-center gap-1.5 mt-2">
-            <Shield className="h-3 w-3" />
+          <div className="flex items-center justify-center mt-4 text-gray-500 text-sm">
+            <Shield className="h-4 w-4 mr-2" />
             <span>All calls are secure, confidential, and comply with healthcare regulations</span>
           </div>
         </div>
