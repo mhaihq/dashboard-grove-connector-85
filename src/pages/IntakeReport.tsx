@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Moon, BatteryFull, Brain, Heart, Users, Activity, UtensilsCrossed, Weight, Shield, Coffee } from 'lucide-react';
-import { Sidebar } from '@/components/Sidebar';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { MentalHealthSummary } from '@/components/MentalHealthSummary';
 import { HealthMetrics } from '@/components/HealthMetrics';
@@ -38,35 +37,31 @@ const IntakeReport = () => {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50">
+      <DashboardHeader 
+        userName={userName} 
+        userEmail={userEmail}
+      />
       
-      <div className="flex-1 ml-[70px] transition-all duration-300">
-        <DashboardHeader 
-          userName={userName} 
-          userEmail={userEmail}
-        />
-        
-        <main className="p-6 pb-12">
-          <div className="max-w-5xl mx-auto">
-            <IntakeReportHeader />
-            <WellnessBanner />
+      <main className="p-6 pb-12">
+        <div className="max-w-5xl mx-auto">
+          <IntakeReportHeader />
+          <WellnessBanner />
+          
+          <div className="space-y-10">
+            <MentalHealthSummary
+              userName={userName}
+              userEmail={userEmail}
+              date="February 13, 2025"
+              summaryItems={summaryItems}
+            />
             
-            <div className="space-y-10">
-              <MentalHealthSummary
-                userName={userName}
-                userEmail={userEmail}
-                date="February 13, 2025"
-                summaryItems={summaryItems}
-              />
-              
-              <HealthMetrics metrics={metrics} />
-              
-              <ProgressSection recommendations={recommendations} />
-            </div>
+            <HealthMetrics metrics={metrics} />
+            
+            <ProgressSection recommendations={recommendations} />
           </div>
-        </main>
-      </div>
+        </div>
+      </main>
     </div>
   );
 };

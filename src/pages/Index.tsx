@@ -1,6 +1,6 @@
+
 import React from 'react';
 import { Activity, Heart, ClipboardList, Award } from 'lucide-react';
-import { Sidebar } from '@/components/Sidebar';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { DashboardWelcome } from '@/components/dashboard/DashboardWelcome';
 import { MentalHealthSummary } from '@/components/MentalHealthSummary';
@@ -80,50 +80,46 @@ const Index = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-gray-50">
+      <DashboardHeader 
+        userName={userName} 
+        userEmail={userEmail}
+        userImage={userImage}
+      />
       
-      <div className="flex-1 ml-[70px] transition-all duration-300">
-        <DashboardHeader 
-          userName={userName} 
-          userEmail={userEmail}
-          userImage={userImage}
-        />
-        
-        <main className="p-6 text-left">
-          <div className="max-w-6xl mx-auto">
-            <DashboardWelcome userName={userName} />
-            
-            {/* Consolidated Call Element Section - Moved to the top */}
-            <div className="mb-8 mt-8">
-              <CallElement userName={userName} />
-            </div>
-            
-            {/* Journal Summary Section */}
-            <MentalHealthSummary 
-              userName={userName}
-              userEmail={userEmail}
-              date="Updated: March 15, 2025"
-              summaryItems={journalSummaryItems}
-            />
-            
-            {/* Key Health Indicators */}
-            <KeyHealthIndicators healthIndicators={healthIndicators} />
-            
-            {/* Health Assessment Section */}
-            <HealthAssessmentSection 
-              assessmentData={assessmentData}
-              eligibilityData={eligibilityData}
-            />
-            
-            {/* Detailed Assessment Section */}
-            <DetailedAssessmentSection
-              userName={userName}
-              upcomingActions={upcomingActions}
-            />
+      <main className="p-6 text-left">
+        <div className="max-w-6xl mx-auto">
+          <DashboardWelcome userName={userName} />
+          
+          {/* Consolidated Call Element Section - Moved to the top */}
+          <div className="mb-8 mt-8">
+            <CallElement userName={userName} />
           </div>
-        </main>
-      </div>
+          
+          {/* Journal Summary Section */}
+          <MentalHealthSummary 
+            userName={userName}
+            userEmail={userEmail}
+            date="Updated: March 15, 2025"
+            summaryItems={journalSummaryItems}
+          />
+          
+          {/* Key Health Indicators */}
+          <KeyHealthIndicators healthIndicators={healthIndicators} />
+          
+          {/* Health Assessment Section */}
+          <HealthAssessmentSection 
+            assessmentData={assessmentData}
+            eligibilityData={eligibilityData}
+          />
+          
+          {/* Detailed Assessment Section */}
+          <DetailedAssessmentSection
+            userName={userName}
+            upcomingActions={upcomingActions}
+          />
+        </div>
+      </main>
     </div>
   );
 };
