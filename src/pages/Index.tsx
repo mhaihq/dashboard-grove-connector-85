@@ -1,15 +1,14 @@
 
-import React, { useState } from 'react';
-import { Users, Activity, Clock, Calendar, ClipboardList, Heart, Award } from 'lucide-react';
+import React from 'react';
+import { Activity, Heart, ClipboardList, Award } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardHeader } from '@/components/DashboardHeader';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { AssessmentOverview } from '@/components/AssessmentOverview';
-import { HealthAssessmentChart } from '@/components/HealthAssessmentChart';
-import { EligibilityStatus } from '@/components/EligibilityStatus';
-import { UpcomingActions } from '@/components/UpcomingActions';
-import { CallElement } from '@/components/CallElement';
+import { DashboardWelcome } from '@/components/dashboard/DashboardWelcome';
 import { MentalHealthSummary } from '@/components/MentalHealthSummary';
+import { CallElement } from '@/components/CallElement';
+import { KeyHealthIndicators } from '@/components/dashboard/KeyHealthIndicators';
+import { HealthAssessmentSection } from '@/components/dashboard/HealthAssessmentSection';
+import { DetailedAssessmentSection } from '@/components/dashboard/DetailedAssessmentSection';
 
 const Index = () => {
   const userName = "Matteo";
@@ -94,12 +93,7 @@ const Index = () => {
         
         <main className="p-6">
           <div className="max-w-6xl mx-auto">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">👋 Welcome back, {userName}!</h1>
-              <p className="text-gray-600 mt-1">
-                Let's check in on your health and build a plan together. I'm here to support you every step of the way!
-              </p>
-            </div>
+            <DashboardWelcome userName={userName} />
             
             {/* Journal Summary Section */}
             <MentalHealthSummary 
@@ -115,108 +109,19 @@ const Index = () => {
             </div>
             
             {/* Key Health Indicators */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-              {healthIndicators.map((indicator, i) => (
-                <Card key={i} className="hover-scale">
-                  <CardHeader className="pb-2">
-                    <div className="flex justify-between items-center">
-                      <CardTitle className="text-sm font-medium text-gray-500">{indicator.title}</CardTitle>
-                      {indicator.icon}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{indicator.value}</div>
-                    <p className={`text-xs ${
-                      indicator.change === "improving" ? "text-green-600" : 
-                      indicator.change === "worsening" ? "text-red-600" : 
-                      "text-blue-600"
-                    }`}>
-                      {indicator.title === "Medicare Status" 
-                        ? "Great news! You're covered for our support program" 
-                        : indicator.change}
-                    </p>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+            <KeyHealthIndicators healthIndicators={healthIndicators} />
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-              {/* Health Assessment Chart */}
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Activity className="w-5 h-5 text-hana-green mr-2" />
-                    Your Health Snapshot
-                  </CardTitle>
-                  <CardDescription>
-                    Here's what we're seeing across different areas of your wellbeing
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <HealthAssessmentChart data={assessmentData} />
-                </CardContent>
-              </Card>
-              
-              {/* Medicare Program Eligibility */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Award className="w-5 h-5 text-hana-green mr-2" />
-                    Programs You Qualify For
-                  </CardTitle>
-                  <CardDescription>
-                    These programs can help support your health journey
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <EligibilityStatus programs={eligibilityData} />
-                </CardContent>
-              </Card>
-            </div>
+            {/* Health Assessment Section */}
+            <HealthAssessmentSection 
+              assessmentData={assessmentData}
+              eligibilityData={eligibilityData}
+            />
             
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              {/* Assessment Overview */}
-              <Card className="lg:col-span-2">
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <ClipboardList className="w-5 h-5 text-hana-green mr-2" />
-                    Let's Talk About Your Health
-                  </CardTitle>
-                  <CardDescription>
-                    Here's what I've noticed and how we can support you
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <AssessmentOverview userName={userName} />
-                </CardContent>
-                <CardFooter>
-                  <button className="text-hana-green hover:text-green-700 text-sm font-medium flex items-center">
-                    See your full health story
-                  </button>
-                </CardFooter>
-              </Card>
-              
-              {/* Next Steps/Actions */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center">
-                    <Calendar className="w-5 h-5 text-hana-green mr-2" />
-                    Small Steps Forward
-                  </CardTitle>
-                  <CardDescription>
-                    Little actions that can make a big difference
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <UpcomingActions actions={upcomingActions} />
-                </CardContent>
-                <CardFooter>
-                  <button className="text-hana-green hover:text-green-700 text-sm font-medium flex items-center">
-                    See all your personalized suggestions
-                  </button>
-                </CardFooter>
-              </Card>
-            </div>
+            {/* Detailed Assessment Section */}
+            <DetailedAssessmentSection
+              userName={userName}
+              upcomingActions={upcomingActions}
+            />
           </div>
         </main>
       </div>
