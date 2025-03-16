@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { JournalEntryType } from '@/pages/FollowupReport';
 import { 
@@ -43,7 +44,7 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
       case 'daily':
         return <Heart className="w-5 h-5" />;
       case 'mood':
-        return <Award className="w-5 h-5" />;
+        return <Zap className="w-5 h-5" />;
       case 'sleep':
         return <Moon className="w-5 h-5" />;
       case 'achievement':
@@ -99,7 +100,7 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
                 <span className="hidden sm:inline">Daily Reflection</span>
               </TabsTrigger>
               <TabsTrigger value="mood" className="flex items-center gap-1 text-sm py-2">
-                <Award className="w-4 h-4" />
+                <Zap className="w-4 h-4" />
                 <span className="hidden sm:inline">Mood & Energy</span>
               </TabsTrigger>
               <TabsTrigger value="sleep" className="flex items-center gap-1 text-sm py-2">
@@ -181,8 +182,30 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
             
             <TabsContent value="sleep" className="text-left">
               <div className="mb-6">
-                <h2 className="text-xl font-semibold text-gray-700 mb-3">{entry.title}</h2>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">Sleep Quality</h2>
                 <p className="text-gray-600 whitespace-pre-line text-sm">{entry.content}</p>
+                
+                <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+                  <Card className="bg-[#F0EEFF] border-indigo-100">
+                    <CardContent className="pt-4 p-4">
+                      <div className="text-3xl mb-2">😴</div>
+                      <h3 className="text-lg font-medium text-gray-800 mb-1">Sleep Duration</h3>
+                      <p className="text-sm text-gray-700">
+                        {entry.sleep?.duration || "7 hours (average)"}
+                      </p>
+                    </CardContent>
+                  </Card>
+                  
+                  <Card className="bg-[#E6F7FF] border-blue-100">
+                    <CardContent className="pt-4 p-4">
+                      <div className="text-3xl mb-2">🌙</div>
+                      <h3 className="text-lg font-medium text-gray-800 mb-1">Sleep Quality</h3>
+                      <p className="text-sm text-gray-700">
+                        {entry.sleep?.quality || "Improved from previous weeks"}
+                      </p>
+                    </CardContent>
+                  </Card>
+                </div>
               </div>
               
               {entry.highlight && (
@@ -195,8 +218,40 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
             
             <TabsContent value="achievement" className="text-left">
               <div className="mb-6">
-                <h2 className="text-xl font-semibold text-gray-700 mb-3">{entry.title}</h2>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">Achievements & Progress</h2>
                 <p className="text-gray-600 whitespace-pre-line text-sm">{entry.content}</p>
+                
+                {entry.achievements && (
+                  <div className="mt-4 space-y-3">
+                    {entry.achievements.map((achievement, idx) => (
+                      <Card key={idx} className="bg-[#F6FFF2] border-green-100">
+                        <CardContent className="pt-4 p-4">
+                          <div className="flex items-start gap-2">
+                            <div className="text-xl mt-0.5">🏆</div>
+                            <div>
+                              <h3 className="text-base font-medium text-gray-800">{achievement.title || "Achievement"}</h3>
+                              <p className="text-sm text-gray-700">{achievement.description || "Completed milestone"}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+                
+                {!entry.achievements && (
+                  <Card className="bg-[#F6FFF2] border-green-100 mt-4">
+                    <CardContent className="pt-4 p-4">
+                      <div className="flex items-start gap-2">
+                        <div className="text-xl mt-0.5">🏆</div>
+                        <div>
+                          <h3 className="text-base font-medium text-gray-800">Physical Activity Progress</h3>
+                          <p className="text-sm text-gray-700">Consistent with daily walks (20 minutes average)</p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
               </div>
               
               {entry.highlight && (
@@ -209,8 +264,53 @@ export const JournalEntryModal: React.FC<JournalEntryModalProps> = ({
             
             <TabsContent value="goals" className="text-left">
               <div className="mb-6">
-                <h2 className="text-xl font-semibold text-gray-700 mb-3">{entry.title}</h2>
+                <h2 className="text-xl font-semibold text-gray-700 mb-3">Goals & Intentions</h2>
                 <p className="text-gray-600 whitespace-pre-line text-sm">{entry.content}</p>
+                
+                {entry.goals && (
+                  <div className="mt-4 space-y-3">
+                    {entry.goals.map((goal, idx) => (
+                      <Card key={idx} className={`${goal.completed ? 'bg-[#F6FFF2] border-green-100' : 'bg-[#F9F9F9] border-gray-100'}`}>
+                        <CardContent className="pt-4 p-4">
+                          <div className="flex items-start gap-2">
+                            <div className="text-xl mt-0.5">{goal.completed ? '✅' : '🎯'}</div>
+                            <div>
+                              <h3 className="text-base font-medium text-gray-800">{goal.title || "Goal"}</h3>
+                              <p className="text-sm text-gray-700">{goal.description || "In progress"}</p>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+                
+                {!entry.goals && (
+                  <div className="mt-4 space-y-3">
+                    <Card className="bg-[#F9F9F9] border-gray-100">
+                      <CardContent className="pt-4 p-4">
+                        <div className="flex items-start gap-2">
+                          <div className="text-xl mt-0.5">🎯</div>
+                          <div>
+                            <h3 className="text-base font-medium text-gray-800">Regular Exercise</h3>
+                            <p className="text-sm text-gray-700">Add more structured activity alongside daily walks</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                    <Card className="bg-[#F6FFF2] border-green-100">
+                      <CardContent className="pt-4 p-4">
+                        <div className="flex items-start gap-2">
+                          <div className="text-xl mt-0.5">✅</div>
+                          <div>
+                            <h3 className="text-base font-medium text-gray-800">Daily Walks</h3>
+                            <p className="text-sm text-gray-700">Maintain current 20-minute daily walks</p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )}
               </div>
               
               {entry.highlight && (

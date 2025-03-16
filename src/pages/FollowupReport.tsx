@@ -29,6 +29,22 @@ export interface JournalEntryType {
     level: string;
     notes: string;
   };
+  sleep?: {
+    duration: string;
+    quality: string;
+    notes?: string;
+  };
+  achievements?: Array<{
+    title: string;
+    description: string;
+    date?: string;
+  }>;
+  goals?: Array<{
+    title: string;
+    description: string;
+    completed: boolean;
+    dueDate?: string;
+  }>;
 }
 
 const FollowupReport = () => {
@@ -92,7 +108,12 @@ const FollowupReport = () => {
       title: "Sleep Improvements",
       content: "The patient reported better sleep after implementing the suggested routine changes. They're now getting an average of 7 hours per night compared to 5 hours previously. Morning fatigue has decreased notably. The evening digital detox (no screens 1 hour before bed) has been particularly effective. Still experiencing occasional night waking but able to fall back asleep more easily.",
       highlight: "Sleep duration increased by approximately 2 hours per night with new bedtime routine. Patient reports feeling 'more rested than I have in months.'",
-      category: 'sleep'
+      category: 'sleep',
+      sleep: {
+        duration: "7 hours",
+        quality: "Improved",
+        notes: "Digital detox one hour before bed has been effective"
+      }
     },
     {
       id: "4",
@@ -119,7 +140,43 @@ const FollowupReport = () => {
       title: "Physical Activity Assessment",
       content: "Patient has been more consistent with daily walks (average 20 minutes) and reports improved mood afterward. Still struggling with motivation for more structured exercise. We discussed simple body-weight exercises that can be done at home with minimal equipment. Most successful when done immediately after morning walk before work demands begin.",
       highlight: "Morning activity appears to have positive cascading effect on other health behaviors throughout the day.",
-      category: 'achievement'
+      category: 'achievement',
+      achievements: [
+        {
+          title: "Consistent Daily Walks",
+          description: "20 minutes average daily"
+        },
+        {
+          title: "Morning Routine",
+          description: "Successfully integrated stretching exercises"
+        }
+      ]
+    },
+    {
+      id: "7",
+      date: "2025-02-15",
+      timestamp: "10:15:30",
+      title: "Health Goals Planning",
+      content: "Set realistic health improvement goals with the patient for the next month. Focus on gradual, sustainable changes rather than dramatic shifts. Created a prioritized list of behaviors to target, starting with sleep hygiene and daily movement. Patient expressed genuine interest in building an evening relaxation ritual to address persistent sleep difficulties.",
+      highlight: "Patient shows increased readiness for change compared to initial assessment. Motivational factors appear primarily health-driven rather than appearance-driven.",
+      category: 'goals',
+      goals: [
+        {
+          title: "Improve Sleep Hygiene",
+          description: "Consistent bedtime routine and digital detox",
+          completed: true
+        },
+        {
+          title: "Increase Physical Activity",
+          description: "Daily 20-minute walks and basic strength exercises",
+          completed: true 
+        },
+        {
+          title: "Reduce Alcohol Consumption",
+          description: "At least 3 alcohol-free days per week",
+          completed: false
+        }
+      ]
     }
   ];
 
