@@ -10,6 +10,11 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import {
   Select,
   SelectContent,
   SelectItem,
@@ -23,6 +28,7 @@ import {
   DialogTitle,
   DialogFooter,
 } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -74,9 +80,11 @@ const ScheduleFollowup = () => {
     setIsModalOpen(false);
   };
 
-  const handleDateClick = (selectedDate: Date) => {
+  const handleDateSelect = (selectedDate: Date | undefined) => {
     setDate(selectedDate);
-    setIsModalOpen(true);
+    if (selectedDate) {
+      setIsModalOpen(true);
+    }
   };
 
   return (
@@ -104,7 +112,7 @@ const ScheduleFollowup = () => {
                     <Calendar
                       mode="single"
                       selected={date}
-                      onSelect={handleDateClick}
+                      onSelect={handleDateSelect}
                       disabled={(date) => date < new Date() || date > new Date(new Date().setMonth(new Date().getMonth() + 2))}
                       className="rounded-md border pointer-events-auto"
                     />
@@ -190,17 +198,30 @@ const ScheduleFollowup = () => {
                 <CalendarIcon className="mr-2 h-5 w-5 text-gray-500" />
                 <label className="text-sm font-medium">Date</label>
               </div>
-              <div className="flex">
-                <input
-                  type="text"
-                  className="w-full rounded-md border border-gray-300 p-2"
-                  value={date ? format(date, 'dd/MM/yyyy') : ''}
-                  readOnly
-                />
-                <Button className="ml-1 p-2" variant="outline" onClick={() => setIsModalOpen(false)}>
-                  <CalendarIcon className="h-5 w-5" />
-                </Button>
-              </div>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className={cn(
+                      "w-full justify-start text-left font-normal",
+                      !date && "text-muted-foreground"
+                    )}
+                  >
+                    {date ? format(date, 'MMMM d, yyyy') : <span>Select date</span>}
+                    <CalendarIcon className="ml-auto h-4 w-4" />
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={date}
+                    onSelect={handleDateSelect}
+                    disabled={(date) => date < new Date() || date > new Date(new Date().setMonth(new Date().getMonth() + 2))}
+                    initialFocus
+                    className="rounded-md pointer-events-auto"
+                  />
+                </PopoverContent>
+              </Popover>
             </div>
             
             <div className="space-y-2">
@@ -209,33 +230,24 @@ const ScheduleFollowup = () => {
                 <label className="text-sm font-medium">Start Time</label>
               </div>
               <div className="flex">
-                <input
-                  type="text"
-                  className="w-full rounded-md border border-gray-300 p-2"
-                  placeholder="--:--"
-                  value={timeInput}
-                  onChange={(e) => setTimeInput(e.target.value)}
-                />
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button className="ml-1 p-2" variant="outline">
-                      <Clock className="h-5 w-5" />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56">
+                <Select 
+                  value={timeInput || undefined} 
+                  onValueChange={(value) => {
+                    setTimeInput(value);
+                    setSelectedTime(value);
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select time" />
+                  </SelectTrigger>
+                  <SelectContent>
                     {availableTimes.map((time) => (
-                      <DropdownMenuItem 
-                        key={time}
-                        onClick={() => {
-                          setSelectedTime(time);
-                          setTimeInput(time);
-                        }}
-                      >
+                      <SelectItem key={time} value={time}>
                         {time}
-                      </DropdownMenuItem>
+                      </SelectItem>
                     ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="pl-7 text-sm text-gray-500">(15 min duration)</div>
             </div>
