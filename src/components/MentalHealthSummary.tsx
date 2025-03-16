@@ -19,10 +19,7 @@ export const MentalHealthSummary: React.FC<MentalHealthSummaryProps> = ({
   summaryItems
 }) => {
   return <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm animate-slide-up text-left py-[67px] my-[38px]">
-      <div className="flex items-center gap-2 mb-2">
-        <TrendingUp className="h-5 w-5 text-hana-green" />
-        <h2 className="text-xl font-semibold text-gray-900">Your Journey So Far</h2>
-      </div>
+      
       
       <div className="text-sm text-gray-500 mb-3">{date}</div>
       
