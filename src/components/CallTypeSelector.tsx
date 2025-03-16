@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Search, ArrowRight, MessageCircle, PhoneCall, Flag, FlagOff } from 'lucide-react';
+import { Search, ArrowRight, MessageCircle, PhoneCall, Flag, FlagOff, Clipboard, Shield } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,11 +32,11 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
   const getCallTypeTitle = (type: string): string => {
     switch(type) {
       case "comprehensive":
-        return "Comprehensive Screening";
+        return "Initial Health Assessment";
       case "followup":
-        return "Follow-up Call";
+        return "Coaching Follow-up";
       case "talk":
-        return "Just Talk";
+        return "Check-in Conversation";
       default:
         return "";
     }
@@ -44,13 +45,42 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
   const getCallTypeDescription = (type: string): string => {
     switch(type) {
       case "comprehensive":
-        return "have a thorough mental health assessment";
+        return "complete a thorough health and wellness assessment";
       case "followup":
-        return "discuss your progress and next steps";
+        return "review progress and adjust health coaching plans";
       case "talk":
-        return "have an open conversation about what's on your mind";
+        return "have a brief wellness check-in";
       default:
         return "";
+    }
+  };
+  
+  const getCallTypeDetails = (type: string): string[] => {
+    switch(type) {
+      case "comprehensive":
+        return [
+          "Health history & chronic conditions",
+          "Current medications & treatments",
+          "Lifestyle & daily routines",
+          "Mental wellness baseline",
+          "Personal health goals"
+        ];
+      case "followup":
+        return [
+          "Progress on recommended actions",
+          "Challenges and barriers",
+          "Adjustments to health coaching plan",
+          "New goals and milestones"
+        ];
+      case "talk":
+        return [
+          "Quick wellness check",
+          "Address immediate concerns",
+          "Provide encouragement",
+          "Schedule more detailed follow-up if needed"
+        ];
+      default:
+        return [];
     }
   };
   
@@ -85,17 +115,17 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
           <PhoneCall className="w-5 h-5 text-hana-green" />
-          <CardTitle className="text-hana-green">Get a Call</CardTitle>
+          <CardTitle className="text-hana-green">Health Coaching Call</CardTitle>
         </div>
       </CardHeader>
       <CardContent>
-        <p className="text-gray-600 mb-4">Select what type of call you need:</p>
+        <p className="text-gray-600 mb-4">Select the purpose of your coaching call:</p>
         
         <Tabs defaultValue={selectedType || undefined} onValueChange={handleSelect} className="w-full">
           <TabsList className="grid grid-cols-3 w-full">
             <TabsTrigger value="comprehensive" className="flex items-center gap-2">
-              <Search className="h-4 w-4" />
-              <span>Comprehensive</span>
+              <Clipboard className="h-4 w-4" />
+              <span>Assessment</span>
             </TabsTrigger>
             <TabsTrigger value="followup" className="flex items-center gap-2">
               <ArrowRight className="h-4 w-4" />
@@ -103,7 +133,7 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
             </TabsTrigger>
             <TabsTrigger value="talk" className="flex items-center gap-2">
               <MessageCircle className="h-4 w-4" />
-              <span>Just Talk</span>
+              <span>Quick Check-in</span>
             </TabsTrigger>
           </TabsList>
         </Tabs>
@@ -111,18 +141,30 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
         {selectedType && (
           <div className="mt-4 p-4 bg-hana-lightGreen rounded-md text-gray-700">
             <h3 className="font-medium flex items-center gap-2">
-              {selectedType === "comprehensive" && <Search className="h-4 w-4 text-hana-green" />}
+              {selectedType === "comprehensive" && <Clipboard className="h-4 w-4 text-hana-green" />}
               {selectedType === "followup" && <ArrowRight className="h-4 w-4 text-hana-green" />}
               {selectedType === "talk" && <MessageCircle className="h-4 w-4 text-hana-green" />}
               {getCallTypeTitle(selectedType)}
             </h3>
             <p className="text-sm mt-1">{getCallTypeDescription(selectedType)}</p>
+            
+            <div className="mt-3 pt-3 border-t border-green-100">
+              <h4 className="text-xs font-medium text-gray-600 mb-2">This call will cover:</h4>
+              <ul className="text-xs space-y-1">
+                {getCallTypeDetails(selectedType).map((detail, index) => (
+                  <li key={index} className="flex items-start gap-2">
+                    <div className="w-1 h-1 rounded-full bg-hana-green mt-1.5"></div>
+                    <span>{detail}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         )}
         
         <div className="mt-6 space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="phoneNumber">Phone Number</Label>
+            <Label htmlFor="phoneNumber">Patient Phone Number</Label>
             <Input 
               id="phoneNumber"
               type="tel" 
@@ -138,21 +180,27 @@ export const CallTypeSelector: React.FC<CallTypeSelectorProps> = ({
               className="flex-1 bg-hana-green hover:bg-hana-green/90 text-white"
             >
               <PhoneCall className="mr-2 h-4 w-4" />
-              Voice Call Now
+              Start Coaching Call
             </Button>
             
             <Button
               variant="outline"
               onClick={toggleFlag}
               className={`${isFlagged ? 'bg-amber-50 border-amber-400' : ''}`}
+              title={isFlagged ? "Unmark this call for special follow-up" : "Mark this call for special follow-up"}
             >
               {isFlagged ? (
                 <Flag className="h-4 w-4 text-amber-500" />
               ) : (
                 <FlagOff className="h-4 w-4" />
               )}
-              {isFlagged ? 'Flagged' : 'Flag Call'}
+              <span className="sr-only">{isFlagged ? 'Flagged' : 'Flag Call'}</span>
             </Button>
+          </div>
+          
+          <div className="text-xs text-gray-500 flex items-center gap-1.5 mt-2">
+            <Shield className="h-3 w-3" />
+            <span>All calls are secure, confidential, and comply with healthcare regulations</span>
           </div>
         </div>
       </CardContent>

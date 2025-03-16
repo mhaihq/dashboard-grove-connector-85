@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, Award, Calendar } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface RecommendationProps {
@@ -9,6 +9,8 @@ interface RecommendationProps {
   steps: string[];
   priority: 'high' | 'medium' | 'low';
   relatedAreas?: string[];
+  timeframe?: string;
+  difficulty?: 'easy' | 'moderate' | 'challenging';
 }
 
 export const ProgressSection: React.FC<{ recommendations: RecommendationProps[] }> = ({ 
@@ -16,7 +18,14 @@ export const ProgressSection: React.FC<{ recommendations: RecommendationProps[] 
 }) => {
   return (
     <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm mt-8 animate-slide-up delay-500">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Recommendations</h2>
+      <div className="flex items-center gap-2 mb-6">
+        <Award className="w-5 h-5 text-hana-green" />
+        <h2 className="text-xl font-semibold text-gray-900">Your Health Coaching Plan</h2>
+      </div>
+      
+      <p className="text-gray-700 mb-6">
+        Based on your assessment, we've created the following personalized recommendations to help you reach your health goals.
+      </p>
       
       <div className="space-y-6">
         {recommendations.map((recommendation, index) => (
@@ -29,17 +38,41 @@ export const ProgressSection: React.FC<{ recommendations: RecommendationProps[] 
                 recommendation.priority === 'medium' ? "bg-amber-100 text-amber-800" :
                 "bg-green-100 text-green-800"
               )}>
-                {recommendation.priority === 'high' ? 'High Priority' :
-                 recommendation.priority === 'medium' ? 'Medium Priority' :
-                 'Low Priority'}
+                {recommendation.priority === 'high' ? 'Focus Area' :
+                 recommendation.priority === 'medium' ? 'Key Recommendation' :
+                 'Supportive Habit'}
               </div>
             </div>
             
             <div className="p-5">
               <p className="text-gray-700 mb-5">{recommendation.description}</p>
               
+              <div className="flex flex-wrap gap-4 mb-5">
+                {recommendation.timeframe && (
+                  <div className="flex items-center gap-1.5 text-sm text-gray-600">
+                    <Calendar className="h-4 w-4 text-hana-green" />
+                    <span>{recommendation.timeframe}</span>
+                  </div>
+                )}
+                
+                {recommendation.difficulty && (
+                  <div className="flex items-center gap-1.5 text-sm">
+                    <span className={cn(
+                      "px-2 py-0.5 rounded-full text-xs",
+                      recommendation.difficulty === 'easy' ? "bg-green-100 text-green-800" :
+                      recommendation.difficulty === 'moderate' ? "bg-blue-100 text-blue-800" :
+                      "bg-amber-100 text-amber-800"
+                    )}>
+                      {recommendation.difficulty === 'easy' ? 'Easy to Implement' :
+                       recommendation.difficulty === 'moderate' ? 'Moderate Challenge' :
+                       'Requires Commitment'}
+                    </span>
+                  </div>
+                )}
+              </div>
+              
               <div className="mb-5">
-                <h4 className="text-sm font-medium text-gray-900 mb-3">Steps to Take</h4>
+                <h4 className="text-sm font-medium text-gray-900 mb-3">Action Steps</h4>
                 <ol className="space-y-2 pl-5 list-decimal">
                   {recommendation.steps.map((step, stepIndex) => (
                     <li key={stepIndex} className="text-gray-700">{step}</li>
@@ -49,7 +82,7 @@ export const ProgressSection: React.FC<{ recommendations: RecommendationProps[] 
               
               {recommendation.relatedAreas && recommendation.relatedAreas.length > 0 && (
                 <div>
-                  <h4 className="text-sm font-medium text-gray-900 mb-2">Related Areas</h4>
+                  <h4 className="text-sm font-medium text-gray-900 mb-2">Related Health Areas</h4>
                   <div className="flex flex-wrap gap-2">
                     {recommendation.relatedAreas.map((area, areaIndex) => (
                       <span 
@@ -69,7 +102,7 @@ export const ProgressSection: React.FC<{ recommendations: RecommendationProps[] 
       
       <div className="mt-6 text-center">
         <button className="inline-flex items-center text-hana-green hover:text-green-800 font-medium">
-          View All Recommendations
+          View Complete Health Coaching Plan
           <ChevronRight className="ml-1 w-4 h-4" />
         </button>
       </div>

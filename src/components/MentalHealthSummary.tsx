@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
+import { Clipboard, Heart, Briefcase } from 'lucide-react';
 
 interface SummaryItem {
   title: string;
@@ -23,16 +24,19 @@ export const MentalHealthSummary: React.FC<MentalHealthSummaryProps> = ({
 }) => {
   return (
     <div className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm animate-slide-up">
+      <div className="flex items-center gap-2 mb-2">
+        <Clipboard className="h-5 w-5 text-hana-green" />
+        <h2 className="text-xl font-semibold text-gray-900">Health Assessment Summary</h2>
+      </div>
+      
       <div className="text-sm text-gray-500 mb-3">{date}</div>
       
       <h1 className="text-3xl font-semibold text-gray-900 mb-1">Hello {userName}!</h1>
       {userEmail && <div className="text-gray-500 mb-6">{userEmail}</div>}
       
       <p className="text-gray-700 mb-8 max-w-2xl">
-        Here's a summary of the key points we've discussed and an initial plan to support your well-being.
+        Here's a summary of the key points from your health coaching assessment. This information helps us create your personalized wellness plan.
       </p>
-      
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">Overview</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {summaryItems.map((item, index) => (
@@ -45,7 +49,10 @@ export const MentalHealthSummary: React.FC<MentalHealthSummaryProps> = ({
               "border-amber-100"
             )}
           >
-            <h3 className="text-lg font-medium text-gray-900 mb-4">
+            <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
+              {item.type === 'notable' && <Briefcase className="h-4 w-4 text-blue-500" />}
+              {item.type === 'joy' && <Heart className="h-4 w-4 text-green-500" />}
+              {item.type === 'weighing' && <Clipboard className="h-4 w-4 text-amber-500" />}
               {item.title}
             </h3>
             <ul className="space-y-3">
