@@ -26,20 +26,20 @@ export const HealthAssessmentSection: React.FC<HealthAssessmentSectionProps> = (
   eligibilityData
 }) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
       {/* Health Assessment Chart */}
       <Card className="lg:col-span-2 text-left shadow-md hover:shadow-lg transition-shadow">
-        <CardHeader className="pb-2 pt-5">
+        <CardHeader className="pb-1 pt-4">
           <CardTitle className="flex items-center text-xl">
             <Activity className="w-5 h-5 text-hana-green mr-2" />
             Your Health Snapshot
           </CardTitle>
-          <CardDescription className="text-gray-600 mt-1">
+          <CardDescription className="text-gray-600">
             Here's what we're seeing across different areas of your wellbeing
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-2 pb-5">
-          <div className="p-1">
+        <CardContent className="pt-1 pb-4">
+          <div className="p-0">
             <HealthAssessmentChart data={assessmentData} />
           </div>
         </CardContent>
@@ -47,16 +47,16 @@ export const HealthAssessmentSection: React.FC<HealthAssessmentSectionProps> = (
       
       {/* Medicare Program Eligibility */}
       <Card className="text-left shadow-md hover:shadow-lg transition-shadow h-full">
-        <CardHeader className="pb-2 pt-5">
+        <CardHeader className="pb-1 pt-4">
           <CardTitle className="flex items-center text-xl">
             <Award className="w-5 h-5 text-hana-green mr-2" />
             Programs You Qualify For
           </CardTitle>
-          <CardDescription className="text-gray-600 mt-1">
+          <CardDescription className="text-gray-600">
             These programs can help support your health journey
           </CardDescription>
         </CardHeader>
-        <CardContent className="pt-2 pb-5">
+        <CardContent className="pt-1 pb-4">
           <EligibilityStatus programs={eligibilityData} />
         </CardContent>
       </Card>
