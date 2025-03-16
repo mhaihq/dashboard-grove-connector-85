@@ -84,11 +84,6 @@ export const Sidebar = () => {
               {showExpanded && (
                 <span className="transition-opacity duration-300">{item.label}</span>
               )}
-              {showExpanded && item.label === 'Health Journal' && (
-                <div className="ml-auto">
-                  <div className="w-1.5 h-1.5 bg-hana-green rounded-full"></div>
-                </div>
-              )}
             </Link>
           );
         })}
