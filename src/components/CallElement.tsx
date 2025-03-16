@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { PhoneCall, Calendar } from 'lucide-react';
+import { PhoneCall, ClipboardList, Phone, MessageCircle } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface CallElementProps {
@@ -12,17 +12,13 @@ interface CallElementProps {
 
 export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
   const [phoneNumber, setPhoneNumber] = useState("0877433002");
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  
-  const availableTimes = [
-    '9:00 AM', '11:00 AM', '1:00 PM', '3:00 PM', '5:00 PM'
-  ];
+  const [callType, setCallType] = useState<string | null>(null);
   
   const handleScheduleCallback = () => {
-    if (!phoneNumber || !selectedTime) {
+    if (!phoneNumber || !callType) {
       toast({
         title: "Missing information",
-        description: "Please enter your phone number and select a time",
+        description: "Please enter your phone number and select a call type",
         variant: "destructive",
       });
       return;
@@ -30,10 +26,10 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
     
     toast({
       title: "Callback scheduled",
-      description: `We'll call you at ${phoneNumber} at ${selectedTime} tomorrow`,
+      description: `We'll call you at ${phoneNumber} for a ${callType} session`,
     });
     
-    setSelectedTime(null);
+    setCallType(null);
   };
   
   return (
@@ -73,25 +69,50 @@ export const CallElement: React.FC<CallElementProps> = ({ userName }) => {
           
           <div className="space-y-2">
             <label className="block text-center font-medium text-gray-700">
-              Select a Time for Tomorrow
+              Select Call Type
             </label>
-            <div className="grid grid-cols-3 sm:grid-cols-5 gap-2">
-              {availableTimes.map((time) => (
-                <Button
-                  key={time}
-                  type="button"
-                  variant={selectedTime === time ? "default" : "outline"}
-                  className={`${
-                    selectedTime === time 
-                      ? "bg-hana-green hover:bg-hana-green/90" 
-                      : "border-hana-green text-hana-green bg-white hover:bg-hana-lightGreen"
-                  } whitespace-nowrap`}
-                  onClick={() => setSelectedTime(time)}
-                >
-                  <Calendar className="mr-2 h-4 w-4 sm:hidden md:block" />
-                  {time}
-                </Button>
-              ))}
+            <div className="grid grid-cols-3 gap-2">
+              <Button
+                type="button"
+                variant={callType === "Intake" ? "default" : "outline"}
+                className={`${
+                  callType === "Intake" 
+                    ? "bg-hana-green hover:bg-hana-green/90" 
+                    : "border-hana-green text-hana-green bg-white hover:bg-hana-lightGreen"
+                }`}
+                onClick={() => setCallType("Intake")}
+              >
+                <ClipboardList className="mr-2 h-4 w-4" />
+                Intake
+              </Button>
+              
+              <Button
+                type="button"
+                variant={callType === "Follow Up" ? "default" : "outline"}
+                className={`${
+                  callType === "Follow Up" 
+                    ? "bg-hana-green hover:bg-hana-green/90" 
+                    : "border-hana-green text-hana-green bg-white hover:bg-hana-lightGreen"
+                }`}
+                onClick={() => setCallType("Follow Up")}
+              >
+                <Phone className="mr-2 h-4 w-4" />
+                Follow Up
+              </Button>
+              
+              <Button
+                type="button"
+                variant={callType === "Just Chat" ? "default" : "outline"}
+                className={`${
+                  callType === "Just Chat" 
+                    ? "bg-hana-green hover:bg-hana-green/90" 
+                    : "border-hana-green text-hana-green bg-white hover:bg-hana-lightGreen"
+                }`}
+                onClick={() => setCallType("Just Chat")}
+              >
+                <MessageCircle className="mr-2 h-4 w-4" />
+                Just Chat
+              </Button>
             </div>
           </div>
           
