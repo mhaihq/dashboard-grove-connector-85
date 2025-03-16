@@ -8,6 +8,7 @@ import { HealthAssessmentChart } from '@/components/HealthAssessmentChart';
 import { EligibilityStatus } from '@/components/EligibilityStatus';
 import { UpcomingActions } from '@/components/UpcomingActions';
 import { CallElement } from '@/components/CallElement';
+import { MentalHealthSummary } from '@/components/MentalHealthSummary';
 
 const Index = () => {
   const userName = "Matteo";
@@ -48,6 +49,37 @@ const Index = () => {
     { title: "Medicare Status", value: "Enrolled", change: "active", icon: <Award className="w-5 h-5 text-emerald-500" /> }
   ];
 
+  // Journal Summary Data
+  const journalSummaryItems = [
+    {
+      title: "What's Going Well",
+      content: [
+        "Your morning walks are becoming more consistent - you've gone from 2 days a week to 5!",
+        "You've been drinking more water throughout the day",
+        "You reached out to a friend for coffee this week"
+      ],
+      type: 'joy'
+    },
+    {
+      title: "Areas of Progress",
+      content: [
+        "Your sleep quality is gradually improving with the new bedtime routine",
+        "You've had 2 alcohol-free days this week compared to none last week",
+        "Your mood has been more stable on days when you've eaten regular meals"
+      ],
+      type: 'notable'
+    },
+    {
+      title: "What's On Your Mind",
+      content: [
+        "Financial concerns with ongoing job search",
+        "Finding time for self-care while managing daily responsibilities",
+        "Difficulty maintaining social connections"
+      ],
+      type: 'weighing'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gray-50 flex">
       <Sidebar />
@@ -68,8 +100,16 @@ const Index = () => {
               </p>
             </div>
             
+            {/* Journal Summary Section */}
+            <MentalHealthSummary 
+              userName={userName}
+              userEmail={userEmail}
+              date="Updated: March 15, 2025"
+              summaryItems={journalSummaryItems}
+            />
+            
             {/* Consolidated Call Element Section */}
-            <div className="mb-8">
+            <div className="mb-8 mt-8">
               <CallElement userName={userName} />
             </div>
             
