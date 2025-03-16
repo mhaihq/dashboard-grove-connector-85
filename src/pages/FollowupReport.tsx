@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { HealthJournalTable } from '@/components/HealthJournalTable';
-import { JournalEntryModal } from '@/components/JournalEntryModal';
+import { JournalEntryModal } from '@/components/journal-modal/JournalEntryModal';
 import { HealthJournalLayout } from '@/components/health-journal/HealthJournalLayout';
 import { journalEntries } from '@/data/journalEntries';
 import { JournalEntryType } from '@/types/journal';
