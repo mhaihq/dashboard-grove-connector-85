@@ -15,6 +15,20 @@ export interface JournalEntryType {
   content: string;
   highlight?: string;
   category: 'daily' | 'mood' | 'sleep' | 'achievement' | 'goals';
+  mood?: {
+    score: string;
+    weekend: string;
+    weekday: string;
+    notes: string;
+  };
+  energy?: {
+    level: string;
+    notes: string;
+  };
+  stress?: {
+    level: string;
+    notes: string;
+  };
 }
 
 const FollowupReport = () => {
@@ -32,7 +46,21 @@ const FollowupReport = () => {
       title: "Feeling Better Overall",
       content: "The patient is showing improvement in multiple areas of health. Mood has noticeably improved, and energy levels are slightly better than baseline. Sleep quality remains an area for continued work, but the implementation of a consistent bedtime on weekdays (5/7 days) is a positive step. Patient reports finding the morning stretching exercises helpful.",
       highlight: "Mood improvement correlates with days of higher physical activity and better sleep quality.",
-      category: 'mood'
+      category: 'mood',
+      mood: {
+        score: "6/10",
+        weekend: "7/10",
+        weekday: "5/10",
+        notes: "Patient reports improved mood compared to previous weeks, especially on days with morning exercise."
+      },
+      energy: {
+        level: "Medium",
+        notes: "Energy levels have improved slightly, especially in the mornings after good sleep."
+      },
+      stress: {
+        level: "Medium",
+        notes: "Stress levels remain significant but managed better with new coping strategies."
+      }
     },
     {
       id: "2",
@@ -41,7 +69,21 @@ const FollowupReport = () => {
       title: "Reflections on Depression and Alcohol Usage",
       content: "Patient continues to work on reducing alcohol intake with modest success (2 alcohol-free days this week vs 0 last week). Depression symptoms are still present but less intense than during initial assessment. Financial stressors remain significant with ongoing job search. Fatigue levels fluctuate but show slight improvement on days following adequate sleep.",
       highlight: "Patient is beginning to recognize the connection between alcohol consumption, sleep quality, and next-day mood/energy.",
-      category: 'mood'
+      category: 'mood',
+      mood: {
+        score: "4/10",
+        weekend: "4/10",
+        weekday: "4/10",
+        notes: "User reports feeling depressed and stressed. Overall mood is low to moderate."
+      },
+      energy: {
+        level: "Low",
+        notes: "The user feels tired, possibly due to diet or the emotional toll of depression."
+      },
+      stress: {
+        level: "High",
+        notes: "Financial and job-search concerns contribute to elevated stress levels."
+      }
     },
     {
       id: "3",
