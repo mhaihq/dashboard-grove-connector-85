@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Activity, Heart, ClipboardList, Award } from 'lucide-react';
 import { Sidebar } from '@/components/Sidebar';
@@ -95,6 +94,11 @@ const Index = () => {
           <div className="max-w-6xl mx-auto">
             <DashboardWelcome userName={userName} />
             
+            {/* Consolidated Call Element Section - Moved to the top */}
+            <div className="mb-8 mt-8">
+              <CallElement userName={userName} />
+            </div>
+            
             {/* Journal Summary Section */}
             <MentalHealthSummary 
               userName={userName}
@@ -102,11 +106,6 @@ const Index = () => {
               date="Updated: March 15, 2025"
               summaryItems={journalSummaryItems}
             />
-            
-            {/* Consolidated Call Element Section */}
-            <div className="mb-8 mt-8">
-              <CallElement userName={userName} />
-            </div>
             
             {/* Key Health Indicators */}
             <KeyHealthIndicators healthIndicators={healthIndicators} />
