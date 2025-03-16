@@ -1,8 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, Home, Calendar, BarChart3, ChevronRight, ChevronLeft } from 'lucide-react';
+import { FileText, Home, Calendar, ChevronRight, ChevronLeft, HelpCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { WalkthroughButton } from '@/components/walkthrough/WalkthroughButton';
 
 export const Sidebar = () => {
   const location = useLocation();
@@ -45,6 +46,7 @@ export const Sidebar = () => {
 
   return (
     <div 
+      id="sidebar"
       className={cn(
         "h-screen bg-white border-r border-gray-100 flex flex-col fixed left-0 top-0 z-10 transition-all duration-300",
         showExpanded ? "w-[240px]" : "w-[70px]"
@@ -90,10 +92,16 @@ export const Sidebar = () => {
       </nav>
       
       <div className="p-4 border-t border-gray-100 flex justify-between items-center">
-        <div className={cn(
-          "text-xs text-gray-500 transition-opacity",
-          showExpanded ? "opacity-100" : "opacity-0"
-        )}>v1.0.0</div>
+        <div className="flex items-center gap-2">
+          <div className={cn(
+            "text-xs text-gray-500 transition-opacity",
+            showExpanded ? "opacity-100" : "opacity-0"
+          )}>v1.0.0</div>
+          
+          {/* Add walkthrough button */}
+          <WalkthroughButton />
+        </div>
+        
         <button 
           onClick={toggleSidebar} 
           className="p-1 rounded-md hover:bg-gray-100 text-gray-500"
