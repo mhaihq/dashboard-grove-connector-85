@@ -70,7 +70,7 @@ export const JournalEntry: React.FC<JournalEntryProps> = ({
       
       {isExpanded && (
         <div className="p-5 border-t border-gray-100">
-          <div className="mb-4">
+          <div className="mb-5">
             <h3 className="text-lg font-medium text-gray-900 mb-3">Mental Health Journal</h3>
             <div className="text-sm text-gray-500 mb-4">{date}</div>
             
@@ -94,12 +94,12 @@ export const JournalEntry: React.FC<JournalEntryProps> = ({
                 <Heart className="w-5 h-5 text-pink-500" />
                 {title}
               </h4>
-              <p className="text-gray-700">{content}</p>
+              <p className="text-gray-700 leading-relaxed">{content}</p>
             </div>
             
             {highlight && (
-              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
-                <div className="font-medium text-sm text-blue-800 mb-1">Highlight</div>
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 mt-4">
+                <div className="font-medium text-sm text-blue-800 mb-2">Highlight</div>
                 <div className="text-blue-700">{highlight}</div>
               </div>
             )}

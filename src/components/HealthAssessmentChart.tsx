@@ -19,19 +19,19 @@ interface HealthAssessmentChartProps {
 
 export const HealthAssessmentChart: React.FC<HealthAssessmentChartProps> = ({ data }) => {
   return (
-    <div className="w-full h-[320px]">
+    <div className="w-full h-[350px] mt-2 mb-4">
       <ResponsiveContainer width="100%" height="100%">
         <RadarChart cx="50%" cy="50%" outerRadius="75%" data={data}>
           <PolarGrid stroke="#e5e7eb" strokeDasharray="3 3" />
           <PolarAngleAxis 
             dataKey="area" 
-            tick={{ fill: '#4b5563', fontSize: 13, fontWeight: 500 }}
+            tick={{ fill: '#4b5563', fontSize: 12, fontWeight: 500 }}
             stroke="#e5e7eb"
           />
           <PolarRadiusAxis 
             domain={[0, 100]} 
             tickCount={5}
-            tick={{ fontSize: 11 }}
+            tick={{ fontSize: 10 }}
             stroke="#9ca3af"
             axisLine={false}
           />

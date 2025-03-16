@@ -70,21 +70,21 @@ const FollowupReport = () => {
           userEmail={userEmail}
         />
         
-        <main className="p-6">
+        <main className="p-8">
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+            <h1 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2 text-left">
               <BookOpen className="w-5 h-5 text-hana-green" />
               Health Journal Entries
             </h1>
             
-            <Alert className="mb-6 border-hana-green/20 bg-hana-green/10">
+            <Alert className="mb-8 border-hana-green/20 bg-hana-green/10">
               <Info className="h-4 w-4 text-hana-green" />
-              <AlertDescription>
+              <AlertDescription className="text-left">
                 These journal entries automatically update your dashboard summary, helping us track your progress and provide better support.
               </AlertDescription>
             </Alert>
             
-            <div className="space-y-5">
+            <div className="space-y-6">
               {journalEntries.map((entry, index) => (
                 <JournalEntry
                   key={index}
