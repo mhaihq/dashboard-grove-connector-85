@@ -160,19 +160,19 @@ const IntakeReport = () => {
           userEmail={userEmail}
         />
         
-        <main className="p-6">
-          <div className="max-w-6xl mx-auto">
-            <div className="flex items-center gap-2 mb-6">
+        <main className="p-6 pb-12">
+          <div className="max-w-5xl mx-auto">
+            <div className="flex items-center gap-2 mb-8">
               <Clipboard className="h-5 w-5 text-hana-green" />
               <h1 className="text-2xl font-bold text-gray-900">Initial Health Coaching Assessment</h1>
             </div>
             
-            <div className="p-4 bg-blue-50 border border-blue-100 rounded-lg mb-8">
-              <div className="flex items-start gap-3">
-                <Shield className="h-5 w-5 text-blue-600 mt-0.5" />
+            <div className="p-5 bg-blue-50 border border-blue-100 rounded-lg mb-10 shadow-sm">
+              <div className="flex items-start gap-4">
+                <Shield className="h-6 w-6 text-blue-600 mt-0.5 flex-shrink-0" />
                 <div>
-                  <h3 className="font-medium text-blue-800">Comprehensive Wellness Profile</h3>
-                  <p className="text-sm text-blue-700 mt-1">
+                  <h3 className="font-medium text-blue-800 text-lg mb-2">Comprehensive Wellness Profile</h3>
+                  <p className="text-blue-700 leading-relaxed">
                     This assessment was completed on February 13, 2025 and establishes your baseline health metrics. 
                     Your personalized coaching plan is based on this information and will be updated as you progress.
                   </p>
@@ -180,16 +180,18 @@ const IntakeReport = () => {
               </div>
             </div>
             
-            <MentalHealthSummary
-              userName={userName}
-              userEmail={userEmail}
-              date="February 13, 2025"
-              summaryItems={summaryItems}
-            />
-            
-            <HealthMetrics metrics={metrics} />
-            
-            <ProgressSection recommendations={recommendations} />
+            <div className="space-y-10">
+              <MentalHealthSummary
+                userName={userName}
+                userEmail={userEmail}
+                date="February 13, 2025"
+                summaryItems={summaryItems}
+              />
+              
+              <HealthMetrics metrics={metrics} />
+              
+              <ProgressSection recommendations={recommendations} />
+            </div>
           </div>
         </main>
       </div>
