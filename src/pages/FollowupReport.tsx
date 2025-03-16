@@ -51,7 +51,7 @@ const FollowupReport = () => {
         "Sleep quality significantly better with new evening routine",
         "Social engagement increasing with reduced anxiety"
       ],
-      type: "notable"
+      type: "notable" as const
     },
     {
       title: "Areas of Joy",
@@ -60,7 +60,7 @@ const FollowupReport = () => {
         "Finding joy in morning walks and better sleep quality",
         "Expressed satisfaction with health coaching progress"
       ],
-      type: "joy"
+      type: "joy" as const
     },
     {
       title: "Areas to Focus On",
@@ -69,7 +69,7 @@ const FollowupReport = () => {
         "Develop more strategies for financial stress management",
         "Further build daily structure to support mental health"
       ],
-      type: "weighing"
+      type: "weighing" as const
     }
   ];
 
