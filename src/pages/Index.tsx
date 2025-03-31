@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Activity, Heart, ClipboardList, Award } from 'lucide-react';
+import { Activity, Heart, ClipboardList, Award, Moon, BatteryFull, Brain, Users, UtensilsCrossed, Weight, Shield, Coffee } from 'lucide-react';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { DashboardWelcome } from '@/components/dashboard/DashboardWelcome';
 import { MentalHealthSummary } from '@/components/MentalHealthSummary';
@@ -8,6 +8,11 @@ import { CallElement } from '@/components/CallElement';
 import { KeyHealthIndicators } from '@/components/dashboard/KeyHealthIndicators';
 import { HealthAssessmentSection } from '@/components/dashboard/HealthAssessmentSection';
 import { DetailedAssessmentSection } from '@/components/dashboard/DetailedAssessmentSection';
+import { HealthMetrics } from '@/components/HealthMetrics';
+import { ProgressSection } from '@/components/ProgressSection';
+import WellnessBanner from '@/components/intake/WellnessBanner';
+import IntakeReportHeader from '@/components/intake/IntakeReportHeader';
+import { getIntakeData, MetricItem } from '@/components/intake/IntakeSummaryData';
 
 const Index = () => {
   const userName = "Matteo";
@@ -78,6 +83,29 @@ const Index = () => {
       type: 'weighing' as const
     }
   ];
+  
+  // Get intake data from our utility function
+  const { summaryItems, metrics: metricItems, recommendations } = getIntakeData();
+  
+  // Add icons to the metrics data
+  const metrics = metricItems.map(metric => {
+    const iconMap: Record<string, React.ReactNode> = {
+      "Sleep Quality": <Moon className="w-5 h-5 text-indigo-500" />,
+      "Social Support": <Users className="w-5 h-5 text-blue-500" />,
+      "Energy Level": <BatteryFull className="w-5 h-5 text-amber-500" />,
+      "Stress Management": <Activity className="w-5 h-5 text-red-500" />,
+      "Cognitive Function": <Brain className="w-5 h-5 text-green-500" />,
+      "Emotional Regulation": <Heart className="w-5 h-5 text-pink-500" />,
+      "Nutrition Habits": <UtensilsCrossed className="w-5 h-5 text-orange-500" />,
+      "Physical Activity": <Weight className="w-5 h-5 text-blue-600" />,
+      "Hydration": <Coffee className="w-5 h-5 text-brown-500" />
+    };
+    
+    return {
+      ...metric,
+      icon: iconMap[metric.title] || null
+    } as MetricItem;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -118,6 +146,25 @@ const Index = () => {
             userName={userName}
             upcomingActions={upcomingActions}
           />
+          
+          {/* Intake Report Section */}
+          <div className="mt-10 pt-8 border-t border-gray-200">
+            <IntakeReportHeader />
+            <WellnessBanner />
+            
+            <div className="space-y-10">
+              <MentalHealthSummary
+                userName={userName}
+                userEmail={userEmail}
+                date="February 13, 2025"
+                summaryItems={summaryItems}
+              />
+              
+              <HealthMetrics metrics={metrics} />
+              
+              <ProgressSection recommendations={recommendations} />
+            </div>
+          </div>
         </div>
       </main>
     </div>

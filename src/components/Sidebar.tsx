@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FileText, Home, Calendar, BarChart3, ChevronRight, ChevronLeft } from 'lucide-react';
@@ -11,36 +10,28 @@ export const Sidebar = () => {
   
   const navItems = [
     { icon: Home, label: 'Dashboard', path: '/' },
-    { icon: FileText, label: 'Intake Report', path: '/intake-report' },
     { icon: Calendar, label: 'Schedule Followup', path: '/schedule-followup' },
     { icon: FileText, label: 'Health Journal', path: '/followup-report' },
   ];
 
-  // Expand sidebar when hovering
   const handleMouseEnter = () => {
     if (isCollapsed) {
       setIsHovering(true);
     }
   };
 
-  // Collapse sidebar when not hovering
   const handleMouseLeave = () => {
     if (isCollapsed) {
       setIsHovering(false);
     }
   };
 
-  // Toggle sidebar collapsed state
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
-    // Reset hover state when explicitly toggling
     setIsHovering(false);
   };
 
-  // Determine if sidebar should be expanded
   const showExpanded = !isCollapsed || isHovering;
-  
-  // Calculate width for main content adjustment
   const sidebarWidth = showExpanded ? "240px" : "70px";
 
   return (
@@ -108,7 +99,6 @@ export const Sidebar = () => {
         </div>
       </div>
       
-      {/* Main content wrapper div that gets pushed */}
       <div
         className="transition-all duration-300"
         style={{ marginLeft: sidebarWidth }}
