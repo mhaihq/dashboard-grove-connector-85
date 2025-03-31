@@ -12,6 +12,31 @@ interface IntakeSummaryProps {
 export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Detailed background information from intake assessment
+  const background = [
+    "Family history of anxiety disorders on maternal side",
+    "No significant physical health conditions",
+    "Started experiencing sleep issues 6 months ago coinciding with work promotion",
+    "Previous therapy experience 2 years ago for work-related stress",
+    "Regular alcohol consumption started gradually over the past year",
+    "Strong family support system with particularly close relationship with wife"
+  ];
+
+  // Primary goals from the assessment
+  const goals = [
+    "Improve sleep quality and routine",
+    "Develop better emotional regulation strategies",
+    "Reduce reliance on alcohol for relaxation",
+    "Create healthier work-life boundaries"
+  ];
+
+  // Functional areas of concern
+  const concerns = [
+    "Sleep disruption (rating: 2/5)",
+    "Stress management (rating: 2/5)",
+    "Emotional regulation (rating: 2/5)"
+  ];
+
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <Collapsible
@@ -48,36 +73,59 @@ export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="border border-gray-100 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-900 mb-2">Initial Health Concerns</h4>
+                  <h4 className="font-medium text-gray-900 mb-2">Background</h4>
                   <ul className="text-sm space-y-2 list-disc list-inside">
-                    <li>Mild hypertension (BP 135/85)</li>
-                    <li>Pre-diabetic (A1C 5.9)</li>
-                    <li>Sleep disruption (avg 5.5 hrs/night)</li>
-                    <li>Occasional anxiety</li>
+                    {background.map((item, index) => (
+                      <li key={index}>{item}</li>
+                    ))}
                   </ul>
                 </div>
                 
                 <div className="border border-gray-100 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-900 mb-2">Care Goals</h4>
+                  <h4 className="font-medium text-gray-900 mb-2">Primary Goals</h4>
                   <ul className="text-sm space-y-2 list-disc list-inside">
-                    <li>Improve sleep quality and duration</li>
-                    <li>Reduce stress through mindfulness</li>
-                    <li>Increase physical activity gradually</li>
-                    <li>Improve nutrition and hydration</li>
+                    {goals.map((goal, index) => (
+                      <li key={index}>{goal}</li>
+                    ))}
                   </ul>
                 </div>
                 
                 <div className="border border-gray-100 rounded-lg p-4">
-                  <h4 className="font-medium text-gray-900 mb-2">Current Medications</h4>
+                  <h4 className="font-medium text-gray-900 mb-2">Areas of Focus</h4>
                   <ul className="text-sm space-y-2 list-disc list-inside">
-                    <li>Lisinopril 10mg (daily)</li>
-                    <li>Multivitamin</li>
-                    <li>Occasional Melatonin (3mg)</li>
+                    {concerns.map((concern, index) => (
+                      <li key={index}>{concern}</li>
+                    ))}
                   </ul>
                 </div>
               </div>
               
-              <div className="flex justify-center mt-4">
+              <div className="mt-4">
+                <h4 className="font-medium text-gray-900 mb-2">Detailed Assessment</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="border border-gray-100 rounded-lg p-4">
+                    <h5 className="font-medium text-gray-800 mb-2">Sleep Observations</h5>
+                    <ul className="text-sm space-y-1 list-disc list-inside">
+                      <li>Difficulty falling asleep due to racing thoughts</li>
+                      <li>Reports never feeling tired despite lack of rest</li>
+                      <li>Brain remains highly active at bedtime</li>
+                    </ul>
+                    <p className="text-sm italic mt-2">"I just don't sleep... I feel that I'm never tired. I feel that my brain is always on."</p>
+                  </div>
+                  
+                  <div className="border border-gray-100 rounded-lg p-4">
+                    <h5 className="font-medium text-gray-800 mb-2">Emotional Regulation Observations</h5>
+                    <ul className="text-sm space-y-1 list-disc list-inside">
+                      <li>Unexplained anger episodes</li>
+                      <li>Frequent nervousness</li>
+                      <li>Difficulty managing emotional responses</li>
+                    </ul>
+                    <p className="text-sm italic mt-2">"I feel nervous a lot of the time, and then... Kind of angry... That's with no reason."</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="flex justify-center mt-6">
                 <Button variant="outline" size="sm">
                   View Full Intake Report
                 </Button>

@@ -13,7 +13,7 @@ interface ProgressJournalProps {
 }
 
 export const ProgressJournal: React.FC<ProgressJournalProps> = ({ entries }) => {
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status: 'positive' | 'neutral' | 'negative') => {
     switch (status) {
       case 'positive':
         return '🟢';
