@@ -1,42 +1,124 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+
+/* App-specific styles that complement or override Tailwind utilities */
+
+/* Base styles and resets */
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #f9fafb;
+  color: #1f2937;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* Custom animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+@keyframes slideRight {
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
-.card {
-  padding: 2em;
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
 }
 
-.read-the-docs {
-  color: #888;
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out forwards;
+}
+
+.animate-slide-right {
+  animation: slideRight 0.6s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+
+/* Glass effect */
+.glass {
+  @apply bg-white/80 backdrop-blur-md border border-white/20;
+}
+
+.hover-scale {
+  @apply transition-transform duration-300 hover:scale-[1.02];
+}
+
+/* Status badge styles */
+.status-badge {
+  @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+}
+
+.status-concerning {
+  @apply status-badge bg-red-100 text-red-800;
+}
+
+.status-mixed {
+  @apply status-badge bg-amber-100 text-amber-800;
+}
+
+.status-positive {
+  @apply status-badge bg-green-100 text-green-800;
+}
+
+/* Focus pill buttons */
+.focus-pill {
+  @apply inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium transition-all;
+}
+
+.focus-pill-active {
+  @apply bg-hana-green text-white;
+}
+
+.focus-pill-inactive {
+  @apply bg-gray-100 text-gray-700 hover:bg-gray-200;
+}
+
+/* Default Hana theme colors */
+:root {
+  --color-hana-green: #1C6E4A;
+  --color-hana-lightGreen: #E6F5EF;
+}
+
+.text-hana-green {
+  color: var(--color-hana-green);
+}
+
+.bg-hana-green {
+  background-color: var(--color-hana-green);
+}
+
+.text-hana-lightGreen {
+  color: var(--color-hana-lightGreen);
+}
+
+.bg-hana-lightGreen {
+  background-color: var(--color-hana-lightGreen);
+}
+
+/* Progress bar customizations */
+.progress-bar {
+  @apply h-2 rounded-full overflow-hidden bg-gray-100;
+}
+
+.progress-bar-fill {
+  @apply h-full rounded-full transition-all duration-500;
+}
+
+.progress-bar-fill-green {
+  @apply bg-green-500;
+}
+
+.progress-bar-fill-amber {
+  @apply bg-amber-500;
+}
+
+.progress-bar-fill-blue {
+  @apply bg-blue-500;
 }
