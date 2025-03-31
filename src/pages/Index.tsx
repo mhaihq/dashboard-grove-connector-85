@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Heart, Activity, Brain, Users, Calendar, ShieldCheck, Award, Moon, UtensilsCrossed, Weight, GlassWater } from 'lucide-react';
+import { Heart, Activity, Brain, Users, Calendar, ShieldCheck, Award, Moon, UtensilsCrossed, Weight, GlassWater, Circle } from 'lucide-react';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { DashboardWelcome } from '@/components/dashboard/DashboardWelcome';
 import { IntakeSummary } from '@/components/dashboard/IntakeSummary';
@@ -9,8 +9,7 @@ import { ProgressJournal } from '@/components/dashboard/ProgressJournal';
 import { CarePlan } from '@/components/dashboard/CarePlan';
 import { Milestones } from '@/components/dashboard/Milestones';
 import { HealthPulse } from '@/components/dashboard/HealthPulse';
-import { SuggestedPrograms } from '@/components/dashboard/SuggestedPrograms';
-import { Circle } from 'lucide-react';
+import { SuggestedPrograms, ProgramItem } from '@/components/dashboard/SuggestedPrograms';
 
 // Types needed for components
 interface HealthIndicator {
@@ -27,14 +26,6 @@ interface CarePlanItem {
   description: string;
 }
 
-interface ProgramItem {
-  program: string;
-  match: "none" | "perfect" | "good" | "possible";
-  status: "Enrolled" | "Available" | "Eligible" | "Not Eligible";
-  description: string;
-  action?: string;
-}
-
 interface Milestone {
   title: string;
   description: string;
@@ -48,6 +39,7 @@ interface FunctionalArea {
   rating: number;
   status: string;
   observations: string[];
+  evidence?: string;
 }
 
 interface HealthPulseItem {
@@ -56,9 +48,27 @@ interface HealthPulseItem {
   improving: boolean;
 }
 
+interface OverviewItem {
+  title: string;
+  items: string[];
+}
+
 const Index = () => {
   const userName = "Matteo Smith";
   const userEmail = "matteo.smith@example.com";
+  
+  // User information from intake
+  const userInfo = {
+    name: "Matteo Smith",
+    email: "matteo.smith@example.com",
+    date: "January 29, 2025"
+  };
+  
+  // Welcome message
+  const welcome = {
+    greeting: "Hi Matteo",
+    message: "Thanks for our conversation. I've analyzed our discussion to provide you with meaningful insights about your wellbeing. Let me know if anything doesn't resonate so we can refine these observations together."
+  };
   
   // Detailed user background from intake
   const userBackground = [
@@ -70,6 +80,42 @@ const Index = () => {
     "Strong family support system with particularly close relationship with wife",
     "No history of substance abuse or major mental health conditions",
     "Recent lifestyle changes include increased work responsibilities and remote work transition"
+  ];
+  
+  // Overview sections
+  const overview: OverviewItem[] = [
+    {
+      title: "Notable Life Changes",
+      items: [
+        "Experiencing fluctuating moods with periods of intense focus",
+        "Difficulty 'switching off' from work mode",
+        "Changes in sleep patterns affecting daily routine"
+      ]
+    },
+    {
+      title: "What's Bringing Joy",
+      items: [
+        "Strong relationship with wife providing emotional support",
+        "Available family support network",
+        "Periods of high productivity and focus"
+      ]
+    },
+    {
+      title: "What's Weighing on You",
+      items: [
+        "Sleep disruption affecting daily energy",
+        "Unexpected emotional reactions causing concern",
+        "Daily alcohol use impacting overall wellbeing"
+      ]
+    },
+    {
+      title: "Goals and Desires",
+      items: [
+        "Improve sleep quality and routine",
+        "Develop better emotional regulation strategies",
+        "Reduce reliance on alcohol for relaxation"
+      ]
+    }
   ];
   
   // Health indicators data
@@ -222,7 +268,8 @@ const Index = () => {
         "Difficulty falling asleep due to racing thoughts",
         "Reports never feeling tired despite lack of rest",
         "Brain remains highly active at bedtime"
-      ]
+      ],
+      evidence: "I just don't sleep... I feel that I'm never tired. I feel that my brain is always on."
     },
     {
       title: "Social Support",
@@ -233,7 +280,8 @@ const Index = () => {
         "Supportive relationship with wife",
         "Family readily available for assistance",
         "Open communication channels"
-      ]
+      ],
+      evidence: "My wife understands what I'm going through, and my family is always there."
     },
     {
       title: "Energy Level",
@@ -244,7 +292,8 @@ const Index = () => {
         "High energy during work hours",
         "Sudden energy crashes",
         "Difficulty maintaining consistent energy levels"
-      ]
+      ],
+      evidence: "I can work intensely for hours, but then I crash completely."
     },
     {
       title: "Stress Management",
@@ -255,7 +304,8 @@ const Index = () => {
         "Relying on alcohol for stress relief",
         "Limited healthy coping mechanisms",
         "Stress affecting sleep and mood"
-      ]
+      ],
+      evidence: "I find myself drinking daily to wind down."
     },
     {
       title: "Cognitive Function",
@@ -266,7 +316,8 @@ const Index = () => {
         "Excellent focus during work",
         "Racing thoughts during downtime",
         "Challenges with mental relaxation"
-      ]
+      ],
+      evidence: "I can focus intensely at work, but can't quiet my mind afterward."
     },
     {
       title: "Emotional Regulation",
@@ -277,7 +328,8 @@ const Index = () => {
         "Unexplained anger episodes",
         "Frequent nervousness",
         "Difficulty managing emotional responses"
-      ]
+      ],
+      evidence: "I feel nervous a lot of the time, and then... Kind of angry... That's with no reason."
     }
   ];
   
@@ -391,7 +443,26 @@ const Index = () => {
         
         {/* Archived Intake & History (Collapsible) */}
         <div className="mb-8">
-          <IntakeSummary date="February 13, 2025" />
+          <IntakeSummary 
+            date="February 13, 2025"
+            background={userBackground}
+            goals={overview.find(item => item.title === "Goals and Desires")?.items || []}
+            concerns={[
+              `Sleep disruption (rating: ${functionalAreas.find(area => area.key === 'sleep')?.rating}/5)`,
+              `Stress management (rating: ${functionalAreas.find(area => area.key === 'stressManagement')?.rating}/5)`,
+              `Emotional regulation (rating: ${functionalAreas.find(area => area.key === 'emotionalRegulation')?.rating}/5)`
+            ]}
+            detailedAssessment={{
+              sleep: {
+                observations: functionalAreas.find(area => area.key === 'sleep')?.observations || [],
+                quote: functionalAreas.find(area => area.key === 'sleep')?.evidence || ""
+              },
+              emotionalRegulation: {
+                observations: functionalAreas.find(area => area.key === 'emotionalRegulation')?.observations || [],
+                quote: functionalAreas.find(area => area.key === 'emotionalRegulation')?.evidence || ""
+              }
+            }}
+          />
         </div>
       </main>
     </div>

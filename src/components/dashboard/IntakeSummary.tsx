@@ -5,15 +5,36 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import { Button } from '@/components/ui/button';
 
-interface IntakeSummaryProps {
-  date: string;
+interface DetailedAssessment {
+  sleep: {
+    observations: string[];
+    quote: string;
+  };
+  emotionalRegulation: {
+    observations: string[];
+    quote: string;
+  };
 }
 
-export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
+interface IntakeSummaryProps {
+  date: string;
+  background?: string[];
+  goals?: string[];
+  concerns?: string[];
+  detailedAssessment?: DetailedAssessment;
+}
+
+export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ 
+  date, 
+  background = [],
+  goals = [],
+  concerns = [],
+  detailedAssessment
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Detailed background information from intake assessment
-  const background = [
+  // Default data if not provided
+  const defaultBackground = [
     "Family history of anxiety disorders on maternal side",
     "No significant physical health conditions",
     "Started experiencing sleep issues 6 months ago coinciding with work promotion",
@@ -23,7 +44,7 @@ export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
   ];
 
   // Primary goals from the assessment
-  const goals = [
+  const defaultGoals = [
     "Improve sleep quality and routine",
     "Develop better emotional regulation strategies",
     "Reduce reliance on alcohol for relaxation",
@@ -31,11 +52,16 @@ export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
   ];
 
   // Functional areas of concern
-  const concerns = [
+  const defaultConcerns = [
     "Sleep disruption (rating: 2/5)",
     "Stress management (rating: 2/5)",
     "Emotional regulation (rating: 2/5)"
   ];
+
+  // Use provided data or fallback to defaults
+  const backgroundData = background.length > 0 ? background : defaultBackground;
+  const goalsData = goals.length > 0 ? goals : defaultGoals;
+  const concernsData = concerns.length > 0 ? concerns : defaultConcerns;
 
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
@@ -75,7 +101,7 @@ export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
                 <div className="border border-gray-100 rounded-lg p-4">
                   <h4 className="font-medium text-gray-900 mb-2">Background</h4>
                   <ul className="text-sm space-y-2 list-disc list-inside">
-                    {background.map((item, index) => (
+                    {backgroundData.map((item, index) => (
                       <li key={index}>{item}</li>
                     ))}
                   </ul>
@@ -84,7 +110,7 @@ export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
                 <div className="border border-gray-100 rounded-lg p-4">
                   <h4 className="font-medium text-gray-900 mb-2">Primary Goals</h4>
                   <ul className="text-sm space-y-2 list-disc list-inside">
-                    {goals.map((goal, index) => (
+                    {goalsData.map((goal, index) => (
                       <li key={index}>{goal}</li>
                     ))}
                   </ul>
@@ -93,7 +119,7 @@ export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
                 <div className="border border-gray-100 rounded-lg p-4">
                   <h4 className="font-medium text-gray-900 mb-2">Areas of Focus</h4>
                   <ul className="text-sm space-y-2 list-disc list-inside">
-                    {concerns.map((concern, index) => (
+                    {concernsData.map((concern, index) => (
                       <li key={index}>{concern}</li>
                     ))}
                   </ul>
@@ -106,21 +132,33 @@ export const IntakeSummary: React.FC<IntakeSummaryProps> = ({ date }) => {
                   <div className="border border-gray-100 rounded-lg p-4">
                     <h5 className="font-medium text-gray-800 mb-2">Sleep Observations</h5>
                     <ul className="text-sm space-y-1 list-disc list-inside">
-                      <li>Difficulty falling asleep due to racing thoughts</li>
-                      <li>Reports never feeling tired despite lack of rest</li>
-                      <li>Brain remains highly active at bedtime</li>
+                      {detailedAssessment?.sleep.observations.map((obs, index) => (
+                        <li key={index}>{obs}</li>
+                      )) || (
+                        <>
+                          <li>Difficulty falling asleep due to racing thoughts</li>
+                          <li>Reports never feeling tired despite lack of rest</li>
+                          <li>Brain remains highly active at bedtime</li>
+                        </>
+                      )}
                     </ul>
-                    <p className="text-sm italic mt-2">"I just don't sleep... I feel that I'm never tired. I feel that my brain is always on."</p>
+                    <p className="text-sm italic mt-2">"{detailedAssessment?.sleep.quote || "I just don't sleep... I feel that I'm never tired. I feel that my brain is always on."}"</p>
                   </div>
                   
                   <div className="border border-gray-100 rounded-lg p-4">
                     <h5 className="font-medium text-gray-800 mb-2">Emotional Regulation Observations</h5>
                     <ul className="text-sm space-y-1 list-disc list-inside">
-                      <li>Unexplained anger episodes</li>
-                      <li>Frequent nervousness</li>
-                      <li>Difficulty managing emotional responses</li>
+                      {detailedAssessment?.emotionalRegulation.observations.map((obs, index) => (
+                        <li key={index}>{obs}</li>
+                      )) || (
+                        <>
+                          <li>Unexplained anger episodes</li>
+                          <li>Frequent nervousness</li>
+                          <li>Difficulty managing emotional responses</li>
+                        </>
+                      )}
                     </ul>
-                    <p className="text-sm italic mt-2">"I feel nervous a lot of the time, and then... Kind of angry... That's with no reason."</p>
+                    <p className="text-sm italic mt-2">"{detailedAssessment?.emotionalRegulation.quote || "I feel nervous a lot of the time, and then... Kind of angry... That's with no reason."}"</p>
                   </div>
                 </div>
               </div>

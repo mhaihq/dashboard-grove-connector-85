@@ -20,23 +20,34 @@ interface HealthPulseItem {
 
 interface HealthPulseProps {
   data: HealthPulseItem[];
+  mostImproved?: string;
+  focusArea?: string;
+  positiveAreas?: number;
+  totalAreas?: number;
 }
 
-export const HealthPulse: React.FC<HealthPulseProps> = ({ data }) => {
-  // Calculate most improved area and area to focus
+export const HealthPulse: React.FC<HealthPulseProps> = ({ 
+  data, 
+  mostImproved,
+  focusArea,
+  positiveAreas,
+  totalAreas
+}) => {
+  // Calculate most improved area and area to focus if not provided
   const improving = data.filter(item => item.improving);
   const needsWork = data.filter(item => !item.improving);
   
-  const mostImproved = improving.length > 0 
-    ? improving.reduce((prev, current) => (prev.score > current.score) ? prev : current) 
-    : null;
+  const calculatedMostImproved = mostImproved || (improving.length > 0 
+    ? improving.reduce((prev, current) => (prev.score > current.score) ? prev : current).area
+    : null);
     
-  const focusArea = needsWork.length > 0 
-    ? needsWork.reduce((prev, current) => (prev.score < current.score) ? prev : current) 
-    : null;
+  const calculatedFocusArea = focusArea || (needsWork.length > 0 
+    ? needsWork.reduce((prev, current) => (prev.score < current.score) ? prev : current).area
+    : null);
   
   // Count positive trends
-  const positiveCount = data.filter(item => item.improving).length;
+  const calculatedPositiveCount = positiveAreas || data.filter(item => item.improving).length;
+  const calculatedTotalAreas = totalAreas || data.length;
 
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
@@ -93,11 +104,11 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({ data }) => {
         <div className="mt-4 flex flex-col gap-2 text-sm">
           <div className="flex items-center text-gray-700">
             <Sparkles className="w-4 h-4 text-amber-500 mr-2" />
-            {mostImproved && <span>Most Improved: <span className="font-medium">{mostImproved.area}</span>.</span>}
-            {focusArea && <span className="ml-2">Area to Focus: <span className="font-medium">{focusArea.area}</span>.</span>}
+            {calculatedMostImproved && <span>Most Improved: <span className="font-medium">{calculatedMostImproved}</span>.</span>}
+            {calculatedFocusArea && <span className="ml-2">Area to Focus: <span className="font-medium">{calculatedFocusArea}</span>.</span>}
           </div>
           <p className="text-gray-600">
-            You're trending positively in <span className="font-medium text-green-600">{positiveCount} out of {data.length}</span> areas.
+            You're trending positively in <span className="font-medium text-green-600">{calculatedPositiveCount} out of {calculatedTotalAreas}</span> areas.
           </p>
         </div>
       </CardContent>

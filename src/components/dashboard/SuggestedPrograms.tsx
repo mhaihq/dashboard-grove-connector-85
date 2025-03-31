@@ -1,14 +1,14 @@
 
 import React from 'react';
-import { Medal, ChevronRight, CheckCircle2, Circle, HelpCircle } from 'lucide-react';
+import { CheckCircle2, AlertCircle, HelpCircle, XCircle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
-interface ProgramItem {
+export interface ProgramItem {
   program: string;
-  match: 'perfect' | 'good' | 'possible' | 'none';
-  status: 'enrolled' | 'active' | 'eligible' | 'ineligible';
+  match: "none" | "perfect" | "good" | "possible";
+  status: "Enrolled" | "Available" | "Eligible" | "Not Eligible";
   description: string;
   action?: string;
 }
@@ -18,62 +18,89 @@ interface SuggestedProgramsProps {
 }
 
 export const SuggestedPrograms: React.FC<SuggestedProgramsProps> = ({ programs }) => {
-  const getMatchBadge = (match: string) => {
+  const getMatchIcon = (match: ProgramItem['match']) => {
     switch (match) {
       case 'perfect':
-        return <Badge className="bg-green-100 text-green-800 border-0 gap-1"><CheckCircle2 className="w-3 h-3" /> Perfect</Badge>;
+        return <CheckCircle2 className="h-5 w-5 text-green-500" />;
       case 'good':
-        return <Badge className="bg-blue-100 text-blue-800 border-0 gap-1"><CheckCircle2 className="w-3 h-3" /> Good</Badge>;
+        return <CheckCircle2 className="h-5 w-5 text-blue-500" />;
       case 'possible':
-        return <Badge className="bg-amber-100 text-amber-800 border-0 gap-1"><HelpCircle className="w-3 h-3" /> Possible</Badge>;
+        return <HelpCircle className="h-5 w-5 text-amber-500" />;
       case 'none':
-        return <Badge className="bg-gray-100 text-gray-500 border-0 gap-1"><Circle className="w-3 h-3" /> No Match</Badge>;
+        return <XCircle className="h-5 w-5 text-gray-400" />;
       default:
-        return null;
+        return <HelpCircle className="h-5 w-5 text-gray-400" />;
     }
   };
-
-  const getActionButton = (status: string, action?: string) => {
+  
+  const getStatusBadge = (status: ProgramItem['status']) => {
+    let colorClasses = "bg-gray-100 text-gray-700";
+    
     switch (status) {
-      case 'enrolled':
-        return <Button size="sm" variant="outline" className="text-green-700 bg-green-50 hover:bg-green-100 border-green-200">Enrolled</Button>;
-      case 'active':
-        return <Button size="sm" variant="outline" className="text-blue-700 bg-blue-50 hover:bg-blue-100 border-blue-200">{action || 'Active'}</Button>;
-      case 'eligible':
-        return <Button size="sm" variant="outline" className="text-amber-700 bg-amber-50 hover:bg-amber-100 border-amber-200">{action || 'Learn More'}</Button>;
-      case 'ineligible':
-        return <Button size="sm" variant="outline" className="text-gray-500 hover:bg-gray-100">{action || 'Not Available'}</Button>;
-      default:
-        return null;
+      case 'Enrolled':
+        colorClasses = "bg-green-100 text-green-800";
+        break;
+      case 'Available':
+        colorClasses = "bg-blue-100 text-blue-800";
+        break;
+      case 'Eligible':
+        colorClasses = "bg-amber-100 text-amber-800";
+        break;
+      case 'Not Eligible':
+        colorClasses = "bg-gray-100 text-gray-600";
+        break;
     }
+    
+    return (
+      <span className={cn("inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium", colorClasses)}>
+        {status}
+      </span>
+    );
   };
 
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center text-xl">
-          <Medal className="w-5 h-5 text-hana-green mr-2" />
+          <CheckCircle2 className="w-5 h-5 text-hana-green mr-2" />
           Suggested Programs
         </CardTitle>
       </CardHeader>
       
       <CardContent className="pt-3">
-        <div className="space-y-3">
+        <div className="space-y-4">
           {programs.map((program, index) => (
-            <div 
-              key={index} 
-              className="flex items-center justify-between border-b border-gray-100 pb-3 last:border-0"
-            >
-              <div className="space-y-1">
-                <div className="flex items-center gap-2">
-                  <h3 className="font-medium text-gray-900">{program.program}</h3>
-                  {getMatchBadge(program.match)}
-                </div>
-                <p className="text-xs text-gray-600">{program.description}</p>
+            <div key={index} className="flex gap-3 border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+              <div className="flex-shrink-0 mt-1">
+                {getMatchIcon(program.match)}
               </div>
               
-              <div>
-                {getActionButton(program.status, program.action)}
+              <div className="flex-1">
+                <div className="flex justify-between items-start">
+                  <div>
+                    <h3 className="font-medium text-gray-900">{program.program}</h3>
+                    <p className="text-sm text-gray-600 mt-0.5">{program.description}</p>
+                  </div>
+                  <div>
+                    {getStatusBadge(program.status)}
+                  </div>
+                </div>
+                
+                {program.action && (
+                  <div className="mt-2">
+                    <Button 
+                      variant="outline" 
+                      size="sm"
+                      className={
+                        program.status === 'Enrolled' 
+                          ? "text-green-700 border-green-300 hover:bg-green-50"
+                          : ""
+                      }
+                    >
+                      {program.action}
+                    </Button>
+                  </div>
+                )}
               </div>
             </div>
           ))}
