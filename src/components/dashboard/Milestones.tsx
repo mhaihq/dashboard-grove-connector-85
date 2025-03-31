@@ -94,4 +94,44 @@ export const Milestones: React.FC<MilestonesProps> = ({ data }) => {
   );
 };
 
-export default Milestones;
+// Now let's create an alternative version of the component that works with the prop format being passed from Index.tsx
+interface Milestone {
+  title: string;
+  description: string;
+  completed: boolean;
+  points: number;
+}
+
+interface AlternativeMilestonesProps {
+  milestones: Milestone[];
+  level: number;
+  levelName: string;
+  points: number;
+  weeklyGoal: number;
+}
+
+export const convertToMilestonesData = (props: AlternativeMilestonesProps): MilestonesData => {
+  const achievements: Achievement[] = props.milestones.map(milestone => ({
+    title: milestone.title,
+    unlocked: milestone.completed,
+    progress: milestone.completed ? 100 : 50,
+    icon: <Circle className="w-5 h-5 text-gray-400" />
+  }));
+
+  return {
+    weeklyPoints: props.points,
+    level: props.level,
+    levelName: props.levelName,
+    nextLevel: `Level ${props.level + 1}`,
+    pointsToNextLevel: props.weeklyGoal - props.points,
+    achievements
+  };
+};
+
+// Export a wrapper component that accepts the props that Index.tsx is passing
+const MilestonesWrapper: React.FC<AlternativeMilestonesProps> = (props) => {
+  const data = convertToMilestonesData(props);
+  return <Milestones data={data} />;
+};
+
+export default MilestonesWrapper;

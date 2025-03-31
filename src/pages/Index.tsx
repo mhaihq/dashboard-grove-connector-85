@@ -10,6 +10,7 @@ import { CarePlan } from '@/components/dashboard/CarePlan';
 import { Milestones } from '@/components/dashboard/Milestones';
 import { HealthPulse } from '@/components/dashboard/HealthPulse';
 import { SuggestedPrograms } from '@/components/dashboard/SuggestedPrograms';
+import { Circle } from 'lucide-react';
 
 // Types needed for components
 interface HealthIndicator {
@@ -29,7 +30,7 @@ interface CarePlanItem {
 interface ProgramItem {
   program: string;
   match: "none" | "perfect" | "good" | "possible";
-  status: string;
+  status: "Enrolled" | "Available" | "Eligible" | "Not Eligible";
   description: string;
   action?: string;
 }
@@ -47,6 +48,12 @@ interface FunctionalArea {
   rating: number;
   status: string;
   observations: string[];
+}
+
+interface HealthPulseItem {
+  area: string;
+  score: number;
+  improving: boolean;
 }
 
 const Index = () => {
@@ -275,9 +282,10 @@ const Index = () => {
   ];
   
   // Health assessment data for radar chart
-  const healthAssessmentData = functionalAreas.map(area => ({
+  const healthAssessmentData: HealthPulseItem[] = functionalAreas.map(area => ({
     area: area.title,
-    score: area.rating * 25 // Convert 1-4 rating to percentage
+    score: area.rating * 25, // Convert 1-4 rating to percentage
+    improving: area.key === 'sleep' // Just for example - sleep is improving
   }));
   
   // Eligibility programs data
@@ -298,6 +306,21 @@ const Index = () => {
       reason: "Awaiting final assessment"
     }
   ];
+
+  // Milestones data
+  const milestonesData = {
+    weeklyPoints: 45,
+    level: 2,
+    levelName: "Consistent Mover",
+    nextLevel: "Level 3",
+    pointsToNextLevel: 55,
+    achievements: milestones.map(milestone => ({
+      title: milestone.title,
+      unlocked: milestone.completed,
+      progress: milestone.completed ? 100 : 50,
+      icon: <Circle className="w-5 h-5 text-gray-400" />
+    }))
+  };
   
   return (
     <div className="min-h-screen bg-gray-50">
@@ -362,13 +385,7 @@ const Index = () => {
           
           {/* Milestones & Gamification */}
           <div>
-            <Milestones 
-              milestones={milestones}
-              level={2}
-              levelName="Consistent Mover"
-              points={45}
-              weeklyGoal={100}
-            />
+            <Milestones data={milestonesData} />
           </div>
         </div>
         
