@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { FileText, Home, Calendar, BarChart3, ChevronRight, ChevronLeft } from 'lucide-react';
+import { FileText, Home, Calendar, ChevronRight, ChevronLeft } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export const Sidebar = () => {
