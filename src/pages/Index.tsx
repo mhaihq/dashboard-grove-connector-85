@@ -10,7 +10,7 @@ import { Milestones } from '@/components/dashboard/Milestones';
 import { HealthPulse } from '@/components/dashboard/HealthPulse';
 import { SuggestedPrograms, ProgramItem } from '@/components/dashboard/SuggestedPrograms';
 import { ContextBanner } from '@/components/dashboard/ContextBanner';
-import { ClinicalRecommendations } from '@/components/dashboard/ClinicalRecommendations';
+import { HealthRecommendations } from '@/components/dashboard/HealthRecommendations';
 
 interface HealthIndicator {
   title: string;
@@ -283,6 +283,61 @@ const Index = () => {
     }
   ];
 
+  const medicarePrograms = [
+    {
+      name: "Chronic Care Management (CCM)",
+      description: "Ongoing support for chronic conditions with regular monitoring and care coordination.",
+      eligibility: "Medicare beneficiaries with 2+ chronic conditions expected to last at least 12 months.",
+      coverage: "Medicare Part B covers 80% of the approved amount after you've met your Part B deductible.",
+      benefits: [
+        "24/7 access to healthcare providers for urgent care needs",
+        "Regular review of medications to prevent interactions",
+        "Coordination between all your healthcare providers",
+        "Personalized care plan that's regularly updated"
+      ],
+      icon: "shield"
+    },
+    {
+      name: "Remote Patient Monitoring (RPM)",
+      description: "Track health metrics from home with devices that send data to your healthcare provider.",
+      eligibility: "Medicare beneficiaries whose providers have ordered RPM services.",
+      coverage: "Medicare Part B covers RPM services for patients with acute and chronic conditions.",
+      benefits: [
+        "Reduce need for in-person visits",
+        "Early detection of health issues",
+        "More consistent monitoring of vital signs",
+        "Real-time alerts for concerning measurements"
+      ],
+      icon: "heart"
+    },
+    {
+      name: "Behavioral Health Integration (BHI)",
+      description: "Mental health services integrated with your primary care.",
+      eligibility: "Medicare beneficiaries with behavioral health conditions like depression or anxiety.",
+      coverage: "Medicare Part B covers BHI services when provided by eligible professionals.",
+      benefits: [
+        "Regular assessment of your condition",
+        "Care planning for behavioral health needs",
+        "Brief interventions using evidence-based techniques",
+        "Monitoring your progress with regular follow-ups"
+      ],
+      icon: "brain"
+    },
+    {
+      name: "Principal Care Management (PCM)",
+      description: "Focused care management for a single high-risk condition.",
+      eligibility: "Medicare beneficiaries with one complex chronic condition that's expected to last at least 3 months.",
+      coverage: "Medicare Part B covers PCM services when provided by eligible professionals.",
+      benefits: [
+        "Dedicated focus on your most serious health concern",
+        "Development of a disease-specific care plan",
+        "Medication management for your condition",
+        "Coordination with specialists for your condition"
+      ],
+      icon: "clipboard"
+    }
+  ];
+
   const handleScheduleCall = () => {
     window.location.href = '/schedule-followup';
   };
@@ -463,8 +518,9 @@ const Index = () => {
         </div>
         
         <div className="mb-8">
-          <ClinicalRecommendations 
+          <HealthRecommendations 
             recommendations={clinicalRecommendations} 
+            medicarePrograms={medicarePrograms}
             onScheduleCall={handleScheduleCall}
           />
         </div>
