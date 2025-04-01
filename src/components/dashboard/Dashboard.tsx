@@ -4,6 +4,9 @@ import { Users } from 'lucide-react';
 import { DashboardWelcome } from '@/components/dashboard/DashboardWelcome';
 import { IntakeSummary } from '@/components/dashboard/IntakeSummary';
 import { KeyHealthIndicators } from '@/components/dashboard/KeyHealthIndicators';
+import { ProgressJournal } from '@/components/dashboard/ProgressJournal';
+import { CarePlan } from '@/components/dashboard/CarePlan';
+import { Milestones } from '@/components/dashboard/Milestones';
 import { HealthPulse } from '@/components/dashboard/HealthPulse';
 import { ContextBanner } from '@/components/dashboard/ContextBanner';
 import { HealthRecommendations } from '@/components/dashboard/HealthRecommendations';
@@ -25,6 +28,20 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
     score: area.rating * 25,
     improving: area.key === 'sleep'
   }));
+
+  const milestonesData = {
+    weeklyPoints: 45,
+    level: 2,
+    levelName: "Consistent Mover",
+    nextLevel: "Level 3",
+    pointsToNextLevel: 55,
+    achievements: milestones.map(milestone => ({
+      title: milestone.title,
+      unlocked: milestone.completed,
+      progress: milestone.completed ? 100 : 50,
+      icon: <Users className="w-5 h-5 text-gray-400" />
+    }))
+  };
 
   const notableLifeChanges = overview.find(section => 
     section.title === "Notable Life Changes"
@@ -78,6 +95,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
           recommendations={clinicalRecommendations} 
           medicarePrograms={medicarePrograms}
           onScheduleCall={onScheduleCall}
+          journalEntries={journalEntries}
+          carePlanItems={carePlanItems}
+          milestonesData={milestonesData}
         />
       </div>
       

@@ -4,20 +4,29 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PhoneCall, BookOpen, ChevronRight, ArrowRight, Clock, BarChart } from 'lucide-react';
-import { ClinicalRecommendation, MedicareProgram } from '@/types/dashboard';
+import { ClinicalRecommendation, MedicareProgram, JournalEntry } from '@/types/dashboard';
 import { toast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { ProgressJournal } from '@/components/dashboard/ProgressJournal';
+import { CarePlan } from '@/components/dashboard/CarePlan';
+import { Milestones } from '@/components/dashboard/Milestones';
 
 interface HealthRecommendationsProps {
   recommendations: ClinicalRecommendation[];
   medicarePrograms: MedicareProgram[];
   onScheduleCall: () => void;
+  journalEntries?: JournalEntry[];
+  carePlanItems?: any[];
+  milestonesData?: any;
 }
 
 export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
   recommendations,
   medicarePrograms,
-  onScheduleCall
+  onScheduleCall,
+  journalEntries = [],
+  carePlanItems = [],
+  milestonesData = null
 }) => {
   const [activeTab, setActiveTab] = useState("recommendations");
 
@@ -172,6 +181,23 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
                 </div>
               </div>
             ))}
+            
+            {/* Added Progress Journal, Care Plan, and Milestones sections */}
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+              <div className="lg:col-span-1">
+                {journalEntries.length > 0 && <ProgressJournal entries={journalEntries} />}
+              </div>
+              
+              <div className="lg:col-span-2">
+                {carePlanItems.length > 0 && <CarePlan items={carePlanItems} />}
+              </div>
+            </div>
+            
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+              <div className="lg:col-span-2">
+                {milestonesData && <Milestones data={milestonesData} />}
+              </div>
+            </div>
             
             <div className="flex justify-end">
               <Button 
