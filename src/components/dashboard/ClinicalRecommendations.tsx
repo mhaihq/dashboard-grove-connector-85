@@ -1,10 +1,11 @@
 
 import React from 'react';
-import { Book, ClipboardCheck, Footprints, HeartPulse, Brain, Thermometer } from 'lucide-react';
+import { Book, ClipboardCheck, Footprints, HeartPulse, Brain, Thermometer, Calendar, PhoneCall, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
+import { toast } from '@/hooks/use-toast';
 
 interface RecommendationStep {
   text: string;
@@ -20,16 +21,19 @@ export interface Recommendation {
   timeframe?: string;
   difficulty?: 'easy' | 'moderate' | 'challenging';
   actionLabel?: string;
+  actionType?: 'self' | 'call' | 'followup';
 }
 
 interface ClinicalRecommendationsProps {
   recommendations: Recommendation[];
   activeTab?: 'all' | 'physical' | 'mental' | 'substance';
+  onScheduleCall?: () => void;
 }
 
 export const ClinicalRecommendations: React.FC<ClinicalRecommendationsProps> = ({ 
   recommendations,
-  activeTab = 'all'
+  activeTab = 'all',
+  onScheduleCall
 }) => {
   const [selectedTab, setSelectedTab] = React.useState<'all' | 'physical' | 'mental' | 'substance'>(activeTab);
   
@@ -122,6 +126,95 @@ export const ClinicalRecommendations: React.FC<ClinicalRecommendationsProps> = (
     }
   };
 
+  const getActionTypeButton = (recommendation: Recommendation) => {
+    const actionType = recommendation.actionType || 'self';
+    const actionLabel = recommendation.actionLabel || "Start Now";
+    
+    switch (actionType) {
+      case 'call':
+        return (
+          <Button 
+            size="sm" 
+            variant="default" 
+            className="mt-1 bg-green-600 hover:bg-green-700"
+            onClick={() => {
+              toast({
+                title: "Scheduling a call",
+                description: `We'll discuss your ${recommendation.title} during your next call.`
+              });
+              if (onScheduleCall) onScheduleCall();
+            }}
+          >
+            <PhoneCall className="mr-1 h-4 w-4" />
+            Discuss in Next Call
+          </Button>
+        );
+      case 'followup':
+        return (
+          <Button 
+            size="sm" 
+            variant="default" 
+            className="mt-1 bg-amber-500 hover:bg-amber-600"
+            onClick={() => {
+              toast({
+                title: "Added to follow-up plan",
+                description: `We'll address ${recommendation.title} in your follow-up session.`
+              });
+            }}
+          >
+            <Calendar className="mr-1 h-4 w-4" />
+            Add to Follow-up
+          </Button>
+        );
+      case 'self':
+      default:
+        return (
+          <Button 
+            size="sm" 
+            variant="default" 
+            className="mt-1"
+            onClick={() => {
+              toast({
+                title: "Action added",
+                description: `${recommendation.title} has been added to your plan.`
+              });
+            }}
+          >
+            <ArrowRight className="mr-1 h-4 w-4" />
+            {actionLabel}
+          </Button>
+        );
+    }
+  };
+
+  const getActionTypeTag = (actionType?: 'self' | 'call' | 'followup') => {
+    if (!actionType || actionType === 'self') return null;
+    
+    let color = '';
+    let text = '';
+    let icon = null;
+    
+    switch (actionType) {
+      case 'call':
+        color = 'bg-green-100 text-green-800';
+        text = 'Coaching Call';
+        icon = <PhoneCall className="h-3 w-3 mr-1" />;
+        break;
+      case 'followup':
+        color = 'bg-amber-100 text-amber-800';
+        text = 'Follow-up';
+        icon = <Calendar className="h-3 w-3 mr-1" />;
+        break;
+    }
+    
+    return (
+      <span className={cn("inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full mr-2", color)}>
+        {icon}
+        {text}
+      </span>
+    );
+  };
+
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <CardHeader className="pb-2">
@@ -180,6 +273,7 @@ export const ClinicalRecommendations: React.FC<ClinicalRecommendationsProps> = (
                     <div className="flex items-center gap-2">
                       {getIconForRecommendation(recommendation)}
                       <h3 className="font-medium text-gray-900">{recommendation.title}</h3>
+                      {getActionTypeTag(recommendation.actionType)}
                     </div>
                     
                     <div className="flex items-center gap-2">
@@ -216,9 +310,7 @@ export const ClinicalRecommendations: React.FC<ClinicalRecommendationsProps> = (
                     </div>
                   )}
                   
-                  <Button size="sm" variant="default" className="mt-1">
-                    {recommendation.actionLabel || "Start Now"}
-                  </Button>
+                  {getActionTypeButton(recommendation)}
                 </div>
               </div>
             ))

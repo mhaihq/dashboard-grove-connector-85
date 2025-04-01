@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Moon, BatteryFull, Brain, Heart, Users, Activity, UtensilsCrossed, Weight, Shield, Coffee } from 'lucide-react';
 import { DashboardHeader } from '@/components/DashboardHeader';
@@ -13,7 +12,6 @@ import { SuggestedPrograms, ProgramItem } from '@/components/dashboard/Suggested
 import { ContextBanner } from '@/components/dashboard/ContextBanner';
 import { ClinicalRecommendations } from '@/components/dashboard/ClinicalRecommendations';
 
-// Types needed for components
 interface HealthIndicator {
   title: string;
   value: string;
@@ -47,20 +45,17 @@ interface OverviewItem {
 }
 
 const Index = () => {
-  // User information from intake
   const userInfo = {
     name: "Matteo Smith",
     email: "matteo.smith@example.com",
     date: "January 29, 2025"
   };
   
-  // Welcome message
   const welcome = {
     greeting: "Hi Matteo",
     message: "Thanks for our conversation. I've analyzed our discussion to provide you with meaningful insights about your wellbeing. Let me know if anything doesn't resonate so we can refine these observations together."
   };
   
-  // Detailed user background from intake
   const userBackground = [
     "Family history of anxiety disorders on maternal side",
     "No significant physical health conditions",
@@ -72,7 +67,6 @@ const Index = () => {
     "Recent lifestyle changes include increased work responsibilities and remote work transition"
   ];
   
-  // Overview sections
   const overview: OverviewItem[] = [
     {
       title: "Notable Life Changes",
@@ -108,7 +102,6 @@ const Index = () => {
     }
   ];
   
-  // Health indicators data
   const healthIndicators: HealthIndicator[] = [
     {
       title: "Sleep Quality",
@@ -136,7 +129,6 @@ const Index = () => {
     }
   ];
   
-  // Progress journal entries
   const journalEntries = [
     {
       text: "Morning walks: 5 days (up from 2!)",
@@ -160,7 +152,6 @@ const Index = () => {
     }
   ];
   
-  // Care plan items
   const carePlanItems: CarePlanItem[] = [
     {
       title: "Sleep Restoration Protocol",
@@ -188,7 +179,6 @@ const Index = () => {
     }
   ];
   
-  // Suggested programs with added relevantAreas
   const suggestedPrograms: ProgramItem[] = [
     {
       program: "Chronic Care Management (CCM)",
@@ -222,7 +212,6 @@ const Index = () => {
     }
   ];
   
-  // Recommendations from intake assessment
   const clinicalRecommendations = [
     {
       title: "Sleep Restoration Protocol",
@@ -238,7 +227,8 @@ const Index = () => {
         "Create a sleep-friendly environment: dim lights, cool temperature, no screens",
         "Use white noise or nature sounds to mask racing thoughts"
       ],
-      actionLabel: "Start Sleep Plan"
+      actionLabel: "Start Sleep Plan",
+      actionType: "self" as const
     },
     {
       title: "Stress Management Toolkit",
@@ -254,7 +244,8 @@ const Index = () => {
         "Use 'stress journaling' to identify triggers",
         "Schedule daily 15-minute mindfulness breaks"
       ],
-      actionLabel: "Explore Toolkit"
+      actionLabel: "Explore Toolkit",
+      actionType: "followup" as const
     },
     {
       title: "Emotional Regulation Framework",
@@ -270,7 +261,8 @@ const Index = () => {
         "Implement daily mood tracking with trigger identification",
         "Schedule regular check-ins with support system"
       ],
-      actionLabel: "Learn Framework"
+      actionLabel: "Learn Framework",
+      actionType: "call" as const
     },
     {
       title: "Energy Management Strategy",
@@ -286,11 +278,15 @@ const Index = () => {
         "Set up regular movement reminders",
         "Plan meals and snacks to maintain stable blood sugar"
       ],
-      actionLabel: "Try Strategy"
+      actionLabel: "Try Strategy",
+      actionType: "self" as const
     }
   ];
-  
-  // Milestones & gamification
+
+  const handleScheduleCall = () => {
+    window.location.href = '/schedule-followup';
+  };
+
   const milestones: Milestone[] = [
     {
       title: "2 Weeks Consistent Sleep",
@@ -318,7 +314,6 @@ const Index = () => {
     }
   ];
 
-  // Functional areas from intake assessment
   const functionalAreas = [
     {
       title: "Sleep",
@@ -393,15 +388,13 @@ const Index = () => {
       evidence: "I feel nervous a lot of the time, and then... Kind of angry... That's with no reason."
     }
   ];
-  
-  // Health assessment data for radar chart
+
   const healthAssessmentData: HealthPulseItem[] = functionalAreas.map(area => ({
     area: area.title,
-    score: area.rating * 25, // Convert 1-4 rating to percentage
-    improving: area.key === 'sleep' // Just for example - sleep is improving
+    score: area.rating * 25,
+    improving: area.key === 'sleep'
   }));
-  
-  // Milestones data
+
   const milestonesData = {
     weeklyPoints: 45,
     level: 2,
@@ -415,12 +408,11 @@ const Index = () => {
       icon: <Users className="w-5 h-5 text-gray-400" />
     }))
   };
-  
-  // Get notable life changes from overview
+
   const notableLifeChanges = overview.find(section => 
     section.title === "Notable Life Changes"
   )?.items || [];
-  
+
   return (
     <div className="min-h-screen bg-gray-50">
       <DashboardHeader 
@@ -429,7 +421,6 @@ const Index = () => {
       />
       
       <main className="p-6 md:p-8 max-w-7xl mx-auto">
-        {/* Welcome & Current Status */}
         <div className="mb-8">
           <DashboardWelcome 
             userName={userInfo.name.split(' ')[0]}
@@ -448,7 +439,6 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Notable Life Changes from Intake - Context Banner */}
         <div className="mb-8">
           <ContextBanner
             title="Ongoing Context From Your Intake"
@@ -458,12 +448,10 @@ const Index = () => {
           />
         </div>
         
-        {/* Key Health Indicators */}
         <div className="mb-8">
           <KeyHealthIndicators healthIndicators={healthIndicators} />
         </div>
         
-        {/* Health Pulse (Snapshot Panel) */}
         <div className="mb-8">
           <HealthPulse 
             data={healthAssessmentData}
@@ -474,25 +462,24 @@ const Index = () => {
           />
         </div>
         
-        {/* Clinical Recommendations Section */}
         <div className="mb-8">
-          <ClinicalRecommendations recommendations={clinicalRecommendations} />
+          <ClinicalRecommendations 
+            recommendations={clinicalRecommendations} 
+            onScheduleCall={handleScheduleCall}
+          />
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-          {/* Progress Journal */}
           <div className="lg:col-span-1">
             <ProgressJournal entries={journalEntries} />
           </div>
           
-          {/* Your Care Plan (Mini Cards) */}
           <div className="lg:col-span-2">
             <CarePlan items={carePlanItems} />
           </div>
         </div>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          {/* Suggested Programs */}
           <div>
             <SuggestedPrograms 
               programs={suggestedPrograms} 
@@ -501,13 +488,11 @@ const Index = () => {
             />
           </div>
           
-          {/* Milestones & Gamification */}
           <div>
             <Milestones data={milestonesData} />
           </div>
         </div>
         
-        {/* Intake Summary (Collapsible) */}
         <div className="mb-8">
           <IntakeSummary 
             date="February 13, 2025"
