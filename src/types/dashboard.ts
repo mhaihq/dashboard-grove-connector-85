@@ -47,10 +47,12 @@ export interface Milestone {
 export interface HealthPulseItem {
   area: string;
   score: number;
+  initialScore?: number; // Added for comparing with previous state
   improving: boolean;
   priority?: boolean;
   tooltip?: string;
   trend?: 'up' | 'down' | 'stable';
+  trendPercentage?: number; // Added to show percentage improvement
   relatedTo?: string[];
 }
 
