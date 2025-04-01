@@ -18,7 +18,7 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({ goals }) => {
           <div className="bg-green-50 p-1.5 rounded-full">
             <FileCheck className="h-4 w-4 text-green-500" />
           </div>
-          This Week's Smart Goals
+          This Week's Goals
         </h4>
         <div className="text-xs text-gray-500 flex items-center">
           <Calendar className="w-3 h-3 mr-1" />
@@ -69,7 +69,7 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({ goals }) => {
           <div className="flex items-center justify-between text-xs text-gray-600">
             <div className="flex items-center">
               <Award className="w-4 h-4 text-amber-500 mr-1" />
-              <span>Progress Score: <span className="font-medium">14 pts</span></span>
+              <span>Momentum Score: <span className="font-medium">14 pts</span></span>
             </div>
             <span>3/4 goals on track</span>
           </div>

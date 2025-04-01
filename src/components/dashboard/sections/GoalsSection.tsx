@@ -72,11 +72,21 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
   // Get user-friendly names for the goals
   const getFriendlyName = (title: string) => {
     switch (title) {
-      case "Sleep Restoration Protocol": return "Evening Wind-down";
-      case "Stress Management Toolkit": return "Calm Moments";
+      case "Sleep Restoration Protocol": return "Better Sleep Routine";
+      case "Stress Management Toolkit": return "Midday Stress Reset";
       case "Emotional Regulation Framework": return "Mood Balancing";
+      case "Hydration Plan": return "Afternoon Energy Boost";
       default: return title;
     }
+  };
+  
+  // Get focus area tag for goals
+  const getFocusTag = (title: string) => {
+    if (title.includes("Sleep")) return "💧 Sleep";
+    if (title.includes("Stress")) return "🧠 Focus";
+    if (title.includes("Emotional")) return "❤️ Mood";
+    if (title.includes("Hydration")) return "💦 Energy";
+    return null;
   };
 
   // Calculate streaks stats
@@ -92,9 +102,10 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Target className="w-5 h-5 text-green-600 mr-2" />
-              <CardTitle className="text-lg font-medium text-gray-800">This Week's Smart Goals</CardTitle>
+              <CardTitle className="text-lg font-medium text-gray-800">This Week's Goals</CardTitle>
             </div>
           </div>
+          <p className="text-xs text-gray-500 mt-1">Supportive routines you're building towards</p>
         </CardHeader>
         
         <CardContent className="p-0">
@@ -103,6 +114,7 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
               const progressPercentage = getProgressPercentage(goal);
               const progressColor = getProgressColor(progressPercentage);
               const friendlyName = getFriendlyName(goal.title);
+              const focusTag = getFocusTag(goal.title);
               
               return (
                 <div key={index} className="rounded-xl p-4 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
@@ -114,15 +126,8 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
                     <div className="flex-1">
                       <div className="flex items-center justify-between mb-1">
                         <h3 className="font-semibold text-gray-800">{friendlyName}</h3>
-                        {goal.status === 'in-progress' && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                            Active
-                          </span>
-                        )}
-                        {goal.status === 'started' && (
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
-                            Just Started
-                          </span>
+                        {focusTag && (
+                          <span className="text-xs text-gray-600">{focusTag}</span>
                         )}
                       </div>
                       
@@ -131,12 +136,11 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
                       <div>
                         <div className="flex justify-between text-xs mb-1">
                           <span className="text-gray-500">
-                            Progress: {progressPercentage}%
+                            {goal.status === 'in-progress' ? `In progress (${goal.completedSteps} of ${goal.totalSteps} days reported)` :
+                             goal.status === 'started' ? 'Started this week' : 'Momentum building...'}
                           </span>
                           <span className="text-gray-500">
-                            {goal.completedSteps && goal.totalSteps && 
-                              `${goal.completedSteps}/${goal.totalSteps} days`
-                            }
+                            {progressPercentage}%
                           </span>
                         </div>
                         <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
@@ -208,13 +212,13 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
         </CardContent>
       </Card>
 
-      {/* Panel B: Your Weekly Habits */}
+      {/* Panel B: Your Momentum This Week */}
       <Card className="shadow-sm overflow-hidden border-gray-200 bg-white rounded-xl">
         <CardHeader className="pb-2 border-b border-gray-100 bg-gray-50">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
               <Award className="w-5 h-5 text-amber-500 mr-2" />
-              <CardTitle className="text-lg font-medium text-gray-800">Your Weekly Habits</CardTitle>
+              <CardTitle className="text-lg font-medium text-gray-800">Your Momentum This Week</CardTitle>
             </div>
           </div>
         </CardHeader>
@@ -222,13 +226,11 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
         <CardContent className="p-4">
           <div className="space-y-5">
             {activeStreaks.slice(0, showAllHabits ? activeStreaks.length : 3).map((streak, index) => {
-              // For each day of the week (up to target)
-              const days = Array.from({ length: streak.target }, (_, i) => {
-                if (i < streak.days) {
-                  return streak.status === 'declined' && i === 0 ? 'red' : 'green';
-                }
-                return 'gray';
-              });
+              // Calculate circle progress percentage
+              const progressPercent = (streak.days / streak.target) * 100;
+              const strokeColor = streak.status === 'improved' ? '#4ade80' : // green
+                                 streak.status === 'declined' ? '#f87171' : // red
+                                 '#fbbf24'; // amber
               
               return (
                 <div key={index} className="relative">
@@ -237,40 +239,56 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
                       <span className="mr-2">{streak.icon}</span>
                       {streak.habit}
                     </span>
-                    <span className="text-xs text-gray-500">
-                      {streak.days}/{streak.target} days
-                    </span>
                   </div>
                   
-                  <div className="flex space-x-2 mb-1">
-                    {days.map((status, dayIndex) => (
-                      <TooltipProvider key={dayIndex}>
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <div 
-                              className={cn(
-                                "w-7 h-7 rounded-full flex items-center justify-center",
-                                status === 'green' ? "bg-green-400 text-white" : 
-                                status === 'red' ? "bg-red-400 text-white" : 
-                                "bg-gray-200 text-gray-400"
-                              )}
-                            >
-                              {status === 'green' ? '✓' : status === 'red' ? '✗' : ''}
+                  <div className="flex items-center">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="relative w-16 h-16">
+                            {/* Background circle */}
+                            <div className="absolute inset-0 rounded-full bg-gray-100"></div>
+                            
+                            {/* Progress circle - using SVG for better control */}
+                            <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+                              <circle 
+                                cx="32" 
+                                cy="32" 
+                                r="28" 
+                                strokeWidth="8"
+                                stroke={strokeColor}
+                                fill="transparent"
+                                strokeDasharray={`${2 * Math.PI * 28 * progressPercent / 100} ${2 * Math.PI * 28}`}
+                              />
+                            </svg>
+                            
+                            {/* Center text */}
+                            <div className="absolute inset-0 flex items-center justify-center text-xs font-medium">
+                              {streak.days}/{streak.target}
                             </div>
-                          </TooltipTrigger>
-                          <TooltipContent>
-                            <p className="text-xs max-w-[150px]">
-                              Day {dayIndex + 1}: {status === 'green' ? 'Completed' : status === 'red' ? 'Missed' : 'Upcoming'}
-                            </p>
-                          </TooltipContent>
-                        </Tooltip>
-                      </TooltipProvider>
-                    ))}
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p className="text-xs max-w-[150px]">
+                            {streak.status === 'improved' 
+                              ? "You've been consistent with this habit" 
+                              : streak.status === 'declined'
+                              ? "This habit needs attention this week"
+                              : "You're maintaining this habit"}
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                    
+                    <div className="ml-3">
+                      <p className="text-xs text-gray-600">
+                        Supports: {streak.supportedGoal}
+                      </p>
+                      <p className="text-xs text-gray-500 mt-1">
+                        {streak.trend}
+                      </p>
+                    </div>
                   </div>
-                  
-                  <p className="text-xs text-gray-600 mt-1">
-                    {streak.supportedGoal && `Supports: ${streak.supportedGoal}`}
-                  </p>
                 </div>
               );
             })}
@@ -286,16 +304,16 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
             
             {/* System Suggestion */}
             {systemSuggestion && (
-              <div className="bg-gray-50 border border-gray-200 rounded-xl p-3 mt-4">
-                <h3 className="text-sm font-medium text-gray-700 mb-1 flex items-center">
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mt-4">
+                <h3 className="text-sm font-medium text-blue-700 mb-1 flex items-center">
                   <Brain className="w-4 h-4 mr-1.5 text-blue-600" />
                   Suggested Habit This Week:
                 </h3>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-blue-800">
                   {systemSuggestion.suggestion}
                 </p>
                 {systemSuggestion.basedOn && (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-blue-600 mt-1">
                     Based on: {systemSuggestion.basedOn}
                   </p>
                 )}
@@ -315,7 +333,7 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
                 </div>
                 <div className="bg-blue-50 rounded-lg p-2">
                   <p className="text-lg text-blue-700 font-bold">+{consistencyPoints}</p>
-                  <p className="text-xs text-gray-700">Consistency Points</p>
+                  <p className="text-xs text-gray-700">Momentum Score</p>
                 </div>
               </div>
             </div>
