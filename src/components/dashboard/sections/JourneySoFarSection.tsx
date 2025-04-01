@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -28,13 +29,25 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   // Calculate the total weekly points from journal entries
   const weeklyPoints = journalEntries.reduce((sum, entry: any) => sum + (entry.points || 0), 0);
   
+  // Add environmental changes highlights (Atomic Habits principle)
+  const environmentalChanges = [
+    { week: "Week 3", change: "Moved phone charger away from bed to improve sleep habits" },
+    { week: "Week 5", change: "Set up a dedicated meditation corner in the living room" }
+  ];
+  
+  // Add consistency highlights (emphasizing systems over goals)
+  const consistencyHighlights = [
+    { behavior: "Morning walks", count: 5, impact: "Improved energy levels throughout the day" },
+    { behavior: "Hydration tracking", count: 7, impact: "Reduced afternoon fatigue" }
+  ];
+  
   return (
-    <div className="mb-16">
+    <div>
       <Card className="shadow-sm hover:shadow-md transition-shadow mb-6">
         <CardHeader className="pb-2">
-          <CardTitle className="text-lg flex items-center">
+          <CardTitle className="flex items-center">
             <Clock className="w-5 h-5 mr-2 text-blue-500" />
-            Your Progress Path
+            <span className="text-gray-700">Your Progress Path</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -58,6 +71,18 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
               <div>
                 <h3 className="text-md font-medium text-gray-900">Now (March 15, 2025)</h3>
                 <p className="text-sm text-gray-600 mt-1">You've shown improvement in sleep quality and reduced alcohol consumption. Hydration remains an area for focus.</p>
+                
+                <div className="mt-2 bg-blue-50 rounded-md p-2">
+                  <h4 className="text-sm font-medium text-blue-700">Environmental Changes (Atomic Habits)</h4>
+                  <ul className="mt-1 space-y-1">
+                    {environmentalChanges.map((change, idx) => (
+                      <li key={idx} className="text-xs text-blue-600 flex">
+                        <span className="text-blue-500 mr-1.5">•</span>
+                        <span><strong>{change.week}:</strong> {change.change}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               </div>
             </div>
             
@@ -68,6 +93,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
               <div>
                 <h3 className="text-md font-medium text-gray-900">Future (Coming Soon)</h3>
                 <p className="text-sm text-gray-600 mt-1">Continued progress will unlock deeper insights and personalized recommendations.</p>
+                <p className="text-xs text-amber-600 italic mt-1">"You don't rise to the level of your goals; you fall to the level of your systems." - James Clear</p>
               </div>
             </div>
           </div>
@@ -80,7 +106,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center">
               <TrendingUp className="w-5 h-5 mr-2 text-hana-green" />
-              Recent Call Summaries
+              <span className="text-gray-700">Recent Call Summaries</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -122,30 +148,31 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
           </CardContent>
         </Card>
         
-        {/* Progress Highlights */}
+        {/* Consistency Highlights */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center">
               <Trophy className="w-5 h-5 mr-2 text-amber-500" />
-              Progress Highlights
+              <span className="text-gray-700">Consistency Over Perfection</span>
             </CardTitle>
           </CardHeader>
           <CardContent>
+            <div className="mb-4 bg-amber-50 border border-amber-100 rounded-lg p-3">
+              <p className="text-sm text-amber-800 italic">"We are what we repeatedly do. Excellence, then, is not an act, but a habit."</p>
+            </div>
+            
             <div className="space-y-4">
-              {journalEntries
-                .filter((entry: any) => entry.status === 'positive')
-                .slice(0, 3)
-                .map((entry: any, idx: number) => (
-                  <div key={idx} className="border border-green-100 rounded-lg p-3 bg-green-50">
-                    <div className="flex justify-between mb-1">
-                      <span className="text-sm font-medium text-green-800">{entry.text}</span>
-                      <span className="text-xs text-green-700">{entry.date}</span>
-                    </div>
-                    {entry.evidence && (
-                      <p className="text-sm text-green-700 mt-1">{entry.evidence}</p>
-                    )}
+              {consistencyHighlights.map((highlight, idx) => (
+                <div key={idx} className="border border-green-100 rounded-lg p-3 bg-green-50">
+                  <div className="flex justify-between items-center mb-1">
+                    <span className="text-sm font-medium text-green-800">{highlight.behavior}</span>
+                    <span className="text-xs font-bold bg-green-200 text-green-800 px-2 py-0.5 rounded-full">
+                      {highlight.count} times
+                    </span>
                   </div>
-                ))}
+                  <p className="text-sm text-green-700 mt-1">{highlight.impact}</p>
+                </div>
+              ))}
               
               <div className="pt-2">
                 <div className="flex justify-between mb-1">

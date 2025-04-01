@@ -1,6 +1,5 @@
 
 import React from 'react';
-import { Trophy } from 'lucide-react';
 import { 
   userInfo, welcome, userBackground, overview, 
   healthIndicators, journalEntries, carePlanItems, 
@@ -89,7 +88,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       
       {/* A. Current Health Snapshot */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">A. Current Health Snapshot</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Current Health Snapshot</h2>
         <HealthPulseSection 
           data={healthAssessmentData}
           mostImproved="Sleep"
@@ -101,7 +100,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       
       {/* B. Goals & Milestones */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">B. Goals & Milestones</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Goals & Milestones</h2>
         <GoalsSection 
           carePlanItems={carePlanItems}
           nextCheckInDate={nextCheckInDate}
@@ -110,7 +109,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       
       {/* C. Recommendations (Systems) */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">C. Recommendations (Systems)</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Recommendations (Systems)</h2>
         <RecommendationsSection 
           recommendations={clinicalRecommendations}
           medicarePrograms={medicarePrograms}
@@ -120,7 +119,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       
       {/* D. Your Journey So Far */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">D. Your Journey So Far</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Journey So Far</h2>
         <JourneySoFarSection 
           journalEntries={journalEntries}
           milestonesData={milestonesData}

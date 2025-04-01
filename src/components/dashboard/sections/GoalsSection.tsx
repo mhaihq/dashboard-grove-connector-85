@@ -23,15 +23,27 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
   // Get active goals count
   const activeGoals = carePlanItems.filter(item => item.status !== 'complete').length;
   
+  // Atomic Habits - create habit stacks and implementation intentions
+  const habitStacks = [
+    { currentHabit: "After brewing your morning coffee", newHabit: "do a 2-minute walk in place" },
+    { currentHabit: "After brushing your teeth at night", newHabit: "do 3 minutes of deep breathing" }
+  ];
+  
+  // Implementation intentions
+  const implementations = [
+    { goal: "Going to the gym", when: "Mondays at 5pm", where: "right after work" },
+    { goal: "Hydration", when: "Every 2 hours", where: "whenever my phone alarm rings" }
+  ];
+  
   return (
-    <div className="mb-16">
+    <div>
       <Card className="shadow-sm hover:shadow-md transition-shadow">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-xl flex items-center">
+            <div className="flex items-center">
               <List className="w-5 h-5 text-hana-green mr-2" />
-              Your SMART Goals
-            </CardTitle>
+              <span className="font-medium text-gray-700">Your SMART Goals</span>
+            </div>
             <div className="flex items-center text-sm">
               <span className="text-gray-500 mr-2">Overall Progress:</span>
               <span className="font-medium text-hana-green">{overallProgress}%</span>
@@ -43,7 +55,8 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
           <Tabs defaultValue="active" className="mb-6">
             <TabsList className="mb-4">
               <TabsTrigger value="active">{activeGoals} Active Goals</TabsTrigger>
-              <TabsTrigger value="streaks">Streak Counters</TabsTrigger>
+              <TabsTrigger value="streaks">Consistency Tracking</TabsTrigger>
+              <TabsTrigger value="habits">Habit Building</TabsTrigger>
             </TabsList>
             
             <TabsContent value="active">
@@ -78,6 +91,44 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
                       <span className="text-amber-700">You're 3 days away from a hydration streak.</span>
                     </li>
                   </ul>
+                </div>
+              </div>
+            </TabsContent>
+            
+            <TabsContent value="habits">
+              <div className="space-y-4">
+                <div className="border border-blue-100 rounded-lg p-4 bg-blue-50">
+                  <h3 className="font-medium text-blue-800 mb-2">Habit Stacking</h3>
+                  <p className="text-xs text-blue-600 mb-3">Connect new habits to existing routines for better consistency</p>
+                  <div className="space-y-3">
+                    {habitStacks.map((stack, index) => (
+                      <div key={index} className="rounded-md bg-white p-3 shadow-sm">
+                        <div className="flex flex-col">
+                          <div className="flex items-center">
+                            <span className="text-blue-500 mr-2 font-bold">→</span>
+                            <span className="text-sm text-gray-700"><strong>{stack.currentHabit}</strong> (existing habit),</span>
+                          </div>
+                          <div className="pl-6">
+                            <span className="text-sm text-gray-700"><strong>{stack.newHabit}</strong> (new habit).</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                
+                <div className="border border-purple-100 rounded-lg p-4 bg-purple-50">
+                  <h3 className="font-medium text-purple-800 mb-2">Implementation Intentions</h3>
+                  <p className="text-xs text-purple-600 mb-3">Specifying when and where you'll take action builds consistency</p>
+                  <div className="space-y-3">
+                    {implementations.map((implementation, index) => (
+                      <div key={index} className="rounded-md bg-white p-3 shadow-sm">
+                        <p className="text-sm text-gray-700">
+                          "I will <strong>{implementation.goal}</strong> on <strong>{implementation.when}</strong> {implementation.where}."
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </TabsContent>

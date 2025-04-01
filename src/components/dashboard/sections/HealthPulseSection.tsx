@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { HealthPulse } from '@/components/dashboard/HealthPulse';
 import { HealthPulseItem } from '@/types/dashboard';
@@ -41,21 +42,33 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
     // Calculate percentage change
     const trendPercentage = Math.round(((item.score - initialScore) / initialScore) * 100);
     
+    // Add system explanation for Atomic Habits integration
+    let systemExplanation = '';
+    if (item.area === 'Sleep' && trend === 'up') {
+      systemExplanation = 'Your consistent bedtime routine (system) boosted your score';
+    } else if (item.area === 'Exercise' && trend === 'up') {
+      systemExplanation = 'Walking after lunch (habit stack) is making a difference';
+    } else if (item.area === 'Hydration' && trend === 'down') {
+      systemExplanation = 'Consider placing a water bottle on your desk (environment design)';
+    }
+    
     return {
       ...item,
       trend,
       relatedTo,
       initialScore,
-      trendPercentage
+      trendPercentage,
+      systemExplanation
     };
   });
   
-  // Generate improved and declined areas for the highlights section
+  // Generate improved and declined areas for the highlights section with Atomic Habits framing
   const improvedAreas = enhancedData
     .filter(item => item.improving && item.trendPercentage && item.trendPercentage > 0)
     .map(item => ({
       area: item.area,
-      change: item.trendPercentage || 0
+      change: item.trendPercentage || 0,
+      systemNote: item.systemExplanation
     }))
     .sort((a, b) => b.change - a.change)
     .slice(0, 3);
@@ -64,13 +77,22 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
     .filter(item => !item.improving && item.trendPercentage && item.trendPercentage < 0)
     .map(item => ({
       area: item.area,
-      change: item.trendPercentage || 0
+      change: item.trendPercentage || 0,
+      systemNote: item.systemExplanation
     }))
     .sort((a, b) => a.change - b.change)
     .slice(0, 3);
   
+  // Add environment design tips for areas needing improvement
+  const environmentTips = {
+    'Sleep': 'Placing your phone away from your bed reduced late-night scrolling',
+    'Hydration': 'Try filling a water bottle each morning and placing it at your desk',
+    'Exercise': 'Leaving gym clothes out the night before reduced morning friction',
+    'Nutrition': 'Pre-cutting veggies on Sunday made healthy snacking easier all week'
+  };
+  
   return (
-    <div className="mb-16">
+    <div>
       <HealthPulse 
         data={enhancedData}
         mostImproved={mostImproved}
@@ -79,6 +101,7 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
         totalAreas={totalAreas}
         improvedAreas={improvedAreas}
         declinedAreas={declinedAreas}
+        environmentTips={environmentTips}
       />
     </div>
   );
