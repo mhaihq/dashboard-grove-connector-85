@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Heart, Activity, Brain, Users, Calendar, ShieldCheck, Award, Moon, UtensilsCrossed, Weight, GlassWater, Circle } from 'lucide-react';
+import { Moon, BatteryFull, Brain, Heart, Users, Activity, UtensilsCrossed, Weight, Shield, Coffee } from 'lucide-react';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { DashboardWelcome } from '@/components/dashboard/DashboardWelcome';
 import { IntakeSummary } from '@/components/dashboard/IntakeSummary';
@@ -142,7 +142,7 @@ const Index = () => {
       title: "Medicare Status",
       value: "Enrolled",
       change: "stable",
-      icon: <ShieldCheck className="h-5 w-5 text-hana-green" />
+      icon: <Shield className="h-5 w-5 text-hana-green" />
     }
   ];
   
@@ -198,28 +198,31 @@ const Index = () => {
     }
   ];
   
-  // Suggested programs
+  // Suggested programs with added relevantAreas
   const suggestedPrograms: ProgramItem[] = [
     {
       program: "Chronic Care Management (CCM)",
       match: "perfect",
       status: "Enrolled",
       description: "Ongoing support for chronic conditions",
-      action: "Monitor BP 🩺"
+      action: "Monitor BP 🩺",
+      relevantAreas: ["Sleep", "Stress Management"]
     },
     {
       program: "Remote Patient Monitoring (RPM)",
       match: "perfect",
       status: "Available",
       description: "Track health metrics from home",
-      action: "Enroll Now"
+      action: "Enroll Now",
+      relevantAreas: ["Sleep", "Energy Level"]
     },
     {
       program: "Behavioral Health Integration (BHI)",
       match: "possible",
       status: "Eligible",
       description: "Mental health support services",
-      action: "Learn More"
+      action: "Learn More",
+      relevantAreas: ["Emotional Regulation"]
     },
     {
       program: "Principal Care Management (PCM)",
@@ -340,25 +343,6 @@ const Index = () => {
     improving: area.key === 'sleep' // Just for example - sleep is improving
   }));
   
-  // Eligibility programs data
-  const eligibilityData = [
-    {
-      program: "Chronic Care Management",
-      eligible: true,
-      reason: "Multiple chronic conditions"
-    },
-    {
-      program: "Remote Patient Monitoring",
-      eligible: true,
-      reason: "Eligible for blood pressure monitoring"
-    },
-    {
-      program: "Behavioral Health Integration",
-      eligible: "Partial",
-      reason: "Awaiting final assessment"
-    }
-  ];
-
   // Milestones data
   const milestonesData = {
     weeklyPoints: 45,
@@ -370,7 +354,7 @@ const Index = () => {
       title: milestone.title,
       unlocked: milestone.completed,
       progress: milestone.completed ? 100 : 50,
-      icon: <Circle className="w-5 h-5 text-gray-400" />
+      icon: <Users className="w-5 h-5 text-gray-400" />
     }))
   };
   
@@ -398,6 +382,16 @@ const Index = () => {
             >
               ✨ Want to check in today? Book your next AI call here.
             </a>
+          </div>
+        </div>
+
+        {/* Notable Life Changes from Intake - Context Banner */}
+        <div className="mb-8 bg-blue-50 border border-blue-100 rounded-lg p-4">
+          <h3 className="font-medium text-blue-800 mb-2">Ongoing Context From Your Intake</h3>
+          <div className="text-blue-700 space-y-1">
+            {overview.find(section => section.title === "Notable Life Changes")?.items.map((item, idx) => (
+              <p key={idx} className="text-sm">• {item}</p>
+            ))}
           </div>
         </div>
         
@@ -432,7 +426,11 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
           {/* Suggested Programs */}
           <div>
-            <SuggestedPrograms programs={suggestedPrograms} />
+            <SuggestedPrograms 
+              programs={suggestedPrograms} 
+              title="Recommended Programs"
+              description="Based on your intake assessment and Medicare eligibility"
+            />
           </div>
           
           {/* Milestones & Gamification */}
@@ -445,8 +443,10 @@ const Index = () => {
         <div className="mb-8">
           <IntakeSummary 
             date="February 13, 2025"
+            welcomeMessage={welcome.message}
             background={userBackground}
             goals={overview.find(item => item.title === "Goals and Desires")?.items || []}
+            overviewSections={overview}
             concerns={[
               `Sleep disruption (rating: ${functionalAreas.find(area => area.key === 'sleep')?.rating}/5)`,
               `Stress management (rating: ${functionalAreas.find(area => area.key === 'stressManagement')?.rating}/5)`,
