@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { CarePlanItem, HabitStreak, SystemSuggestion } from '@/types/dashboard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { List, CheckCircle2, Target, Droplets, Award, Brain, Footprints, Thermometer, Heart } from 'lucide-react';
+import { List, CheckCircle2, Target, Droplets, Award, Brain, Footprints, Thermometer, Heart, LineChart, BarChart } from 'lucide-react';
 import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 
@@ -60,6 +59,13 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
       default: return <Footprints className="w-5 h-5 text-amber-500" />;
     }
   };
+
+  // Calculate aggregated stats (like in the Streaks app)
+  const totalCompletions = activeStreaks.reduce((total, streak) => total + streak.days, 0);
+  const avgCompletion = activeStreaks.length > 0 
+    ? Math.round((totalCompletions / (activeStreaks.length * 7)) * 1000) / 10 
+    : 0;
+  const currentStreak = activeStreaks.length > 0 ? Math.max(...activeStreaks.map(s => s.days)) : 0;
   
   return (
     <Card className="shadow-sm overflow-hidden border-gray-200 bg-white">
@@ -80,7 +86,94 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
           Personalized goals and how your habits support them
         </div>
         
-        {/* Top Module: Active Goals */}
+        {/* Streaks App Style - "Since" Header */}
+        <div className="bg-gray-50 p-4 border-b border-gray-200">
+          <p className="text-center text-lg font-bold text-gray-800">SINCE FEB 15, 2025</p>
+          <div className="flex justify-center space-x-2 mt-3">
+            {activeStreaks.slice(0, 5).map((streak, idx) => (
+              <div key={idx} className="w-14 h-14 rounded-full bg-red-500 flex items-center justify-center text-white text-lg font-bold">
+                {streak.icon}
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Streaks App Style - Stats Summary */}
+        <div className="grid grid-cols-3 border-b border-gray-200">
+          <div className="p-4 text-center border-r border-gray-200">
+            <p className="text-3xl font-bold text-gray-800">{currentStreak}</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wide">Current Streak</p>
+          </div>
+          <div className="p-4 text-center border-r border-gray-200">
+            <p className="text-3xl font-bold text-gray-800">{avgCompletion}%</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wide">All Time</p>
+          </div>
+          <div className="p-4 text-center">
+            <p className="text-3xl font-bold text-gray-800">{totalCompletions}</p>
+            <p className="text-xs text-gray-500 uppercase tracking-wide">Completions</p>
+          </div>
+        </div>
+        
+        {/* Streaks App Style - Timeline Chart */}
+        <div className="p-4 border-b border-gray-200">
+          <div className="flex items-center justify-between mb-2">
+            <p className="text-xs text-gray-500">FEB 15</p>
+            <p className="text-xs text-gray-500 font-medium">30 DAYS</p>
+            <p className="text-xs text-gray-500">TODAY</p>
+          </div>
+          <div className="relative h-16 bg-gray-50 rounded-lg overflow-hidden">
+            <div className="absolute inset-0 flex items-center">
+              <svg className="w-full" height="40" viewBox="0 0 300 40">
+                <path 
+                  d="M0,20 Q10,10 20,15 T40,20 T60,10 T80,20 T100,15 T120,25 T140,15 T160,20 T180,10 T200,20 T220,5 T240,20 T260,15 T280,20 T300,10" 
+                  fill="none" 
+                  stroke="#ef4444" 
+                  strokeWidth="2"
+                />
+                {[0, 20, 40, 60, 80, 100, 120, 140, 160, 180, 200, 220, 240, 260, 280, 300].map((x, i) => (
+                  <circle key={i} cx={x} cy={x % 30 === 0 ? 15 : 25} r="3" fill="#ef4444" />
+                ))}
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        {/* Streaks App Style - Weekly Completions */}
+        <div className="p-4 border-b border-gray-200">
+          <p className="text-sm font-medium text-gray-700 mb-3 text-center uppercase">Completions</p>
+          <div className="flex justify-between items-end h-24 px-4">
+            {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((day, idx) => (
+              <div key={idx} className="flex flex-col items-center">
+                <div 
+                  className="w-8 bg-red-500 rounded-md" 
+                  style={{ height: `${Math.max(20, Math.random() * 80)}px` }}
+                ></div>
+                <p className="text-xs font-medium text-gray-700 mt-2">{day}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex justify-between mt-6 mb-2">
+            <p className="text-xs text-gray-500">6 AM</p>
+            <p className="text-xs text-gray-500">6 PM</p>
+          </div>
+          <div className="relative h-16 bg-gray-50 rounded-lg overflow-hidden">
+            <div className="absolute inset-0 flex items-center">
+              <svg className="w-full" height="40" viewBox="0 0 300 40">
+                <path 
+                  d="M0,35 Q30,30 60,25 T120,10 T180,15 T240,20 T300,30" 
+                  fill="none" 
+                  stroke="#ef4444" 
+                  strokeWidth="2"
+                />
+                {[0, 60, 120, 180, 240, 300].map((x, i) => (
+                  <circle key={i} cx={x} cy={i === 2 ? 10 : i === 0 ? 35 : 15 + i * 3} r="3" fill="#ef4444" />
+                ))}
+              </svg>
+            </div>
+          </div>
+        </div>
+        
+        {/* Top Module: Active Goals - Keep the original implementation */}
         <div className="px-4 py-3 space-y-3">
           {activeGoals.slice(0, 3).map((goal, index) => {
             const progressPercentage = getProgressPercentage(goal);
@@ -232,6 +325,14 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
             </div>
           </div>
         )}
+        
+        {/* Streaks App Style - Navigation Dots */}
+        <div className="flex justify-center items-center py-3 border-t border-gray-200">
+          <div className="w-5 h-5 text-red-500">★</div>
+          {[...Array(5)].map((_, idx) => (
+            <div key={idx} className="w-2 h-2 rounded-full bg-gray-300 mx-1"></div>
+          ))}
+        </div>
         
         {/* Next Check-in Reminder */}
         {nextCheckInDate && (
