@@ -1,4 +1,3 @@
-
 import { ReactNode } from 'react';
 
 export interface HealthIndicator {
@@ -6,6 +5,17 @@ export interface HealthIndicator {
   value: string;
   change: string;
   icon: string; // Changed from function returning ReactNode to string
+  score?: number;
+  previousScore?: number;
+  maxScore?: number;
+  status?: string;
+  evidence?: string;
+  intakeReference?: string;
+  updatedAt?: string;
+  actionItems?: string[];
+  trendData?: number[]; // Added for trend mini-charts
+  plainLanguage?: string; // Added for user-friendly descriptions
+  actionSuggestion?: string; // Added for direct action item
 }
 
 export interface CarePlanItem {

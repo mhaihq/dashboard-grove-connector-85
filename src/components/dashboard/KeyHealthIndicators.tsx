@@ -1,8 +1,15 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Moon, Activity, Brain, Shield, Heart, Users, Info, Droplets, Clock, ArrowUp, ArrowDown, Minus } from 'lucide-react';
+import { 
+  Moon, Activity, Brain, Shield, Heart, Users, Info, 
+  Droplets, Clock, ArrowUp, ArrowDown, Minus, 
+  Sparkles, TrendingUp, TrendingDown, LineChart 
+} from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { ChartContainer } from '@/components/ui/chart';
+import { Line } from 'recharts';
 
 interface HealthIndicator {
   title: string;
@@ -17,6 +24,9 @@ interface HealthIndicator {
   intakeReference?: string;
   updatedAt?: string;
   actionItems?: string[];
+  trendData?: number[];
+  plainLanguage?: string;
+  actionSuggestion?: string;
 }
 
 interface KeyHealthIndicatorsProps {
@@ -62,6 +72,19 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
     }
   };
 
+  const getTrendDirection = (trendData?: number[]) => {
+    if (!trendData || trendData.length < 2) return 'stable';
+    
+    // Calculate the general trend by comparing average of first half to second half
+    const middle = Math.floor(trendData.length / 2);
+    const firstHalfAvg = trendData.slice(0, middle).reduce((sum, val) => sum + val, 0) / middle;
+    const secondHalfAvg = trendData.slice(middle).reduce((sum, val) => sum + val, 0) / (trendData.length - middle);
+    
+    if (secondHalfAvg - firstHalfAvg > 0.5) return 'up';
+    if (firstHalfAvg - secondHalfAvg > 0.5) return 'down';
+    return 'stable';
+  };
+
   const renderScoreDots = (score: number, previousScore: number | undefined, maxScore: number) => {
     return (
       <div className="flex space-x-1 mt-1">
@@ -96,6 +119,47 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
     } else {
       return <Minus className="h-3 w-3 text-gray-400" />;
     }
+  };
+
+  const renderTrendMiniChart = (trendData?: number[]) => {
+    if (!trendData || trendData.length < 2) return null;
+    
+    const data = trendData.map((value, index) => ({
+      day: index + 1,
+      value
+    }));
+    
+    const trendDirection = getTrendDirection(trendData);
+    
+    return (
+      <div className="mt-2">
+        <div className="flex items-center gap-1 mb-1">
+          <LineChart className="h-3 w-3 text-gray-500" />
+          <span className="text-xs text-gray-500">2-Week Trend:</span>
+          {trendDirection === 'up' && <TrendingUp className="h-3 w-3 text-green-500" />}
+          {trendDirection === 'down' && <TrendingDown className="h-3 w-3 text-red-500" />}
+          {trendDirection === 'stable' && <Minus className="h-3 w-3 text-blue-500" />}
+        </div>
+        <div className="h-10 w-full">
+          <ChartContainer 
+            config={{
+              value: { theme: { light: '#10b981', dark: '#10b981' } }
+            }}
+          >
+            <Line
+              data={data}
+              dataKey="value"
+              type="monotone"
+              dot={false}
+              activeDot={false}
+              isAnimationActive={false}
+              stroke="#10b981"
+              strokeWidth={2}
+            />
+          </ChartContainer>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -139,6 +203,14 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
                 }
               </div>
               
+              {indicator.plainLanguage && (
+                <div className="my-2 text-sm">
+                  {indicator.plainLanguage}
+                </div>
+              )}
+              
+              {indicator.trendData && renderTrendMiniChart(indicator.trendData)}
+              
               {indicator.status && (
                 <div className={`text-xs font-medium mb-1 ${getStatusColor(indicator.status)}`}>
                   Status: {indicator.status.charAt(0).toUpperCase() + indicator.status.slice(1)}
@@ -148,6 +220,19 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
               {indicator.evidence && (
                 <div className="mt-2 text-xs text-gray-600 italic">
                   "{indicator.evidence}"
+                </div>
+              )}
+              
+              {indicator.actionSuggestion && (
+                <div className="mt-3">
+                  <Button 
+                    variant="outline" 
+                    size="sm" 
+                    className="w-full flex items-center gap-1 text-sm border-hana-green text-hana-green hover:bg-hana-green/10"
+                  >
+                    <Sparkles className="h-3.5 w-3.5" />
+                    {indicator.actionSuggestion}
+                  </Button>
                 </div>
               )}
               
