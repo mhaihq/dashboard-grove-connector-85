@@ -121,25 +121,25 @@ export const carePlanItems = [
   {
     title: "Sleep Restoration Protocol",
     icon: "moon",
-    status: "in-progress",
+    status: "in-progress" as const,
     description: "A structured approach to improve sleep quality and mental wind-down."
   },
   {
     title: "Stress Management Toolkit",
     icon: "activity",
-    status: "started",
+    status: "started" as const,
     description: "Alternative stress relief methods to replace alcohol use."
   },
   {
     title: "Emotional Regulation Framework",
     icon: "heart",
-    status: "not-started",
+    status: "not-started" as const,
     description: "Structured approach to understanding and managing emotional responses."
   },
   {
     title: "Social Check-In",
     icon: "users",
-    status: "complete",
+    status: "complete" as const,
     description: "Regular connection with support system."
   }
 ];
@@ -148,32 +148,32 @@ export const carePlanItems = [
 export const suggestedPrograms = [
   {
     program: "Chronic Care Management (CCM)",
-    match: "perfect",
-    status: "Enrolled",
+    match: "perfect" as const,
+    status: "Enrolled" as const,
     description: "Ongoing support for chronic conditions",
     action: "Monitor BP 🩺",
     relevantAreas: ["Sleep", "Stress Management"]
   },
   {
     program: "Remote Patient Monitoring (RPM)",
-    match: "perfect",
-    status: "Available",
+    match: "perfect" as const,
+    status: "Available" as const,
     description: "Track health metrics from home",
     action: "Enroll Now",
     relevantAreas: ["Sleep", "Energy Level"]
   },
   {
     program: "Behavioral Health Integration (BHI)",
-    match: "possible",
-    status: "Eligible",
+    match: "possible" as const,
+    status: "Eligible" as const,
     description: "Mental health support services",
     action: "Learn More",
     relevantAreas: ["Emotional Regulation"]
   },
   {
     program: "Principal Care Management (PCM)",
-    match: "none",
-    status: "Not Eligible",
+    match: "none" as const,
+    status: "Not Eligible" as const,
     description: "Focused on single condition management"
   }
 ];
@@ -367,7 +367,7 @@ export const medicarePrograms = [
       "Coordination between all your healthcare providers",
       "Personalized care plan that's regularly updated"
     ],
-    icon: "shield"
+    icon: "shield" as const
   },
   {
     name: "Remote Patient Monitoring (RPM)",
@@ -380,7 +380,7 @@ export const medicarePrograms = [
       "More consistent monitoring of vital signs",
       "Real-time alerts for concerning measurements"
     ],
-    icon: "heart"
+    icon: "heart" as const
   },
   {
     name: "Behavioral Health Integration (BHI)",
@@ -393,7 +393,7 @@ export const medicarePrograms = [
       "Brief interventions using evidence-based techniques",
       "Monitoring your progress with regular follow-ups"
     ],
-    icon: "brain"
+    icon: "brain" as const
   },
   {
     name: "Principal Care Management (PCM)",
@@ -406,6 +406,6 @@ export const medicarePrograms = [
       "Medication management for your condition",
       "Coordination with specialists for your condition"
     ],
-    icon: "clipboard"
+    icon: "clipboard" as const
   }
 ];
