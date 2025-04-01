@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { CarePlanItem, HabitStreak, SystemSuggestion } from '@/types/dashboard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { cn } from '@/lib/utils';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
+import { Separator } from '@/components/ui/separator';
 
 interface GoalsSectionProps {
   carePlanItems: CarePlanItem[];
@@ -225,80 +225,83 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
         
         <CardContent className="p-4">
           <div className="space-y-5">
-            {activeStreaks.slice(0, showAllHabits ? activeStreaks.length : 3).map((streak, index) => {
-              // Calculate circle progress percentage
-              const progressPercent = (streak.days / streak.target) * 100;
-              const strokeColor = streak.status === 'improved' ? '#4ade80' : // green
-                                 streak.status === 'declined' ? '#f87171' : // red
-                                 '#fbbf24'; // amber
-              
-              return (
-                <div key={index} className="relative">
-                  <div className="mb-1.5 flex justify-between items-center">
-                    <span className="font-medium text-sm text-gray-700 flex items-center">
-                      <span className="mr-2">{streak.icon}</span>
-                      {streak.habit}
-                    </span>
-                  </div>
-                  
-                  <div className="flex items-center">
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <div className="relative w-16 h-16">
-                            {/* Background circle */}
-                            <div className="absolute inset-0 rounded-full bg-gray-100"></div>
-                            
-                            {/* Progress circle - using SVG for better control */}
-                            <svg className="absolute inset-0 w-full h-full transform -rotate-90">
-                              <circle 
-                                cx="32" 
-                                cy="32" 
-                                r="28" 
-                                strokeWidth="8"
-                                stroke={strokeColor}
-                                fill="transparent"
-                                strokeDasharray={`${2 * Math.PI * 28 * progressPercent / 100} ${2 * Math.PI * 28}`}
-                              />
-                            </svg>
-                            
-                            {/* Center text */}
-                            <div className="absolute inset-0 flex items-center justify-center text-xs font-medium">
-                              {streak.days}/{streak.target}
-                            </div>
-                          </div>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <p className="text-xs max-w-[150px]">
-                            {streak.status === 'improved' 
-                              ? "You've been consistent with this habit" 
-                              : streak.status === 'declined'
-                              ? "This habit needs attention this week"
-                              : "You're maintaining this habit"}
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
+            {/* Display streaks in a 2x2 grid */}
+            <div className="grid grid-cols-2 gap-4">
+              {activeStreaks.slice(0, showAllHabits ? activeStreaks.length : 4).map((streak, index) => {
+                // Calculate circle progress percentage
+                const progressPercent = (streak.days / streak.target) * 100;
+                const strokeColor = streak.status === 'improved' ? '#4ade80' : // green
+                                   streak.status === 'declined' ? '#f87171' : // red
+                                   '#fbbf24'; // amber
+                
+                return (
+                  <div key={index} className="relative">
+                    <div className="mb-1.5">
+                      <span className="font-medium text-sm text-gray-700 flex items-center">
+                        <span className="mr-2">{streak.icon}</span>
+                        {streak.habit}
+                      </span>
+                    </div>
                     
-                    <div className="ml-3">
-                      <p className="text-xs text-gray-600">
-                        Supports: {streak.supportedGoal}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">
-                        {streak.trend}
-                      </p>
+                    <div className="flex items-center">
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <div className="relative w-12 h-12">
+                              {/* Background circle */}
+                              <div className="absolute inset-0 rounded-full bg-gray-100"></div>
+                              
+                              {/* Progress circle - using SVG for better control */}
+                              <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+                                <circle 
+                                  cx="24" 
+                                  cy="24" 
+                                  r="20" 
+                                  strokeWidth="6"
+                                  stroke={strokeColor}
+                                  fill="transparent"
+                                  strokeDasharray={`${2 * Math.PI * 20 * progressPercent / 100} ${2 * Math.PI * 20}`}
+                                />
+                              </svg>
+                              
+                              {/* Center text */}
+                              <div className="absolute inset-0 flex items-center justify-center text-xs font-medium">
+                                {streak.days}/{streak.target}
+                              </div>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p className="text-xs max-w-[150px]">
+                              {streak.status === 'improved' 
+                                ? "You've been consistent with this habit" 
+                                : streak.status === 'declined'
+                                ? "This habit needs attention this week"
+                                : "You're maintaining this habit"}
+                            </p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                      
+                      <div className="ml-2">
+                        <p className="text-xs text-gray-600 whitespace-nowrap">
+                          {streak.supportedGoal}
+                        </p>
+                        <p className="text-xs text-gray-500 mt-1">
+                          {streak.trend}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
             
-            {activeStreaks.length > 3 && !showAllHabits && (
+            {activeStreaks.length > 4 && !showAllHabits && (
               <button 
                 className="text-xs text-blue-600 hover:text-blue-800 font-medium py-1"
                 onClick={() => setShowAllHabits(true)}
               >
-                + Show {activeStreaks.length - 3} more habits
+                + Show {activeStreaks.length - 4} more habits
               </button>
             )}
             
@@ -321,7 +324,7 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
             )}
             
             {/* Gamified Feedback */}
-            <div className="mt-6 pt-4 border-t border-gray-100">
+            <div className="mt-4 pt-3 border-t border-gray-100">
               <div className="grid grid-cols-3 gap-2 text-center">
                 <div className="bg-green-50 rounded-lg p-2">
                   <p className="text-lg text-green-700 font-bold">🔥</p>
