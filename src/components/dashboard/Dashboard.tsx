@@ -1,8 +1,6 @@
 
 import React from 'react';
-import { Users } from 'lucide-react';
 import { DashboardWelcome } from '@/components/dashboard/DashboardWelcome';
-import { IntakeSummary } from '@/components/dashboard/IntakeSummary';
 import { KeyHealthIndicators } from '@/components/dashboard/KeyHealthIndicators';
 import { ProgressJournal } from '@/components/dashboard/ProgressJournal';
 import { CarePlan } from '@/components/dashboard/CarePlan';
@@ -10,8 +8,9 @@ import { Milestones } from '@/components/dashboard/Milestones';
 import { HealthPulse } from '@/components/dashboard/HealthPulse';
 import { ContextBanner } from '@/components/dashboard/ContextBanner';
 import { HealthRecommendations } from '@/components/dashboard/HealthRecommendations';
+import { IntakeSummary } from '@/components/dashboard/IntakeSummary';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollText, Clipboard, Trophy } from 'lucide-react';
+import { ScrollText, Clipboard, Trophy, Calendar, Clock } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   userInfo, welcome, userBackground, overview, 
@@ -44,7 +43,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       title: milestone.title,
       unlocked: milestone.completed,
       progress: milestone.completed ? 100 : (milestone.currentStreak / milestone.requiredStreak) * 100,
-      icon: <Users className="w-5 h-5 text-gray-400" />
+      icon: <Trophy className="w-5 h-5 text-gray-400" />
     }))
   };
 
@@ -64,8 +63,22 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
     ? `Last week, you ${positiveEntries.map(e => e.text.toLowerCase().replace(':', '')).join(', and ')}. You're doing better than you think — let's keep it going.` 
     : "Let's keep building on your progress — small steps, big impact.";
   
+  // Calculate next scheduled check-in date
+  const today = new Date();
+  const nextWednesday = new Date(today);
+  nextWednesday.setDate(today.getDate() + (3 - today.getDay() + 7) % 7);
+  nextWednesday.setHours(17, 30, 0); // 5:30 PM
+  const nextCheckInDate = nextWednesday.toLocaleDateString('en-US', { 
+    weekday: 'long',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: '2-digit'
+  });
+  
   return (
     <>
+      {/* 1. Welcome & Health Pulse (Top) */}
       <div className="mb-8">
         <DashboardWelcome 
           userName={userInfo.name.split(' ')[0]}
@@ -84,20 +97,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
           </a>
         </div>
       </div>
-
-      <div className="mb-8">
-        <ContextBanner
-          title="Ongoing Context From Your Intake"
-          items={notableLifeChanges}
-          date={userInfo.date}
-          variant="primary"
-        />
-      </div>
       
-      <div className="mb-8">
-        <KeyHealthIndicators healthIndicators={healthIndicators} />
-      </div>
-      
+      {/* Health Pulse Chart */}
       <div className="mb-8">
         <HealthPulse 
           data={healthAssessmentData}
@@ -108,6 +109,32 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         />
       </div>
       
+      {/* 2. Current Care Plan */}
+      <div className="mb-8">
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xl">
+              🧭 Your Active Goals
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <CarePlan items={carePlanItems} />
+            
+            <div className="mt-5 flex items-center text-sm text-gray-600 border-t pt-4 border-gray-100">
+              <Calendar className="w-4 h-4 mr-2 text-hana-green" />
+              <span>Weekly Check-in Scheduled: </span>
+              <span className="font-medium ml-1">{nextCheckInDate}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+      
+      {/* 3. Functional Area Breakdown */}
+      <div className="mb-8">
+        <KeyHealthIndicators healthIndicators={healthIndicators} />
+      </div>
+      
+      {/* 4. Your Journey So Far (merged section) */}
       <div className="mb-8">
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
@@ -117,31 +144,43 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
           </CardHeader>
           
           <CardContent className="pt-3">
-            <Tabs defaultValue="reflections">
+            <Tabs defaultValue="progress">
               <TabsList className="grid grid-cols-3 mb-4">
-                <TabsTrigger value="reflections">Latest Reflections</TabsTrigger>
+                <TabsTrigger value="progress">Your Progress</TabsTrigger>
                 <TabsTrigger value="plans">Active Plans</TabsTrigger>
-                <TabsTrigger value="achievements">Milestones</TabsTrigger>
+                <TabsTrigger value="milestones">Milestones</TabsTrigger>
               </TabsList>
               
-              <TabsContent value="reflections" className="mt-0">
+              <TabsContent value="progress" className="mt-0">
                 <div className="flex items-center mb-3">
                   <ScrollText className="w-5 h-5 text-hana-green mr-2" />
-                  <h3 className="font-medium">Progress Journal</h3>
+                  <h3 className="font-medium">Weekly Journal</h3>
                   <div className="ml-auto text-sm font-medium text-hana-green">{totalJournalPoints} points earned</div>
                 </div>
                 <ProgressJournal entries={journalEntries} />
+                
+                <div className="mt-4 text-sm text-gray-500 flex items-center">
+                  <Clock className="w-4 h-4 mr-1" />
+                  <span>Last updated: March 15, 2025</span>
+                </div>
               </TabsContent>
               
               <TabsContent value="plans" className="mt-0">
                 <div className="flex items-center mb-3">
                   <Clipboard className="w-5 h-5 text-hana-green mr-2" />
-                  <h3 className="font-medium">Your Care Plan</h3>
+                  <h3 className="font-medium">Smart Recommendations</h3>
                 </div>
-                <CarePlan items={carePlanItems} />
+                <HealthRecommendations 
+                  recommendations={clinicalRecommendations} 
+                  medicarePrograms={medicarePrograms}
+                  onScheduleCall={onScheduleCall}
+                  journalEntries={journalEntries}
+                  carePlanItems={carePlanItems}
+                  milestonesData={milestonesData}
+                />
               </TabsContent>
               
-              <TabsContent value="achievements" className="mt-0">
+              <TabsContent value="milestones" className="mt-0">
                 <div className="flex items-center mb-3">
                   <Trophy className="w-5 h-5 text-hana-green mr-2" />
                   <h3 className="font-medium">Achievements & Progress</h3>
@@ -153,40 +192,39 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         </Card>
       </div>
       
+      {/* 5. Full Intake Archive */}
       <div className="mb-8">
-        <HealthRecommendations 
-          recommendations={clinicalRecommendations} 
-          medicarePrograms={medicarePrograms}
-          onScheduleCall={onScheduleCall}
-          journalEntries={journalEntries}
-          carePlanItems={carePlanItems}
-          milestonesData={milestonesData}
-        />
-      </div>
-      
-      <div className="mb-8">
-        <IntakeSummary 
-          date="February 13, 2025"
-          welcomeMessage={welcome.message}
-          background={userBackground}
-          goals={overview.find(item => item.title === "Goals and Desires")?.items || []}
-          overviewSections={overview}
-          concerns={[
-            `Sleep disruption (rating: ${functionalAreas.find(area => area.key === 'sleep')?.rating}/5)`,
-            `Stress management (rating: ${functionalAreas.find(area => area.key === 'stressManagement')?.rating}/5)`,
-            `Emotional regulation (rating: ${functionalAreas.find(area => area.key === 'emotionalRegulation')?.rating}/5)`
-          ]}
-          detailedAssessment={{
-            sleep: {
-              observations: functionalAreas.find(area => area.key === 'sleep')?.observations || [],
-              quote: functionalAreas.find(area => area.key === 'sleep')?.evidence || ""
-            },
-            emotionalRegulation: {
-              observations: functionalAreas.find(area => area.key === 'emotionalRegulation')?.observations || [],
-              quote: functionalAreas.find(area => area.key === 'emotionalRegulation')?.evidence || ""
-            }
-          }}
-        />
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xl">
+              📘 Your Full Health Story
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <IntakeSummary 
+              date="February 13, 2025"
+              welcomeMessage={welcome.message}
+              background={userBackground}
+              goals={overview.find(item => item.title === "Goals and Desires")?.items || []}
+              overviewSections={overview}
+              concerns={[
+                `Sleep disruption (rating: ${functionalAreas.find(area => area.key === 'sleep')?.rating}/5)`,
+                `Stress management (rating: ${functionalAreas.find(area => area.key === 'stressManagement')?.rating}/5)`,
+                `Emotional regulation (rating: ${functionalAreas.find(area => area.key === 'emotionalRegulation')?.rating}/5)`
+              ]}
+              detailedAssessment={{
+                sleep: {
+                  observations: functionalAreas.find(area => area.key === 'sleep')?.observations || [],
+                  quote: functionalAreas.find(area => area.key === 'sleep')?.evidence || ""
+                },
+                emotionalRegulation: {
+                  observations: functionalAreas.find(area => area.key === 'emotionalRegulation')?.observations || [],
+                  quote: functionalAreas.find(area => area.key === 'emotionalRegulation')?.evidence || ""
+                }
+              }}
+            />
+          </CardContent>
+        </Card>
       </div>
     </>
   );

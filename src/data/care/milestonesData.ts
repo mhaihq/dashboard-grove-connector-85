@@ -7,13 +7,16 @@ export const milestones = [
     description: "Maintain your sleep schedule for 2 weeks straight",
     completed: false,
     points: 50,
-    currentStreak: 3,
+    currentStreak: 5,
+    previousStreak: 3,
     requiredStreak: 14,
     category: "sleep",
     unlocks: "Advanced Sleep Meditation Audio",
     icon: "moon",
     dateCreated: "March 1, 2025",
-    lastUpdated: "March 15, 2025"
+    lastUpdated: "March 15, 2025",
+    nextMilestone: "3 Weeks Consistent Sleep",
+    nextMilestonePoints: 75
   },
   {
     id: "milestone2",
@@ -22,12 +25,16 @@ export const milestones = [
     completed: true,
     points: 25,
     currentStreak: 7,
+    previousStreak: 4,
     requiredStreak: 7,
     category: "hydration",
     unlocks: "Personalized Hydration Schedule",
     icon: "droplets",
     dateCreated: "March 1, 2025",
-    dateCompleted: "March 14, 2025"
+    dateCompleted: "March 14, 2025",
+    nextMilestone: "Hydration Guru",
+    nextMilestonePoints: 40,
+    nextMilestoneRequirement: "Maintain hydration for 14 days"
   },
   {
     id: "milestone3",
@@ -36,12 +43,16 @@ export const milestones = [
     completed: true,
     points: 30,
     currentStreak: 1,
+    previousStreak: 0,
     requiredStreak: 1,
     category: "social",
     unlocks: "Weekly Community Support Access",
     icon: "users",
     dateCreated: "February 20, 2025",
-    dateCompleted: "March 5, 2025"
+    dateCompleted: "March 5, 2025",
+    nextMilestone: "Social Supporter",
+    nextMilestonePoints: 45,
+    nextMilestoneRequirement: "Attend 3 group sessions"
   },
   {
     id: "milestone4",
@@ -50,11 +61,33 @@ export const milestones = [
     completed: false,
     points: 45,
     currentStreak: 2,
+    previousStreak: 1,
     requiredStreak: 3,
     category: "engagement",
     unlocks: "Specialized Assessment Tool",
     icon: "phone",
     dateCreated: "February 15, 2025",
-    lastUpdated: "March 10, 2025"
+    lastUpdated: "March 10, 2025",
+    nextMilestone: "Consistent Check-ins",
+    nextMilestonePoints: 60,
+    nextMilestoneRequirement: "Complete 5 AI calls"
+  },
+  {
+    id: "milestone5",
+    title: "Stress-Free Evening",
+    description: "Complete evening relaxation routine for 5 days",
+    completed: false,
+    points: 35,
+    currentStreak: 2,
+    previousStreak: 0,
+    requiredStreak: 5,
+    category: "stress",
+    unlocks: "Advanced Stress Relief Techniques",
+    icon: "activity",
+    dateCreated: "March 5, 2025",
+    lastUpdated: "March 15, 2025",
+    nextMilestone: "Stress Management Master",
+    nextMilestonePoints: 50,
+    nextMilestoneRequirement: "Complete 10 days of stress management"
   }
 ];

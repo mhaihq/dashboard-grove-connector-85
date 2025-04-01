@@ -7,12 +7,15 @@ export const carePlanItems = [
     status: "in-progress" as const,
     description: "A structured approach to improve sleep quality and mental wind-down.",
     relatedMetric: "Sleep Quality",
-    currentScore: 2,
+    currentScore: 3,
+    previousScore: 2,
     targetScore: 4,
     evidence: "I've been struggling with racing thoughts at night",
     nextStep: "Try the 4-7-8 breathing technique before bed tonight",
-    completedSteps: 1,
-    totalSteps: 4
+    completedSteps: 2,
+    totalSteps: 4,
+    lastUpdated: "March 15, 2025",
+    weeklyTargets: ["Consistent bedtime 6/7 nights", "No screens 1 hour before bed"]
   },
   {
     title: "Stress Management Toolkit",
@@ -21,11 +24,14 @@ export const carePlanItems = [
     description: "Alternative stress relief methods to replace alcohol use.",
     relatedMetric: "Stress Level",
     currentScore: 3,
+    previousScore: 2,
     targetScore: 4,
     evidence: "Work deadlines are creating anxiety spikes",
     nextStep: "Practice progressive muscle relaxation during lunch break",
     completedSteps: 1,
-    totalSteps: 4
+    totalSteps: 4,
+    lastUpdated: "March 14, 2025",
+    weeklyTargets: ["Daily 5-minute breathing exercise", "Identify 3 stress triggers"]
   },
   {
     title: "Emotional Regulation Framework",
@@ -34,11 +40,14 @@ export const carePlanItems = [
     description: "Structured approach to understanding and managing emotional responses.",
     relatedMetric: "Emotional Health",
     currentScore: 2,
+    previousScore: 2,
     targetScore: 4,
     evidence: "Mood swings are affecting my relationships",
     nextStep: "Read introduction to PLEASE skills framework",
     completedSteps: 0,
-    totalSteps: 4
+    totalSteps: 4,
+    lastUpdated: "March 12, 2025",
+    weeklyTargets: ["Journal emotions daily", "Practice 1 regulation technique"]
   },
   {
     title: "Social Check-In",
@@ -47,10 +56,29 @@ export const carePlanItems = [
     description: "Regular connection with support system.",
     relatedMetric: "Social Connection",
     currentScore: 4,
+    previousScore: 3,
     targetScore: 4,
     evidence: "Reaching out to friends has improved my outlook",
     nextStep: "Schedule next coffee meetup within 2 weeks",
     completedSteps: 4,
-    totalSteps: 4
+    totalSteps: 4,
+    lastUpdated: "March 12, 2025",
+    weeklyTargets: ["Connect with 1 friend", "Share a challenge you're facing"]
+  },
+  {
+    title: "Hydration Plan",
+    icon: "droplets",
+    status: "in-progress" as const,
+    description: "Structured approach to improve daily water intake.",
+    relatedMetric: "Hydration",
+    currentScore: 2,
+    previousScore: 1,
+    targetScore: 4,
+    evidence: "I forget to drink water during busy workdays",
+    nextStep: "Set hydration reminders on your phone",
+    completedSteps: 2,
+    totalSteps: 4,
+    lastUpdated: "March 14, 2025",
+    weeklyTargets: ["Drink 6+ glasses daily", "Morning hydration routine"]
   }
 ];

@@ -8,8 +8,12 @@ export const journalEntries = [
     date: "March 15, 2025",
     relatedTo: "physical_activity",
     streakCount: 5,
+    previousStreakCount: 2,
     points: 10,
-    evidence: "I've been feeling more energetic since starting morning walks."
+    evidence: "I've been feeling more energetic since starting morning walks.",
+    actionable: true,
+    weekNumber: 11,
+    weekOf: "March 9-15"
   },
   {
     id: "entry2",
@@ -18,8 +22,12 @@ export const journalEntries = [
     date: "March 14, 2025",
     relatedTo: "hydration",
     streakCount: 7,
+    previousStreakCount: 3,
     points: 15,
-    evidence: "Drinking water first thing in the morning has helped a lot."
+    evidence: "Drinking water first thing in the morning has helped a lot.",
+    actionable: true,
+    weekNumber: 11,
+    weekOf: "March 9-15"
   },
   {
     id: "entry3",
@@ -28,8 +36,12 @@ export const journalEntries = [
     date: "March 12, 2025",
     relatedTo: "social_connection",
     streakCount: 1,
+    previousStreakCount: 0,
     points: 5,
-    evidence: "It was nice to reconnect after so long."
+    evidence: "It was nice to reconnect after so long.",
+    actionable: true,
+    weekNumber: 11,
+    weekOf: "March 9-15"
   },
   {
     id: "entry4",
@@ -38,8 +50,12 @@ export const journalEntries = [
     date: "March 10, 2025",
     relatedTo: "nutrition",
     streakCount: 0,
+    previousStreakCount: 0,
     points: 0,
-    evidence: "Need to work on my meal schedule."
+    evidence: "Need to work on my meal schedule.",
+    actionable: true,
+    weekNumber: 11,
+    weekOf: "March 9-15"
   },
   {
     id: "entry5",
@@ -48,7 +64,39 @@ export const journalEntries = [
     date: "March 8, 2025",
     relatedTo: "sleep",
     streakCount: 0,
+    previousStreakCount: 1,
     points: 0,
-    evidence: "Waking up 3-4 times each night."
+    evidence: "Waking up 3-4 times each night.",
+    actionable: true,
+    weekNumber: 10,
+    weekOf: "March 2-8"
+  },
+  {
+    id: "entry6",
+    text: "Alcohol-free for 3 nights this week",
+    status: "positive" as const,
+    date: "March 5, 2025",
+    relatedTo: "substance_use",
+    streakCount: 3,
+    previousStreakCount: 0,
+    points: 15,
+    evidence: "Finding alternatives to unwind has been helpful.",
+    actionable: true,
+    weekNumber: 10,
+    weekOf: "March 2-8"
+  },
+  {
+    id: "entry7",
+    text: "Stress level peaked (7/10) on Friday",
+    status: "negative" as const,
+    date: "March 7, 2025",
+    relatedTo: "stress",
+    streakCount: 0,
+    previousStreakCount: 0,
+    points: 0,
+    evidence: "Work deadline caused significant anxiety.",
+    actionable: true,
+    weekNumber: 10,
+    weekOf: "March 2-8"
   }
 ];

@@ -24,7 +24,7 @@ export const DashboardWelcome: React.FC<DashboardWelcomeProps> = ({
     <div className="text-left">
       <h1 className="text-2xl font-bold text-gray-900">👋 Welcome back, {userName}!</h1>
       <p className="text-gray-600 mt-1 mb-4">
-        {welcomeMessage || "Let's keep building on your progress — small steps, big impact."}
+        {welcomeMessage || "You're making progress in key areas. Let's keep building momentum — small steps, big impact."}
       </p>
       
       <div className="flex flex-wrap gap-4 mt-4">
