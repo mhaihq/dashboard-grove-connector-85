@@ -109,7 +109,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         />
       </div>
       
-      {/* 2. Current Care Plan */}
+      {/* 2. Current Care Plan - Moved out */}
       <div className="mb-8">
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
@@ -129,12 +129,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         </Card>
       </div>
       
-      {/* 3. Functional Area Breakdown */}
+      {/* 3. Health Wellbeing Recommendations - Moved here and split */}
+      <div className="mb-8">
+        <HealthRecommendations 
+          recommendations={clinicalRecommendations} 
+          medicarePrograms={medicarePrograms}
+          onScheduleCall={onScheduleCall}
+          journalEntries={journalEntries}
+          carePlanItems={carePlanItems}
+          milestonesData={milestonesData}
+        />
+      </div>
+      
+      {/* 4. Functional Area Breakdown */}
       <div className="mb-8">
         <KeyHealthIndicators healthIndicators={healthIndicators} />
       </div>
       
-      {/* 4. Your Journey So Far (merged section) */}
+      {/* 5. Your Journey So Far (merged section) */}
       <div className="mb-8">
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
@@ -145,9 +157,8 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
           
           <CardContent className="pt-3">
             <Tabs defaultValue="progress">
-              <TabsList className="grid grid-cols-3 mb-4">
+              <TabsList className="grid grid-cols-2 mb-4">
                 <TabsTrigger value="progress">Your Progress</TabsTrigger>
-                <TabsTrigger value="plans">Active Plans</TabsTrigger>
                 <TabsTrigger value="milestones">Milestones</TabsTrigger>
               </TabsList>
               
@@ -165,21 +176,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
                 </div>
               </TabsContent>
               
-              <TabsContent value="plans" className="mt-0">
-                <div className="flex items-center mb-3">
-                  <Clipboard className="w-5 h-5 text-hana-green mr-2" />
-                  <h3 className="font-medium">Smart Recommendations</h3>
-                </div>
-                <HealthRecommendations 
-                  recommendations={clinicalRecommendations} 
-                  medicarePrograms={medicarePrograms}
-                  onScheduleCall={onScheduleCall}
-                  journalEntries={journalEntries}
-                  carePlanItems={carePlanItems}
-                  milestonesData={milestonesData}
-                />
-              </TabsContent>
-              
               <TabsContent value="milestones" className="mt-0">
                 <div className="flex items-center mb-3">
                   <Trophy className="w-5 h-5 text-hana-green mr-2" />
@@ -192,7 +188,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         </Card>
       </div>
       
-      {/* 5. Full Intake Archive */}
+      {/* 6. Full Intake Archive */}
       <div className="mb-8">
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
