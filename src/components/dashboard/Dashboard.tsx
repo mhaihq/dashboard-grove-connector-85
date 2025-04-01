@@ -146,7 +146,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         <KeyHealthIndicators healthIndicators={healthIndicators} />
       </div>
       
-      {/* 5. Your Journey So Far (merged section) */}
+      {/* 5. Your Journey So Far with combined Progress & Milestones */}
       <div className="mb-8">
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
@@ -156,13 +156,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
           </CardHeader>
           
           <CardContent className="pt-3">
-            <Tabs defaultValue="progress">
-              <TabsList className="grid grid-cols-2 mb-4">
-                <TabsTrigger value="progress">Your Progress</TabsTrigger>
-                <TabsTrigger value="milestones">Milestones</TabsTrigger>
-              </TabsList>
-              
-              <TabsContent value="progress" className="mt-0">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {/* Progress Journal Section */}
+              <div>
                 <div className="flex items-center mb-3">
                   <ScrollText className="w-5 h-5 text-hana-green mr-2" />
                   <h3 className="font-medium">Weekly Journal</h3>
@@ -174,16 +170,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
                   <Clock className="w-4 h-4 mr-1" />
                   <span>Last updated: March 15, 2025</span>
                 </div>
-              </TabsContent>
+              </div>
               
-              <TabsContent value="milestones" className="mt-0">
+              {/* Milestones Section */}
+              <div>
                 <div className="flex items-center mb-3">
                   <Trophy className="w-5 h-5 text-hana-green mr-2" />
                   <h3 className="font-medium">Achievements & Progress</h3>
                 </div>
                 <Milestones data={milestonesData} />
-              </TabsContent>
-            </Tabs>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </div>
