@@ -16,7 +16,10 @@ export const clinicalRecommendations = [
       "Use white noise or nature sounds to mask racing thoughts"
     ],
     actionLabel: "Start Sleep Plan",
-    actionType: "self" as const
+    actionType: "self" as const,
+    whyItMatters: "Improves your energy because quality sleep enhances cognitive function and emotional stability",
+    timeToResults: "3-5 days of consistent practice",
+    quickTip: "Try the 4-7-8 breathing technique right now, even for just one minute"
   },
   {
     title: "Stress Management Toolkit",
@@ -33,7 +36,10 @@ export const clinicalRecommendations = [
       "Schedule daily 15-minute mindfulness breaks"
     ],
     actionLabel: "Explore Toolkit",
-    actionType: "followup" as const
+    actionType: "followup" as const,
+    whyItMatters: "Reduces anxiety because it gives you effective alternatives to alcohol for stress management",
+    timeToResults: "1-2 weeks for noticeable changes",
+    quickTip: "When stressed, pause and take 5 deep breaths, counting to 4 on each inhale and exhale"
   },
   {
     title: "Emotional Regulation Framework",
@@ -50,7 +56,10 @@ export const clinicalRecommendations = [
       "Schedule regular check-ins with support system"
     ],
     actionLabel: "Learn Framework",
-    actionType: "call" as const
+    actionType: "call" as const,
+    whyItMatters: "Strengthens your relationships because better emotional regulation reduces reactivity to stress",
+    timeToResults: "2-3 weeks with consistent practice",
+    quickTip: "Next time you feel emotionally overwhelmed, say 'STOP' to yourself and take a physical step back"
   },
   {
     title: "Energy Management Strategy",
@@ -67,6 +76,9 @@ export const clinicalRecommendations = [
       "Plan meals and snacks to maintain stable blood sugar"
     ],
     actionLabel: "Try Strategy",
-    actionType: "self" as const
+    actionType: "self" as const,
+    whyItMatters: "Increases your productivity because it works with your body's natural energy cycles",
+    timeToResults: "3-5 days to notice difference",
+    quickTip: "Stand up right now, stretch for 30 seconds, and drink a glass of water"
   }
 ];

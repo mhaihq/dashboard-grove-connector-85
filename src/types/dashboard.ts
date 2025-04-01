@@ -1,3 +1,4 @@
+
 import { ReactNode } from 'react';
 
 export interface HealthIndicator {
@@ -82,6 +83,9 @@ export interface ClinicalRecommendation {
   steps: string[];
   actionLabel: string;
   actionType: "self" | "followup" | "call";
+  whyItMatters?: string;
+  timeToResults?: string;
+  quickTip?: string;
 }
 
 export interface MedicareProgram {

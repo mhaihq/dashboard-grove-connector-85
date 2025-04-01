@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, ThumbsUp, ThumbsDown } from 'lucide-react';
+import { BarChart, ThumbsUp, ThumbsDown, UserIcon, Stethoscope } from 'lucide-react';
 import { ClinicalRecommendation, MedicareProgram } from '@/types/dashboard';
 import { toast } from '@/hooks/use-toast';
 import PersonalRecommendationsTab from '@/components/dashboard/PersonalRecommendationsTab';
@@ -82,8 +82,20 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
       <CardContent className="pt-3">
         <Tabs defaultValue="recommendations" value={activeTab} onValueChange={setActiveTab}>
           <TabsList className="grid w-full grid-cols-2 mb-5">
-            <TabsTrigger value="recommendations">Personal Recommendations</TabsTrigger>
-            <TabsTrigger value="guidelines">Clinical Guidelines</TabsTrigger>
+            <TabsTrigger 
+              value="recommendations" 
+              className="flex items-center justify-center gap-2"
+            >
+              <UserIcon className="h-4 w-4" />
+              <span>Personal Suggestions</span>
+            </TabsTrigger>
+            <TabsTrigger 
+              value="guidelines"
+              className="flex items-center justify-center gap-2"
+            >
+              <Stethoscope className="h-4 w-4" />
+              <span>Clinical Guidelines</span>
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="recommendations">

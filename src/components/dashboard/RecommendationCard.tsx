@@ -1,9 +1,15 @@
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { Clock, PhoneCall } from 'lucide-react';
+import { Clock, PhoneCall, Info } from 'lucide-react';
 import { ClinicalRecommendation } from '@/types/dashboard';
 import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface RecommendationCardProps {
   recommendation: ClinicalRecommendation;
@@ -86,6 +92,32 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
       <div className="p-4">
         <div className="mb-3">
           <p className="text-gray-700 text-sm">{recommendation.description}</p>
+          
+          {recommendation.whyItMatters && (
+            <div className="mt-2 p-2 bg-gray-50 rounded-md border border-gray-100">
+              <p className="text-sm font-medium text-gray-700">Why it matters:</p>
+              <p className="text-sm text-gray-600">{recommendation.whyItMatters}</p>
+            </div>
+          )}
+          
+          {recommendation.quickTip && (
+            <div className="mt-2 flex items-start gap-2">
+              <div className="mt-0.5 flex-shrink-0">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="h-4 w-4 text-blue-500" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="w-64">Quick tip you can try right now</p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+              <p className="text-sm italic text-blue-600">{recommendation.quickTip}</p>
+            </div>
+          )}
+          
           <div className="flex flex-wrap gap-2 mt-2">
             {recommendation.relatedAreas && recommendation.relatedAreas.map((area, areaIndex) => (
               <span 
@@ -101,6 +133,14 @@ export const RecommendationCard: React.FC<RecommendationCardProps> = ({
         <div className="flex items-center justify-between">
           <div className="text-xs text-gray-500">
             <span>{recommendation.timeframe}</span>
+            {!isClinical && recommendation.timeToResults && (
+              <>
+                {" • "}
+                <span className="text-blue-600">
+                  Results in: {recommendation.timeToResults}
+                </span>
+              </>
+            )}
             {!isClinical && (
               <>
                 {" • "}
