@@ -1,8 +1,11 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Brain, Heart, Footprints, Clipboard, Shield, Book } from 'lucide-react';
+import { Calendar, Brain, Heart, Footprints, Clipboard, Shield, Book, Tabs, TabsContent, TabsList, TabsTrigger } from 'lucide-react';
 import { ClinicalRecommendation, MedicareProgram } from '@/types/dashboard';
+import PersonalRecommendationsTab from '@/components/dashboard/PersonalRecommendationsTab';
+import ClinicalGuidelinesTab from '@/components/dashboard/ClinicalGuidelinesTab';
 
 interface HealthRecommendationsProps {
   recommendations: ClinicalRecommendation[];
@@ -28,64 +31,60 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
   medicarePrograms,
   onScheduleCall
 }) => {
-  return (
-    <div>
-      {recommendations.map((recommendation, index) => (
-        <Card key={index} className="mb-4 shadow-sm hover:shadow-md transition-shadow">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <div className="flex items-center">
-              {getIcon(recommendation.icon)}
-              <CardTitle className="text-base font-semibold">{recommendation.title}</CardTitle>
-            </div>
-            <span className="text-xs text-gray-500">{recommendation.timeframe}</span>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-gray-700 mb-3">{recommendation.description}</p>
-            <ul className="list-disc pl-5 mb-4 text-sm text-gray-600">
-              {recommendation.steps.map((step, stepIndex) => (
-                <li key={stepIndex}>{step}</li>
-              ))}
-            </ul>
-            <Button variant="outline" size="sm" onClick={onScheduleCall}>
-              {recommendation.actionLabel}
-            </Button>
-          </CardContent>
-        </Card>
-      ))}
+  const [activeTab, setActiveTab] = useState<"personal" | "clinical">("personal");
 
-      {medicarePrograms.length > 0 && (
-        <div className="mt-8">
-          <h3 className="text-lg font-semibold mb-4">Explore Medicare Programs</h3>
-          {medicarePrograms.map((program, index) => (
-            <Card key={index} className="mb-4 shadow-sm hover:shadow-md transition-shadow">
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <div className="flex items-center">
-                  {getIcon(program.icon)}
-                  <CardTitle className="text-base font-semibold">{program.name}</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-gray-700 mb-3">{program.description}</p>
-                <ul className="list-disc pl-5 mb-4 text-sm text-gray-600">
-                  {program.benefits.map((benefit, benefitIndex) => (
-                    <li key={benefitIndex}>{benefit}</li>
-                  ))}
-                </ul>
-                {program.isEligible === false ? (
-                  <Button variant="destructive" size="sm" disabled>
-                    Not Eligible
-                  </Button>
-                ) : (
-                  <Button variant="outline" size="sm">
-                    Learn More
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+  const handleRecommendationAction = (recommendation: ClinicalRecommendation) => {
+    if (recommendation.actionType === "call") {
+      onScheduleCall();
+    }
+    // Handle other action types as needed
+  };
+
+  const switchTab = () => {
+    setActiveTab(activeTab === "personal" ? "clinical" : "personal");
+  };
+
+  return (
+    <Card className="shadow-sm hover:shadow-md transition-shadow">
+      <CardHeader className="pb-2">
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-xl">Health Recommendations</CardTitle>
         </div>
-      )}
-    </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex space-x-1 rounded-lg bg-gray-100 p-1 mb-4">
+          <Button
+            variant={activeTab === "personal" ? "default" : "ghost"}
+            className={`flex-1 ${activeTab === "personal" ? "bg-white shadow-sm" : ""}`}
+            onClick={() => setActiveTab("personal")}
+          >
+            Personal Tips
+          </Button>
+          <Button
+            variant={activeTab === "clinical" ? "default" : "ghost"}
+            className={`flex-1 ${activeTab === "clinical" ? "bg-white shadow-sm" : ""}`}
+            onClick={() => setActiveTab("clinical")}
+          >
+            Care Guidelines
+          </Button>
+        </div>
+
+        {activeTab === "personal" ? (
+          <PersonalRecommendationsTab
+            recommendations={recommendations}
+            onRecommendationAction={handleRecommendationAction}
+            onSwitchTab={switchTab}
+          />
+        ) : (
+          <ClinicalGuidelinesTab
+            recommendations={recommendations}
+            medicarePrograms={medicarePrograms}
+            onRecommendationAction={handleRecommendationAction}
+            onSwitchTab={switchTab}
+          />
+        )}
+      </CardContent>
+    </Card>
   );
 };
 
