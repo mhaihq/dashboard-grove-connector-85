@@ -8,6 +8,9 @@ import {
 } from '@/data/index';
 import { HealthPulseItem } from '@/types/dashboard';
 
+// Import lucide-react icons
+import { Trophy } from 'lucide-react';
+
 // Import our components
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import HealthPulseSection from '@/components/dashboard/sections/HealthPulseSection';
