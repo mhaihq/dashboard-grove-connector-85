@@ -8,7 +8,6 @@ import { ProgressJournal } from '@/components/dashboard/ProgressJournal';
 import { CarePlan } from '@/components/dashboard/CarePlan';
 import { Milestones } from '@/components/dashboard/Milestones';
 import { HealthPulse } from '@/components/dashboard/HealthPulse';
-import { SuggestedPrograms } from '@/components/dashboard/SuggestedPrograms';
 import { ContextBanner } from '@/components/dashboard/ContextBanner';
 import { HealthRecommendations } from '@/components/dashboard/HealthRecommendations';
 import { 
@@ -110,15 +109,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-        <div>
-          <SuggestedPrograms 
-            programs={suggestedPrograms} 
-            title="Medicare Programs"
-            description="Based on your intake assessment and Medicare eligibility"
-          />
-        </div>
-        
-        <div>
+        <div className="lg:col-span-2">
           <Milestones data={milestonesData} />
         </div>
       </div>
