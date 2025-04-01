@@ -10,6 +10,9 @@ import { Milestones } from '@/components/dashboard/Milestones';
 import { HealthPulse } from '@/components/dashboard/HealthPulse';
 import { ContextBanner } from '@/components/dashboard/ContextBanner';
 import { HealthRecommendations } from '@/components/dashboard/HealthRecommendations';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { ScrollText, Clipboard, Trophy } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   userInfo, welcome, userBackground, overview, 
   healthIndicators, journalEntries, carePlanItems, 
@@ -38,7 +41,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
     achievements: milestones.map(milestone => ({
       title: milestone.title,
       unlocked: milestone.completed,
-      progress: milestone.completed ? 100 : 50,
+      progress: milestone.completed ? 100 : (milestone.currentStreak / milestone.requiredStreak) * 100,
       icon: <Users className="w-5 h-5 text-gray-400" />
     }))
   };
@@ -47,6 +50,17 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
     section.title === "Notable Life Changes"
   )?.items || [];
 
+  // Calculate total journal points for summary
+  const totalJournalPoints = journalEntries.reduce((sum, entry) => sum + (entry.points || 0), 0);
+  
+  // Get positive entries for welcome message
+  const positiveEntries = journalEntries.filter(entry => entry.status === 'positive');
+  
+  // Create a personalized welcome message
+  const welcomeMessage = positiveEntries.length > 0 
+    ? `Last week, you ${positiveEntries.map(e => e.text.toLowerCase().replace(':', '')).join(', and ')}. You're doing better than you think — let's keep it going.` 
+    : "Let's keep building on your progress — small steps, big impact.";
+  
   return (
     <>
       <div className="mb-8">
@@ -56,6 +70,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
           medicareStatus="Enrolled"
           riskScore="Medium"
           riskTrend="Improving"
+          welcomeMessage={welcomeMessage}
         />
         <div className="mt-4">
           <a 
@@ -88,6 +103,51 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
           positiveAreas={4}
           totalAreas={6}
         />
+      </div>
+      
+      <div className="mb-8">
+        <Card className="shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-xl">
+              📘 Your Journey So Far
+            </CardTitle>
+          </CardHeader>
+          
+          <CardContent className="pt-3">
+            <Tabs defaultValue="reflections">
+              <TabsList className="grid grid-cols-3 mb-4">
+                <TabsTrigger value="reflections">Latest Reflections</TabsTrigger>
+                <TabsTrigger value="plans">Active Plans</TabsTrigger>
+                <TabsTrigger value="achievements">Milestones</TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="reflections" className="mt-0">
+                <div className="flex items-center mb-3">
+                  <ScrollText className="w-5 h-5 text-hana-green mr-2" />
+                  <h3 className="font-medium">Progress Journal</h3>
+                  <div className="ml-auto text-sm font-medium text-hana-green">{totalJournalPoints} points earned</div>
+                </div>
+                <ProgressJournal entries={journalEntries} />
+              </TabsContent>
+              
+              <TabsContent value="plans" className="mt-0">
+                <div className="flex items-center mb-3">
+                  <Clipboard className="w-5 h-5 text-hana-green mr-2" />
+                  <h3 className="font-medium">Your Care Plan</h3>
+                </div>
+                <CarePlan items={carePlanItems} />
+              </TabsContent>
+              
+              <TabsContent value="achievements" className="mt-0">
+                <div className="flex items-center mb-3">
+                  <Trophy className="w-5 h-5 text-hana-green mr-2" />
+                  <h3 className="font-medium">Achievements & Progress</h3>
+                </div>
+                <Milestones data={milestonesData} />
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
       </div>
       
       <div className="mb-8">

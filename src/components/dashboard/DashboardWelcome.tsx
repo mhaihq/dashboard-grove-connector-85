@@ -9,6 +9,7 @@ interface DashboardWelcomeProps {
   medicareStatus: string;
   riskScore: string;
   riskTrend: string;
+  welcomeMessage?: string;
 }
 
 export const DashboardWelcome: React.FC<DashboardWelcomeProps> = ({ 
@@ -16,13 +17,14 @@ export const DashboardWelcome: React.FC<DashboardWelcomeProps> = ({
   lastCheckIn,
   medicareStatus,
   riskScore,
-  riskTrend
+  riskTrend,
+  welcomeMessage
 }) => {
   return (
     <div className="text-left">
       <h1 className="text-2xl font-bold text-gray-900">👋 Welcome back, {userName}!</h1>
       <p className="text-gray-600 mt-1 mb-4">
-        Let's keep building on your progress — small steps, big impact.
+        {welcomeMessage || "Let's keep building on your progress — small steps, big impact."}
       </p>
       
       <div className="flex flex-wrap gap-4 mt-4">
