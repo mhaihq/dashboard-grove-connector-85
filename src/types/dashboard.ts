@@ -12,6 +12,18 @@ export interface CarePlanItem {
   icon: string; // Changed from function returning ReactNode to string
   status: "not-started" | "started" | "in-progress" | "complete";
   description: string;
+  completedSteps?: number;
+  totalSteps?: number;
+  timeCommitment?: string;
+  benefit?: string;
+  nextStep?: string;
+  relatedMetric?: string;
+  currentScore?: number;
+  previousScore?: number;
+  targetScore?: number;
+  evidence?: string;
+  lastUpdated?: string;
+  weeklyTargets?: string[];
 }
 
 export interface Milestone {

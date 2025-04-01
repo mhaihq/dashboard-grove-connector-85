@@ -15,7 +15,9 @@ export const carePlanItems = [
     completedSteps: 2,
     totalSteps: 4,
     lastUpdated: "March 15, 2025",
-    weeklyTargets: ["Consistent bedtime 6/7 nights", "No screens 1 hour before bed"]
+    weeklyTargets: ["Consistent bedtime 6/7 nights", "No screens 1 hour before bed"],
+    timeCommitment: "15 min/day",
+    benefit: "Improves your overall energy and cognitive function"
   },
   {
     title: "Stress Management Toolkit",
@@ -31,7 +33,9 @@ export const carePlanItems = [
     completedSteps: 1,
     totalSteps: 4,
     lastUpdated: "March 14, 2025",
-    weeklyTargets: ["Daily 5-minute breathing exercise", "Identify 3 stress triggers"]
+    weeklyTargets: ["Daily 5-minute breathing exercise", "Identify 3 stress triggers"],
+    timeCommitment: "5 min/day",
+    benefit: "Reduces anxiety and prevents burnout"
   },
   {
     title: "Emotional Regulation Framework",
@@ -47,7 +51,9 @@ export const carePlanItems = [
     completedSteps: 0,
     totalSteps: 4,
     lastUpdated: "March 12, 2025",
-    weeklyTargets: ["Journal emotions daily", "Practice 1 regulation technique"]
+    weeklyTargets: ["Journal emotions daily", "Practice 1 regulation technique"],
+    timeCommitment: "10 min/day",
+    benefit: "Strengthens relationships and emotional stability"
   },
   {
     title: "Social Check-In",
@@ -63,7 +69,9 @@ export const carePlanItems = [
     completedSteps: 4,
     totalSteps: 4,
     lastUpdated: "March 12, 2025",
-    weeklyTargets: ["Connect with 1 friend", "Share a challenge you're facing"]
+    weeklyTargets: ["Connect with 1 friend", "Share a challenge you're facing"],
+    timeCommitment: "30 min/week",
+    benefit: "Enhances mood and provides emotional support"
   },
   {
     title: "Hydration Plan",
@@ -79,6 +87,8 @@ export const carePlanItems = [
     completedSteps: 2,
     totalSteps: 4,
     lastUpdated: "March 14, 2025",
-    weeklyTargets: ["Drink 6+ glasses daily", "Morning hydration routine"]
+    weeklyTargets: ["Drink 6+ glasses daily", "Morning hydration routine"],
+    timeCommitment: "1 min/hour",
+    benefit: "Improves energy levels and cognitive function"
   }
 ];
