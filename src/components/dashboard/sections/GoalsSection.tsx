@@ -30,7 +30,7 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
           <div className="flex items-center justify-between">
             <CardTitle className="text-xl flex items-center">
               <List className="w-5 h-5 text-hana-green mr-2" />
-              Your Active Goals
+              Your Action Plan
             </CardTitle>
             <div className="flex items-center text-sm">
               <span className="text-gray-500 mr-2">Overall Progress:</span>

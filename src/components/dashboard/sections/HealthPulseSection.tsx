@@ -45,6 +45,7 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
   
   return (
     <div className="mb-16">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Health Snapshot</h2>
       <HealthPulse 
         data={enhancedData}
         mostImproved={mostImproved}

@@ -1,13 +1,8 @@
-
-import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart, ThumbsUp, ThumbsDown, UserIcon, Stethoscope } from 'lucide-react';
-import { ClinicalRecommendation, MedicareProgram } from '@/types/dashboard';
-import { toast } from '@/hooks/use-toast';
-import PersonalRecommendationsTab from '@/components/dashboard/PersonalRecommendationsTab';
-import ClinicalGuidelinesTab from '@/components/dashboard/ClinicalGuidelinesTab';
 import { Button } from '@/components/ui/button';
+import { Calendar, Brain, Heart, Footprints, Clipboard, Shield, Book } from 'lucide-react';
+import { ClinicalRecommendation, MedicareProgram } from '@/types/dashboard';
 
 interface HealthRecommendationsProps {
   recommendations: ClinicalRecommendation[];
@@ -15,134 +10,82 @@ interface HealthRecommendationsProps {
   onScheduleCall: () => void;
 }
 
+const getIcon = (icon: string) => {
+  switch (icon) {
+    case "thermometer": return <Calendar className="w-4 h-4 mr-2" />;
+    case "brain": return <Brain className="w-4 h-4 mr-2" />;
+    case "heart": return <Heart className="w-4 h-4 mr-2" />;
+    case "footprints": return <Footprints className="w-4 h-4 mr-2" />;
+    case "clipboard": return <Clipboard className="w-4 h-4 mr-2" />;
+    case "shield": return <Shield className="w-4 h-4 mr-2" />;
+    case "book": return <Book className="w-4 h-4 mr-2" />;
+    default: return null;
+  }
+};
+
 export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
   recommendations,
   medicarePrograms,
   onScheduleCall
 }) => {
-  const [activeTab, setActiveTab] = useState("recommendations");
-  const [feedbackGiven, setFeedbackGiven] = useState(false);
-
-  // Handle recommendation actions
-  const handleAction = (recommendation: ClinicalRecommendation) => {
-    switch (recommendation.actionType) {
-      case "self":
-        toast({
-          title: "Plan Started",
-          description: `You've started the ${recommendation.title}. Check your progress journal for updates.`,
-        });
-        break;
-      case "followup":
-        toast({
-          title: "Follow-up Scheduled",
-          description: `We'll discuss ${recommendation.title} in detail during our next check-in.`,
-        });
-        break;
-      case "call":
-        onScheduleCall();
-        break;
-    }
-  };
-
-  // Handle feedback
-  const handleFeedback = (isPositive: boolean) => {
-    setFeedbackGiven(true);
-    toast({
-      title: "Thanks for your feedback!",
-      description: "Your input helps us improve your recommendations.",
-    });
-  };
-
-  // Filter recommendations into personal and clinical categories
-  const personalRecommendations = recommendations.filter(rec => 
-    !rec.relatedAreas.some(area => 
-      area.toLowerCase().includes('clinical') || 
-      area.toLowerCase().includes('medical') ||
-      area.toLowerCase().includes('healthcare')
-    )
-  );
-  
-  const clinicalRecommendations = recommendations.filter(rec => 
-    rec.relatedAreas.some(area => 
-      area.toLowerCase().includes('clinical') || 
-      area.toLowerCase().includes('medical') ||
-      area.toLowerCase().includes('healthcare')
-    )
-  );
-
   return (
-    <Card className="shadow-sm hover:shadow-md transition-shadow">
-      <CardHeader className="pb-2">
-        <CardTitle className="flex items-center text-xl">
-          <BarChart className="w-5 h-5 text-hana-green mr-2" />
-          Health & Wellbeing Recommendations
-        </CardTitle>
-      </CardHeader>
-      
-      <CardContent className="pt-3">
-        <Tabs defaultValue="recommendations" value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2 mb-5">
-            <TabsTrigger 
-              value="recommendations" 
-              className="flex items-center justify-center gap-2"
-            >
-              <UserIcon className="h-4 w-4" />
-              <span>Personal Suggestions</span>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="guidelines"
-              className="flex items-center justify-center gap-2"
-            >
-              <Stethoscope className="h-4 w-4" />
-              <span>Clinical Guidelines</span>
-            </TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="recommendations">
-            <PersonalRecommendationsTab 
-              recommendations={personalRecommendations}
-              onRecommendationAction={handleAction}
-              onSwitchTab={() => setActiveTab("guidelines")}
-            />
-          </TabsContent>
-
-          <TabsContent value="guidelines">
-            <ClinicalGuidelinesTab 
-              recommendations={clinicalRecommendations}
-              medicarePrograms={medicarePrograms}
-              onRecommendationAction={handleAction}
-              onSwitchTab={() => setActiveTab("recommendations")}
-            />
-          </TabsContent>
-        </Tabs>
-        
-        <div className="mt-4 border-t pt-3 text-xs text-gray-500 flex justify-end">
-          {!feedbackGiven ? (
-            <div className="flex items-center gap-2">
-              <span>Was this section helpful?</span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="p-1 h-auto" 
-                onClick={() => handleFeedback(true)}
-              >
-                <ThumbsUp className="h-4 w-4" />
-              </Button>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                className="p-1 h-auto" 
-                onClick={() => handleFeedback(false)}
-              >
-                <ThumbsDown className="h-4 w-4" />
-              </Button>
+    <div>
+      {recommendations.map((recommendation, index) => (
+        <Card key={index} className="mb-4 shadow-sm hover:shadow-md transition-shadow">
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <div className="flex items-center">
+              {getIcon(recommendation.icon)}
+              <CardTitle className="text-base font-semibold">{recommendation.title}</CardTitle>
             </div>
-          ) : (
-            <span>Thanks for your feedback!</span>
-          )}
+            <span className="text-xs text-gray-500">{recommendation.timeframe}</span>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-gray-700 mb-3">{recommendation.description}</p>
+            <ul className="list-disc pl-5 mb-4 text-sm text-gray-600">
+              {recommendation.steps.map((step, stepIndex) => (
+                <li key={stepIndex}>{step}</li>
+              ))}
+            </ul>
+            <Button variant="outline" size="sm" onClick={onScheduleCall}>
+              {recommendation.actionLabel}
+            </Button>
+          </CardContent>
+        </Card>
+      ))}
+
+      {medicarePrograms.length > 0 && (
+        <div className="mt-8">
+          <h3 className="text-lg font-semibold mb-4">Explore Medicare Programs</h3>
+          {medicarePrograms.map((program, index) => (
+            <Card key={index} className="mb-4 shadow-sm hover:shadow-md transition-shadow">
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <div className="flex items-center">
+                  {getIcon(program.icon)}
+                  <CardTitle className="text-base font-semibold">{program.name}</CardTitle>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-gray-700 mb-3">{program.description}</p>
+                <ul className="list-disc pl-5 mb-4 text-sm text-gray-600">
+                  {program.benefits.map((benefit, benefitIndex) => (
+                    <li key={benefitIndex}>{benefit}</li>
+                  ))}
+                </ul>
+                {program.isEligible === false ? (
+                  <Button variant="destructive" size="sm" disabled>
+                    Not Eligible
+                  </Button>
+                ) : (
+                  <Button variant="outline" size="sm">
+                    Learn More
+                  </Button>
+                )}
+              </CardContent>
+            </Card>
+          ))}
         </div>
-      </CardContent>
-    </Card>
+      )}
+    </div>
   );
 };
 

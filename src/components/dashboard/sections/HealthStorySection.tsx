@@ -39,7 +39,7 @@ export const HealthStorySection: React.FC<HealthStorySectionProps> = ({
       <Card className="shadow-sm hover:shadow-md transition-shadow">
         <CardHeader className="pb-2">
           <CardTitle className="text-xl">
-            📘 Your Full Health Story
+            📘 Your Health History
           </CardTitle>
         </CardHeader>
         <CardContent>

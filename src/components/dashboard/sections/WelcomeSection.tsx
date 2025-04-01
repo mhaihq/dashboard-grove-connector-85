@@ -32,6 +32,7 @@ export const WelcomeSection: React.FC<WelcomeSectionProps> = ({
 
   return (
     <div className="mb-16">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Today's Check-In</h2>
       <DashboardWelcome 
         userName={userName}
         lastCheckIn={lastCheckIn}

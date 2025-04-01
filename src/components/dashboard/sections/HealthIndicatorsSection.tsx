@@ -12,6 +12,7 @@ export const HealthIndicatorsSection: React.FC<HealthIndicatorsSectionProps> = (
 }) => {
   return (
     <div className="mb-16">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Health Insights</h2>
       <KeyHealthIndicators healthIndicators={healthIndicators} />
     </div>
   );

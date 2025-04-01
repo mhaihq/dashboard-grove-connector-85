@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Activity, Sparkles, TrendingUp, AlertTriangle, ArrowUp, ArrowDown, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -111,7 +112,7 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
           <CardTitle className="flex items-center justify-between text-xl">
             <div className="flex items-center">
               <Activity className="w-5 h-5 text-hana-green mr-2" />
-              Health Pulse
+              Health Snapshot
             </div>
             <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700">
               Updated Today

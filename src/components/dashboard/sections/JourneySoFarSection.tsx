@@ -31,7 +31,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   
   return (
     <div className="mb-16">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Health Journey</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Progress Timeline</h2>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Progress Card */}

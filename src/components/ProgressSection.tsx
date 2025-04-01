@@ -20,7 +20,7 @@ export const ProgressSection: React.FC<{ recommendations: RecommendationProps[] 
     <div className="bg-white rounded-xl border border-gray-100 p-5 shadow-sm mt-4 text-left">
       <div className="flex items-center gap-2 mb-3">
         <Award className="w-5 h-5 text-hana-green" />
-        <h2 className="text-xl font-semibold text-gray-900">Personalized Care Plan</h2>
+        <h2 className="text-xl font-semibold text-gray-900">Your Action Plan</h2>
       </div>
       
       <p className="text-gray-700 mb-4">

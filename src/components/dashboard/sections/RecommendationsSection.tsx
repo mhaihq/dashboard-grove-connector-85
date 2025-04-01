@@ -16,6 +16,7 @@ export const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
 }) => {
   return (
     <div className="mb-16">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Today's Health Tips</h2>
       <HealthRecommendations 
         recommendations={recommendations} 
         medicarePrograms={medicarePrograms}
