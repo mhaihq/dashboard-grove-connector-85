@@ -1,12 +1,13 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Moon, Activity, Brain, Shield, Heart, Users } from 'lucide-react';
 
 interface HealthIndicator {
   title: string;
   value: string;
   change: string;
-  icon: () => React.ReactNode;
+  icon: string;
 }
 
 interface KeyHealthIndicatorsProps {
@@ -16,6 +17,21 @@ interface KeyHealthIndicatorsProps {
 export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({ 
   healthIndicators 
 }) => {
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'moon':
+        return <Moon className="h-5 w-5 text-indigo-500" />;
+      case 'activity':
+        return <Activity className="h-5 w-5 text-red-500" />;
+      case 'brain':
+        return <Brain className="h-5 w-5 text-amber-500" />;
+      case 'shield':
+        return <Shield className="h-5 w-5 text-hana-green" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
       {healthIndicators.map((indicator, i) => (
@@ -23,7 +39,7 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
           <CardHeader className="pb-2">
             <div className="flex justify-between items-center">
               <CardTitle className="text-sm font-medium text-gray-500">{indicator.title}</CardTitle>
-              {indicator.icon()}
+              {getIcon(indicator.icon)}
             </div>
           </CardHeader>
           <CardContent>

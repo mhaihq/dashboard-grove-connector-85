@@ -1,13 +1,13 @@
 
 import React from 'react';
-import { Clipboard, Check, Clock, Play, X, Plus } from 'lucide-react';
+import { Clipboard, Check, Clock, Play, X, Plus, Moon, Activity, Heart, Users } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 
 interface CarePlanItem {
   title: string;
-  icon: () => React.ReactNode;
+  icon: string;
   status: 'not-started' | 'started' | 'in-progress' | 'complete';
   description: string;
 }
@@ -32,6 +32,21 @@ export const CarePlan: React.FC<CarePlanProps> = ({ items }) => {
     }
   };
 
+  const getIcon = (iconName: string) => {
+    switch (iconName) {
+      case 'moon':
+        return <Moon className="w-5 h-5 text-indigo-500" />;
+      case 'activity':
+        return <Activity className="w-5 h-5 text-red-500" />;
+      case 'heart':
+        return <Heart className="w-5 h-5 text-pink-500" />;
+      case 'users':
+        return <Users className="w-5 h-5 text-blue-500" />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <CardHeader className="pb-2">
@@ -49,7 +64,7 @@ export const CarePlan: React.FC<CarePlanProps> = ({ items }) => {
               className="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-all hover:border-gray-200 bg-white cursor-pointer"
             >
               <div className="flex items-center gap-2 mb-2">
-                {item.icon()}
+                {getIcon(item.icon)}
                 <h3 className="font-medium text-gray-900">{item.title}</h3>
               </div>
               
