@@ -11,7 +11,7 @@ interface HealthPulseProps {
   focusArea: string;
   positiveAreas: number;
   totalAreas: number;
-  environmentTips?: { // Add this new prop
+  environmentTips?: {
     title: string;
     tips: string[];
   };
@@ -25,10 +25,10 @@ export const HealthPulseSection: React.FC<HealthPulseProps> = ({
   totalAreas,
   environmentTips
 }) => {
-  // Add trend data to each item
+  // Add trend data to each item - fixed to use proper enum values for trend
   const enhancedData = data.map(item => ({
     ...item,
-    trend: item.improving ? 'up' : 'stable',
+    trend: item.improving ? 'up' as const : 'stable' as const, // Fixed: using proper enum values with type assertion
     relatedTo: ['sleep', 'nutrition'],
     initialScore: item.score - (item.improving ? 15 : 0),
     trendPercentage: item.improving ? 15 : 0,
