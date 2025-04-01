@@ -9,7 +9,7 @@ import {
 } from '@/data/index';
 import { HealthPulseItem } from '@/types/dashboard';
 
-// Import our new components
+// Import our components
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
 import WelcomeSection from '@/components/dashboard/sections/WelcomeSection';
 import HealthPulseSection from '@/components/dashboard/sections/HealthPulseSection';
@@ -18,6 +18,7 @@ import RecommendationsSection from '@/components/dashboard/sections/Recommendati
 import HealthIndicatorsSection from '@/components/dashboard/sections/HealthIndicatorsSection';
 import JourneySoFarSection from '@/components/dashboard/sections/JourneySoFarSection';
 import HealthStorySection from '@/components/dashboard/sections/HealthStorySection';
+import WelcomeBanner from '@/components/dashboard/WelcomeBanner';
 
 interface DashboardProps {
   onScheduleCall: () => void;
@@ -28,12 +29,13 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
   const healthAssessmentData: HealthPulseItem[] = functionalAreas.map(area => ({
     area: area.title,
     score: area.rating * 25,
-    improving: area.key === 'sleep'
+    improving: area.key === 'sleep',
+    priority: area.key === 'sleep' || area.key === 'stressManagement'
   }));
 
   // Calculate milestone achievement metrics
   const milestonesData = {
-    weeklyPoints: journalEntries.reduce((sum, entry) => sum + entry.points, 0),
+    weeklyPoints: journalEntries.reduce((sum, entry: any) => sum + (entry.points || 0), 0),
     level: 2,
     levelName: "Consistent Mover",
     nextLevel: "Level 3",
@@ -64,8 +66,30 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
     minute: '2-digit'
   });
   
+  // Get recent positive achievement for welcome banner
+  const recentAchievement = journalEntries.find(entry => entry.status === 'positive')?.text || 'Making progress!';
+  
+  // Get streak data
+  const streakBehavior = journalEntries.find(entry => (entry as any).streakCount > 2);
+  const streak = {
+    count: streakBehavior ? (streakBehavior as any).streakCount : 3,
+    behavior: streakBehavior ? streakBehavior.relatedTo.replace('_', ' ') : 'morning walks'
+  };
+  
   return (
     <DashboardLayout>
+      {/* New Welcome Banner */}
+      <WelcomeBanner
+        userName={userInfo.name.split(' ')[0]}
+        recentAchievement="Your morning walks are making a difference!"
+        priorityAction={{
+          task: "Log your water intake",
+          estimatedTime: "2 min"
+        }}
+        streak={streak}
+        journeyProgress={35}
+      />
+      
       {/* 1. Welcome & Check-in Section */}
       <WelcomeSection 
         userName={userInfo.name.split(' ')[0]}

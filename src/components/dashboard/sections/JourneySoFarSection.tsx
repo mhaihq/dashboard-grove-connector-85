@@ -1,13 +1,12 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ScrollText, Trophy, Clock } from 'lucide-react';
-import { ProgressJournal } from '@/components/dashboard/ProgressJournal';
-import { Milestones } from '@/components/dashboard/Milestones';
+import { Progress } from '@/components/ui/progress';
+import { Trophy, TrendingUp } from 'lucide-react';
 import { JournalEntry } from '@/types/dashboard';
 
 interface JourneySoFarSectionProps {
-  journalEntries: JournalEntry[];
+  journalEntries: any[]; // Use any[] to accommodate the points property
   milestonesData: {
     weeklyPoints: number;
     level: number;
@@ -27,52 +26,82 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   journalEntries,
   milestonesData
 }) => {
-  // Calculate total journal points for summary
-  const totalJournalPoints = journalEntries.reduce((sum, entry) => sum + (entry.points || 0), 0);
+  // Calculate the total weekly points from journal entries
+  const weeklyPoints = journalEntries.reduce((sum, entry: any) => sum + (entry.points || 0), 0);
   
   return (
     <div className="mb-16">
-      <Card className="shadow-sm hover:shadow-md transition-shadow">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-xl">
-            📘 Your Journey So Far
-          </CardTitle>
-        </CardHeader>
-        
-        <CardContent className="pt-3">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Progress Journal Section */}
-            <div>
-              <div className="flex items-center mb-3">
-                <ScrollText className="w-5 h-5 text-hana-green mr-2" />
-                <h3 className="font-medium">Weekly Journal</h3>
-                <div className="ml-auto text-sm font-medium text-hana-green">{totalJournalPoints} points earned</div>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Health Journey</h2>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {/* Progress Card */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <TrendingUp className="w-5 h-5 mr-2 text-hana-green" />
+              Progress Snapshot
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm font-medium">Level {milestonesData.level}</span>
+                  <span className="text-sm text-gray-500">{milestonesData.levelName}</span>
+                </div>
+                <Progress value={(milestonesData.weeklyPoints / (milestonesData.weeklyPoints + milestonesData.pointsToNextLevel)) * 100} />
+                <div className="flex justify-between mt-1">
+                  <span className="text-xs">{milestonesData.weeklyPoints} points</span>
+                  <span className="text-xs">{milestonesData.pointsToNextLevel} points to {milestonesData.nextLevel}</span>
+                </div>
               </div>
-              <ProgressJournal entries={journalEntries} />
               
-              <div className="mt-4 text-sm text-gray-500 flex items-center">
-                <Clock className="w-4 h-4 mr-1" />
-                <span>Last updated: March 15, 2025</span>
+              <div className="pt-2">
+                <h4 className="text-sm font-medium mb-2">Recent Progress</h4>
+                <ul className="space-y-1 text-sm">
+                  {journalEntries
+                    .filter((entry: any) => entry.status === 'positive')
+                    .slice(0, 3)
+                    .map((entry: any, idx: number) => (
+                      <li key={idx} className="flex items-start">
+                        <span className="text-green-500 mr-2">✓</span>
+                        <span>{entry.text}</span>
+                      </li>
+                    ))}
+                </ul>
               </div>
             </div>
-            
-            {/* Milestones Section */}
-            <div>
-              <div className="flex items-center mb-3">
-                <Trophy className="w-5 h-5 text-hana-green mr-2" />
-                <h3 className="font-medium">Achievements & Progress</h3>
-              </div>
-              <Milestones data={milestonesData} />
+          </CardContent>
+        </Card>
+        
+        {/* Milestones Card */}
+        <Card>
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center">
+              <Trophy className="w-5 h-5 mr-2 text-amber-500" />
+              Achievements
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {milestonesData.achievements.map((achievement, idx) => (
+                <div key={idx}>
+                  <div className="flex items-center justify-between mb-1">
+                    <div className="flex items-center">
+                      {achievement.icon}
+                      <span className="text-sm font-medium ml-2">{achievement.title}</span>
+                    </div>
+                    <span className={`text-xs ${achievement.unlocked ? 'text-green-600' : 'text-gray-500'}`}>
+                      {achievement.unlocked ? 'Unlocked' : `${Math.round(achievement.progress)}%`}
+                    </span>
+                  </div>
+                  <Progress value={achievement.progress} className="h-1.5" />
+                </div>
+              ))}
             </div>
-          </div>
-          
-          <div className="mt-6 border-t pt-4 text-xs text-gray-500 flex justify-end">
-            <span className="mr-2">Was this section helpful?</span>
-            <button className="text-gray-500 hover:text-gray-700">👍</button>
-            <button className="ml-2 text-gray-500 hover:text-gray-700">👎</button>
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };

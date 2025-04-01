@@ -1,7 +1,8 @@
 
 import React from 'react';
-import { Activity, Sparkles } from 'lucide-react';
+import { Activity, Sparkles, TrendingUp, AlertTriangle } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import {
   Radar,
   RadarChart,
@@ -16,6 +17,7 @@ interface HealthPulseItem {
   area: string;
   score: number;
   improving: boolean;
+  priority?: boolean;
 }
 
 interface HealthPulseProps {
@@ -48,20 +50,31 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
   // Count positive trends
   const calculatedPositiveCount = positiveAreas || data.filter(item => item.improving).length;
   const calculatedTotalAreas = totalAreas || data.length;
+  
+  // Format the data to highlight priority areas
+  const formattedData = data.map(item => ({
+    ...item,
+    fill: item.priority ? "#ef4444" : "#1C6E4A"
+  }));
 
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <CardHeader className="pb-2">
-        <CardTitle className="flex items-center text-xl">
-          <Activity className="w-5 h-5 text-hana-green mr-2" />
-          Health Pulse
+        <CardTitle className="flex items-center justify-between text-xl">
+          <div className="flex items-center">
+            <Activity className="w-5 h-5 text-hana-green mr-2" />
+            Health Pulse
+          </div>
+          <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700">
+            Updated Today
+          </Badge>
         </CardTitle>
       </CardHeader>
       
       <CardContent className="pt-3">
         <div className="h-[260px] w-full">
           <ResponsiveContainer width="100%" height="100%">
-            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={data}>
+            <RadarChart cx="50%" cy="50%" outerRadius="70%" data={formattedData}>
               <PolarGrid stroke="#e5e7eb" strokeDasharray="3 3" />
               <PolarAngleAxis 
                 dataKey="area" 
@@ -96,20 +109,33 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
                   padding: '10px 14px',
                   fontSize: '14px'
                 }}
+                cursor={{ strokeDasharray: '8 8' }}
               />
             </RadarChart>
           </ResponsiveContainer>
         </div>
         
         <div className="mt-4 flex flex-col gap-2 text-sm">
-          <div className="flex items-center text-gray-700">
-            <Sparkles className="w-4 h-4 text-amber-500 mr-2" />
-            {calculatedMostImproved && <span>Most Improved: <span className="font-medium">{calculatedMostImproved}</span>.</span>}
-            {calculatedFocusArea && <span className="ml-2">Area to Focus: <span className="font-medium">{calculatedFocusArea}</span>.</span>}
+          <div className="flex flex-wrap gap-3">
+            {calculatedMostImproved && (
+              <div className="flex items-center text-gray-700">
+                <Sparkles className="w-4 h-4 text-amber-500 mr-1.5" />
+                <span>Most Improved: <span className="font-medium">{calculatedMostImproved}</span></span>
+              </div>
+            )}
+            
+            {calculatedFocusArea && (
+              <div className="flex items-center text-gray-700">
+                <AlertTriangle className="w-4 h-4 text-orange-500 mr-1.5" />
+                <span>Focus Area: <span className="font-medium">{calculatedFocusArea}</span></span>
+              </div>
+            )}
           </div>
-          <p className="text-gray-600">
-            You're trending positively in <span className="font-medium text-green-600">{calculatedPositiveCount} out of {calculatedTotalAreas}</span> areas.
-          </p>
+          
+          <div className="flex items-center text-gray-600">
+            <TrendingUp className="w-4 h-4 text-green-600 mr-1.5" />
+            <span>Trending positively in <span className="font-medium text-green-600">{calculatedPositiveCount} out of {calculatedTotalAreas}</span> areas</span>
+          </div>
         </div>
       </CardContent>
     </Card>
