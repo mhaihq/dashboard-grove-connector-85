@@ -16,7 +16,7 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
       <CardHeader className="pb-2">
         <CardTitle className="text-xl flex items-center">
           <Sparkles className="w-5 h-5 text-amber-500 mr-2" />
-          Key Health Indicators
+          Your Health Insights
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -33,3 +33,5 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
     </Card>
   );
 };
+
+export default KeyHealthIndicators;

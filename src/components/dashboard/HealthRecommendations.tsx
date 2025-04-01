@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Calendar, Brain, Heart, Footprints, Clipboard, Shield, Book, Tabs, TabsContent, TabsList, TabsTrigger } from 'lucide-react';
+import { Calendar, Brain, Heart, Footprints, Clipboard, Shield, Book } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ClinicalRecommendation, MedicareProgram } from '@/types/dashboard';
 import PersonalRecommendationsTab from '@/components/dashboard/PersonalRecommendationsTab';
 import ClinicalGuidelinesTab from '@/components/dashboard/ClinicalGuidelinesTab';
@@ -48,7 +49,7 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl">Health Recommendations</CardTitle>
+          <CardTitle className="text-xl">Today's Health Tips</CardTitle>
         </div>
       </CardHeader>
       <CardContent>
