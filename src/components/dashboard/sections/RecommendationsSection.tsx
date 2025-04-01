@@ -28,7 +28,7 @@ export const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
       systemsThinking = 'Attaching stress relief to existing routines builds consistency without willpower';
     } else if (rec.title.includes('Emotional')) {
       atomicHabitsPrinciple = 'Implementation Intentions';
-      systemsThinking = 'Specifying when and where you'll manage emotions removes decision fatigue';
+      systemsThinking = 'Specifying when and where you\'ll manage emotions removes decision fatigue';
     } else if (rec.title.includes('Energy')) {
       atomicHabitsPrinciple = 'Make It Easy';
       systemsThinking = 'Reducing friction in your environment leads to more consistent energy management';
