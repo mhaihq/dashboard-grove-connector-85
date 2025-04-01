@@ -190,9 +190,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         />
       </div>
       
-      {/* D. Your Journey So Far */}
+      {/* D. Your Journey So Far - Updated heading to match new design */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Journey So Far</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Health Journey</h2>
         <JourneySoFarSection 
           journalEntries={journalEntries}
           milestonesData={milestonesData}

@@ -2,11 +2,11 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Trophy, TrendingUp, Clock, ArrowRight } from 'lucide-react';
+import { Clock, Milestone, CheckCircle2, Brain, FileSparkles, Sparkles, Stars, ArrowRight } from 'lucide-react';
 import { JournalEntry } from '@/types/dashboard';
 
 interface JourneySoFarSectionProps {
-  journalEntries: any[]; // Use any[] to accommodate the points property
+  journalEntries: any[]; 
   milestonesData: {
     weeklyPoints: number;
     level: number;
@@ -26,169 +26,148 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   journalEntries,
   milestonesData
 }) => {
-  // Calculate the total weekly points from journal entries
-  const weeklyPoints = journalEntries.reduce((sum, entry: any) => sum + (entry.points || 0), 0);
-  
-  // Add environmental changes highlights (Atomic Habits principle)
-  const environmentalChanges = [
-    { week: "Week 3", change: "Moved phone charger away from bed to improve sleep habits" },
-    { week: "Week 5", change: "Set up a dedicated meditation corner in the living room" }
+  // Define the milestone stages for the health journey roadmap
+  const journeyMilestones = [
+    {
+      stage: 1,
+      label: "Intake Complete",
+      description: "Initial assessment done. We know your baseline.",
+      date: "February 13, 2025",
+      icon: <CheckCircle2 className="w-5 h-5 text-green-500" />,
+      completed: true
+    },
+    {
+      stage: 2,
+      label: "AI Follow-Ups Started",
+      description: "You're now receiving weekly check-ins.",
+      date: "February 20, 2025",
+      icon: <Clock className="w-5 h-5 text-blue-500" />,
+      completed: true
+    },
+    {
+      stage: 3,
+      label: "First Habit Momentum",
+      description: "You're showing consistency with morning walks (5-day streak).",
+      date: "March 5, 2025",
+      icon: <Sparkles className="w-5 h-5 text-amber-500" />,
+      completed: true
+    },
+    {
+      stage: 4,
+      label: "First Insight Unlocked",
+      description: "System detected: your sleep is better when you avoid screens at night.",
+      date: "March 10, 2025",
+      icon: <Brain className="w-5 h-5 text-purple-500" />,
+      completed: true
+    },
+    {
+      stage: 5,
+      label: "Care Plan Adapted",
+      description: "Goals personalized based on your check-ins and progress.",
+      date: "March 15, 2025",
+      icon: <FileSparkles className="w-5 h-5 text-green-500" />,
+      completed: true
+    },
+    {
+      stage: 6,
+      label: "Sustained Progress",
+      description: "Over 4 weeks of engagement with notable wins.",
+      date: "Expected: April 5, 2025",
+      icon: <Stars className="w-5 h-5 text-amber-500" />,
+      completed: false
+    },
+    {
+      stage: 7,
+      label: "Next Step",
+      description: "Specialist review of your progress and adjustments to your care path.",
+      date: "Expected: April 20, 2025",
+      icon: <Milestone className="w-5 h-5 text-blue-500" />,
+      completed: false
+    }
   ];
-  
-  // Add consistency highlights (emphasizing systems over goals)
-  const consistencyHighlights = [
-    { behavior: "Morning walks", count: 5, impact: "Improved energy levels throughout the day" },
-    { behavior: "Hydration tracking", count: 7, impact: "Reduced afternoon fatigue" }
-  ];
+
+  // Calculate the user's current position in the journey (where they are now)
+  const currentStage = 5; // They've completed 5 stages based on the data
+  const progressPercentage = (currentStage / journeyMilestones.length) * 100;
   
   return (
     <div>
       <Card className="shadow-sm hover:shadow-md transition-shadow mb-6">
         <CardHeader className="pb-2">
           <CardTitle className="flex items-center">
-            <Clock className="w-5 h-5 mr-2 text-blue-500" />
-            <span className="text-gray-700">Your Progress Path</span>
+            <Milestone className="w-5 h-5 mr-2 text-blue-500" />
+            <span className="text-gray-700">Health Journey Roadmap</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
+          {/* Progress indicator */}
+          <div className="mb-4">
+            <div className="flex justify-between items-center mb-1">
+              <span className="text-sm font-medium">Your Journey Progress</span>
+              <span className="text-sm text-gray-500">{currentStage} of {journeyMilestones.length} milestones</span>
+            </div>
+            <Progress value={progressPercentage} className="h-2" />
+          </div>
+          
+          {/* Timeline display */}
           <div className="relative py-4">
+            {/* Vertical timeline line */}
             <div className="absolute top-0 bottom-0 left-[22px] w-1 bg-gray-200"></div>
             
-            <div className="flex mb-8 relative z-10">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 border-4 border-white text-blue-500 mr-4">
-                <span className="text-lg font-bold">1</span>
-              </div>
-              <div>
-                <h3 className="text-md font-medium text-gray-900">Intake (February 13, 2025)</h3>
-                <p className="text-sm text-gray-600 mt-1">Initial health assessment established your baseline scores across key health dimensions.</p>
-              </div>
-            </div>
-            
-            <div className="flex mb-8 relative z-10">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 border-4 border-white text-green-500 mr-4">
-                <span className="text-lg font-bold">2</span>
-              </div>
-              <div>
-                <h3 className="text-md font-medium text-gray-900">Now (March 15, 2025)</h3>
-                <p className="text-sm text-gray-600 mt-1">You've shown improvement in sleep quality and reduced alcohol consumption. Hydration remains an area for focus.</p>
-                
-                <div className="mt-2 bg-blue-50 rounded-md p-2">
-                  <h4 className="text-sm font-medium text-blue-700">Environmental Changes (Atomic Habits)</h4>
-                  <ul className="mt-1 space-y-1">
-                    {environmentalChanges.map((change, idx) => (
-                      <li key={idx} className="text-xs text-blue-600 flex">
-                        <span className="text-blue-500 mr-1.5">•</span>
-                        <span><strong>{change.week}:</strong> {change.change}</span>
-                      </li>
-                    ))}
-                  </ul>
+            {/* Milestone points */}
+            {journeyMilestones.map((milestone, index) => (
+              <div key={index} className={`flex mb-8 relative z-10 ${index === currentStage - 1 ? "animate-pulse" : ""}`}>
+                <div className={`flex items-center justify-center w-12 h-12 rounded-full ${
+                  milestone.completed 
+                    ? "bg-green-100 border-4 border-white text-green-500" 
+                    : "bg-gray-200 border-4 border-white text-gray-500"
+                } mr-4`}>
+                  <span className="text-lg font-bold">{milestone.stage}</span>
+                </div>
+                <div className={milestone.completed ? "" : "opacity-60"}>
+                  <h3 className="text-md font-medium text-gray-900 flex items-center">
+                    {milestone.label}
+                    {index === currentStage - 1 && 
+                      <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
+                        You are here
+                      </span>
+                    }
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">{milestone.description}</p>
+                  <div className="flex items-center mt-1">
+                    <span className="text-xs text-gray-500 mr-2">{milestone.date}</span>
+                    {milestone.icon}
+                  </div>
+                  
+                  {/* Special highlights for completed milestones */}
+                  {milestone.completed && milestone.stage === 3 && (
+                    <div className="mt-2 bg-amber-50 rounded-md p-2">
+                      <p className="text-xs text-amber-700">
+                        <span className="font-medium">Environmental Win:</span> Moving your phone charger away from your bed helped establish this habit.
+                      </p>
+                    </div>
+                  )}
+                  
+                  {milestone.completed && milestone.stage === 4 && (
+                    <div className="mt-2 bg-purple-50 rounded-md p-2">
+                      <p className="text-xs text-purple-700">
+                        <span className="font-medium">AI Pattern Discovery:</span> "We noticed your sleep quality improves by 30% when you avoid screens 1 hour before bed."
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
-            </div>
-            
-            <div className="flex relative z-10">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-200 border-4 border-white text-gray-500 mr-4">
-                <span className="text-lg font-bold">3</span>
-              </div>
-              <div>
-                <h3 className="text-md font-medium text-gray-900">Future (Coming Soon)</h3>
-                <p className="text-sm text-gray-600 mt-1">Continued progress will unlock deeper insights and personalized recommendations.</p>
-                <p className="text-xs text-amber-600 italic mt-1">"You don't rise to the level of your goals; you fall to the level of your systems." - James Clear</p>
-              </div>
-            </div>
+            ))}
+          </div>
+          
+          {/* Quote at the bottom */}
+          <div className="mt-2 bg-gray-50 border border-gray-200 rounded-lg p-3">
+            <p className="text-sm text-gray-700 italic">
+              "Small changes consistently applied create remarkable results over time."
+            </p>
           </div>
         </CardContent>
       </Card>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Call Summaries */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg flex items-center">
-              <TrendingUp className="w-5 h-5 mr-2 text-hana-green" />
-              <span className="text-gray-700">Recent Call Summaries</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="border border-gray-100 rounded-lg p-3">
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium">March 15, 2025</span>
-                  <span className="text-xs text-gray-500">Weekly Check-in</span>
-                </div>
-                <ul className="space-y-1 text-sm mt-2">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Morning walks streak is making a difference in energy levels</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-amber-500 mr-2">!</span>
-                    <span>Discussed strategies for improving hydration throughout the day</span>
-                  </li>
-                </ul>
-              </div>
-              
-              <div className="border border-gray-100 rounded-lg p-3">
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium">March 8, 2025</span>
-                  <span className="text-xs text-gray-500">Weekly Check-in</span>
-                </div>
-                <ul className="space-y-1 text-sm mt-2">
-                  <li className="flex items-start">
-                    <span className="text-green-500 mr-2">✓</span>
-                    <span>Reached out to friend for coffee - social connection improving</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="text-amber-500 mr-2">!</span>
-                    <span>Sleep disrupted by work stress - implemented evening routine</span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-        
-        {/* Consistency Highlights */}
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle className="text-lg flex items-center">
-              <Trophy className="w-5 h-5 mr-2 text-amber-500" />
-              <span className="text-gray-700">Consistency Over Perfection</span>
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-4 bg-amber-50 border border-amber-100 rounded-lg p-3">
-              <p className="text-sm text-amber-800 italic">"We are what we repeatedly do. Excellence, then, is not an act, but a habit."</p>
-            </div>
-            
-            <div className="space-y-4">
-              {consistencyHighlights.map((highlight, idx) => (
-                <div key={idx} className="border border-green-100 rounded-lg p-3 bg-green-50">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-medium text-green-800">{highlight.behavior}</span>
-                    <span className="text-xs font-bold bg-green-200 text-green-800 px-2 py-0.5 rounded-full">
-                      {highlight.count} times
-                    </span>
-                  </div>
-                  <p className="text-sm text-green-700 mt-1">{highlight.impact}</p>
-                </div>
-              ))}
-              
-              <div className="pt-2">
-                <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium">Overall Progress</span>
-                  <span className="text-sm text-gray-500">{milestonesData.weeklyPoints} points earned</span>
-                </div>
-                <Progress value={(milestonesData.weeklyPoints / (milestonesData.weeklyPoints + milestonesData.pointsToNextLevel)) * 100} />
-                <div className="flex justify-between mt-1 text-xs text-gray-500">
-                  <span>Current: Level {milestonesData.level}</span>
-                  <span>Next: {milestonesData.pointsToNextLevel} points to {milestonesData.nextLevel}</span>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   );
 };
