@@ -26,7 +26,7 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
   environmentTips
 }) => {
   // Enhance data with additional metrics for the new design
-  const enhancedData = data.map(item => ({
+  const enhancedData: HealthPulseItem[] = data.map(item => ({
     ...item,
     trend: item.improving ? 'up' as const : 'stable' as const,
     relatedTo: ['sleep', 'nutrition'],
@@ -40,7 +40,7 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
       current: Math.floor(Math.random() * 7) + 1,
       target: 7,
       change: Math.floor(Math.random() * 5) - 2,
-      status: Math.random() > 0.6 ? 'improved' : (Math.random() > 0.5 ? 'declined' : 'stable')
+      status: Math.random() > 0.6 ? 'improved' as const : (Math.random() > 0.5 ? 'declined' as const : 'stable' as const)
     }
   }));
   

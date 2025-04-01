@@ -6,7 +6,7 @@ import {
   suggestedPrograms, medicarePrograms, milestones, functionalAreas,
   clinicalRecommendations
 } from '@/data/index';
-import { HealthPulseItem } from '@/types/dashboard';
+import { HealthPulseItem, HabitStreak, SystemSuggestion } from '@/types/dashboard';
 
 // Import lucide-react icons
 import { Trophy } from 'lucide-react';
@@ -74,6 +74,56 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
     count: streakBehavior ? (streakBehavior as any).streakCount : 3,
     behavior: streakBehavior ? streakBehavior.relatedTo.replace('_', ' ') : 'morning walks'
   };
+
+  // Create active streaks for Goals section
+  const activeStreaks: HabitStreak[] = [
+    {
+      habit: "Morning Walks",
+      icon: "🥾",
+      days: 5,
+      target: 7,
+      trend: "+1 day ↑",
+      status: 'improved',
+      supportedGoal: "Sleep Restoration"
+    },
+    {
+      habit: "Alcohol-Free Days",
+      icon: "🍷",
+      days: 3,
+      target: 7,
+      trend: "-2 days ↓",
+      status: 'declined',
+      supportedGoal: "Stress Management"
+    }
+  ];
+
+  // Create system suggestion
+  const systemSuggestion: SystemSuggestion = {
+    suggestion: "Hydration check-in every 2 hours to reduce fatigue spikes.",
+    basedOn: "reduced hydration + afternoon energy crash patterns",
+    impact: "Increased water intake correlates with 30% higher energy in the afternoons"
+  };
+
+  // Enhance care plan items with insights
+  const enhancedCarePlanItems = carePlanItems.map(item => {
+    let insights = "";
+    
+    if (item.title === "Sleep Restoration Protocol" && item.status === "in-progress") {
+      insights = "Reported better sleep on 3 nights you used this technique.";
+    } else if (item.title === "Stress Management Toolkit" && item.status === "started") {
+      insights = "Used 2 times this week. Most helpful on high-stress days.";
+    } else if (item.title === "Emotional Regulation Framework" && item.status === "not-started") {
+      insights = "Let's revisit this after building momentum with sleep + stress tools.";
+    }
+    
+    return {
+      ...item,
+      insights,
+      priority: item.title === "Sleep Restoration Protocol" ? "high" as const : 
+                item.title === "Stress Management Toolkit" ? "medium" as const : 
+                "low" as const
+    };
+  });
   
   return (
     <DashboardLayout>
@@ -103,10 +153,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       
       {/* B. Goals & Milestones */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Goals & Milestones</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Goals & Progress</h2>
         <GoalsSection 
-          carePlanItems={carePlanItems}
+          carePlanItems={enhancedCarePlanItems}
           nextCheckInDate={nextCheckInDate}
+          activeStreaks={activeStreaks}
+          systemSuggestion={systemSuggestion}
         />
       </div>
       

@@ -36,6 +36,9 @@ export interface CarePlanItem {
   evidence?: string;
   lastUpdated?: string;
   weeklyTargets?: string[];
+  insights?: string; // Added for AI-generated insights about the goal
+  correlations?: string; // Added to show connections with other health areas
+  priority?: "high" | "medium" | "low"; // Added to help with prioritization
 }
 
 export interface Milestone {
@@ -132,4 +135,22 @@ export interface MilestonesData {
     progress: number;
     icon: ReactNode;
   }[];
+}
+
+// New interface for habit streaks
+export interface HabitStreak {
+  habit: string;
+  icon: string;
+  days: number;
+  target: number;
+  trend: string;
+  status: 'improved' | 'declined' | 'stable';
+  supportedGoal?: string;
+}
+
+// New interface for AI system suggestion
+export interface SystemSuggestion {
+  suggestion: string;
+  basedOn: string;
+  impact: string;
 }
