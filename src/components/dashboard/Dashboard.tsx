@@ -26,14 +26,16 @@ interface DashboardProps {
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
+  // Format health assessment data for the pulse chart
   const healthAssessmentData: HealthPulseItem[] = functionalAreas.map(area => ({
     area: area.title,
     score: area.rating * 25,
     improving: area.key === 'sleep'
   }));
 
+  // Calculate milestone achievement metrics
   const milestonesData = {
-    weeklyPoints: 45,
+    weeklyPoints: journalEntries.reduce((sum, entry) => sum + entry.points, 0),
     level: 2,
     levelName: "Consistent Mover",
     nextLevel: "Level 3",
@@ -46,10 +48,11 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
     }))
   };
 
+  // Get relevant life events for context
   const notableLifeChanges = overview.find(section => 
     section.title === "Notable Life Changes"
   )?.items || [];
-
+  
   // Calculate total journal points for summary
   const totalJournalPoints = journalEntries.reduce((sum, entry) => sum + (entry.points || 0), 0);
   

@@ -2,6 +2,7 @@
 // Milestones with enhanced gamification elements
 export const milestones = [
   {
+    id: "milestone1",
     title: "2 Weeks Consistent Sleep",
     description: "Maintain your sleep schedule for 2 weeks straight",
     completed: false,
@@ -10,9 +11,12 @@ export const milestones = [
     requiredStreak: 14,
     category: "sleep",
     unlocks: "Advanced Sleep Meditation Audio",
-    icon: "moon"
+    icon: "moon",
+    dateCreated: "March 1, 2025",
+    lastUpdated: "March 15, 2025"
   },
   {
+    id: "milestone2",
     title: "Hydration Hero",
     description: "Drink 8 glasses of water daily for a week",
     completed: true,
@@ -21,9 +25,12 @@ export const milestones = [
     requiredStreak: 7,
     category: "hydration",
     unlocks: "Personalized Hydration Schedule",
-    icon: "droplets"
+    icon: "droplets",
+    dateCreated: "March 1, 2025",
+    dateCompleted: "March 14, 2025"
   },
   {
+    id: "milestone3",
     title: "First Peer Group Chat",
     description: "Join your first group support session",
     completed: true,
@@ -32,9 +39,12 @@ export const milestones = [
     requiredStreak: 1,
     category: "social",
     unlocks: "Weekly Community Support Access",
-    icon: "users"
+    icon: "users",
+    dateCreated: "February 20, 2025",
+    dateCompleted: "March 5, 2025"
   },
   {
+    id: "milestone4",
     title: "Logged 3 AI Calls",
     description: "Complete 3 follow-up calls with your AI coach",
     completed: false,
@@ -43,6 +53,8 @@ export const milestones = [
     requiredStreak: 3,
     category: "engagement",
     unlocks: "Specialized Assessment Tool",
-    icon: "phone"
+    icon: "phone",
+    dateCreated: "February 15, 2025",
+    lastUpdated: "March 10, 2025"
   }
 ];
