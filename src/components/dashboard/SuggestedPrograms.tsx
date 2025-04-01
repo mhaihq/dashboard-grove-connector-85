@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CheckCircle2, AlertCircle, HelpCircle, XCircle, ExternalLink } from 'lucide-react';
+import { CheckCircle2, AlertCircle, HelpCircle, XCircle, ExternalLink, Shield } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -84,7 +84,7 @@ export const SuggestedPrograms: React.FC<SuggestedProgramsProps> = ({
     <Card className="shadow-sm hover:shadow-md transition-shadow">
       <CardHeader className="pb-2">
         <CardTitle className="flex items-center text-xl">
-          <CheckCircle2 className="w-5 h-5 text-hana-green mr-2" />
+          <Shield className="w-5 h-5 text-hana-green mr-2" />
           {title}
         </CardTitle>
         {description && (
