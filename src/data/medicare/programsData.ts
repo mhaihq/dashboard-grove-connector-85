@@ -36,7 +36,8 @@ export const suggestedPrograms = [
 // Medicare Programs
 export const medicarePrograms = [
   {
-    name: "Chronic Care Management (CCM)",
+    name: "Care Coordination Support",
+    originalName: "Chronic Care Management (CCM)",
     description: "Ongoing support for chronic conditions with regular monitoring and care coordination.",
     eligibility: "Medicare beneficiaries with 2+ chronic conditions expected to last at least 12 months.",
     coverage: "Medicare Part B covers 80% of the approved amount after you've met your Part B deductible.",
@@ -46,10 +47,12 @@ export const medicarePrograms = [
       "Coordination between all your healthcare providers",
       "Personalized care plan that's regularly updated"
     ],
-    icon: "shield" as const
+    icon: "shield" as const,
+    isEligible: true
   },
   {
-    name: "Remote Patient Monitoring (RPM)",
+    name: "Home Health Monitoring",
+    originalName: "Remote Patient Monitoring (RPM)",
     description: "Track health metrics from home with devices that send data to your healthcare provider.",
     eligibility: "Medicare beneficiaries whose providers have ordered RPM services.",
     coverage: "Medicare Part B covers RPM services for patients with acute and chronic conditions.",
@@ -59,10 +62,12 @@ export const medicarePrograms = [
       "More consistent monitoring of vital signs",
       "Real-time alerts for concerning measurements"
     ],
-    icon: "heart" as const
+    icon: "heart" as const,
+    isEligible: true
   },
   {
-    name: "Behavioral Health Integration (BHI)",
+    name: "Mental Health Integration",
+    originalName: "Behavioral Health Integration (BHI)",
     description: "Mental health services integrated with your primary care.",
     eligibility: "Medicare beneficiaries with behavioral health conditions like depression or anxiety.",
     coverage: "Medicare Part B covers BHI services when provided by eligible professionals.",
@@ -72,10 +77,12 @@ export const medicarePrograms = [
       "Brief interventions using evidence-based techniques",
       "Monitoring your progress with regular follow-ups"
     ],
-    icon: "brain" as const
+    icon: "brain" as const,
+    isEligible: false
   },
   {
-    name: "Principal Care Management (PCM)",
+    name: "Focused Condition Support",
+    originalName: "Principal Care Management (PCM)",
     description: "Focused care management for a single high-risk condition.",
     eligibility: "Medicare beneficiaries with one complex chronic condition that's expected to last at least 3 months.",
     coverage: "Medicare Part B covers PCM services when provided by eligible professionals.",
@@ -85,6 +92,7 @@ export const medicarePrograms = [
       "Medication management for your condition",
       "Coordination with specialists for your condition"
     ],
-    icon: "clipboard" as const
+    icon: "clipboard" as const,
+    isEligible: false
   }
 ];

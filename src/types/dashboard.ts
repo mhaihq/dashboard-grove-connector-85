@@ -90,11 +90,13 @@ export interface ClinicalRecommendation {
 
 export interface MedicareProgram {
   name: string;
+  originalName: string;
   description: string;
   eligibility: string;
   coverage: string;
   benefits: string[];
   icon: "thermometer" | "brain" | "heart" | "footprints" | "clipboard" | "shield" | "book";
+  isEligible?: boolean;
 }
 
 export interface MilestonesData {
