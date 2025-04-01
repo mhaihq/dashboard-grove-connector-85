@@ -5,7 +5,7 @@ import { HealthPulseItem } from '@/types/dashboard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Activity } from 'lucide-react';
 
-interface HealthPulseProps {
+interface HealthPulseSectionProps {
   data: HealthPulseItem[];
   mostImproved: string;
   focusArea: string;
@@ -17,7 +17,7 @@ interface HealthPulseProps {
   };
 }
 
-export const HealthPulseSection: React.FC<HealthPulseProps> = ({
+export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
   data,
   mostImproved,
   focusArea,
@@ -36,6 +36,31 @@ export const HealthPulseSection: React.FC<HealthPulseProps> = ({
       ? `Your ${item.area.toLowerCase()} system is working well`
       : `Consider adjusting your ${item.area.toLowerCase()} routine`
   }));
+  
+  // Find the most significant improvements for weekly change summary
+  const improvements = enhancedData
+    .filter(item => item.trend === 'up')
+    .sort((a, b) => b.trendPercentage - a.trendPercentage);
+  
+  // Calculate improved and declined areas for visualization
+  const improvedAreas = improvements.map(item => ({
+    area: item.area,
+    change: item.trendPercentage
+  }));
+  
+  const declinedAreas = enhancedData
+    .filter(item => item.trend === 'stable' && item.score < 60)
+    .map(item => ({
+      area: item.area,
+      change: 0
+    }));
+  
+  // Create weekly change insights
+  const weeklyInsights = [
+    `You've improved in ${mostImproved} this week — ${improvements[0]?.trendPercentage}% increase in positive self-reports.`,
+    `Stress is lower on days with a structured evening routine.`,
+    `Mood stabilized on days with social interaction.`
+  ];
   
   return (
     <Card className="shadow-sm hover:shadow-md transition-shadow">
@@ -76,7 +101,9 @@ export const HealthPulseSection: React.FC<HealthPulseProps> = ({
           focusArea={focusArea}
           positiveAreas={positiveAreas}
           totalAreas={totalAreas}
-          environmentTips={environmentTips}
+          improvedAreas={improvedAreas}
+          declinedAreas={declinedAreas}
+          weeklyInsights={weeklyInsights}
         />
       </CardContent>
     </Card>

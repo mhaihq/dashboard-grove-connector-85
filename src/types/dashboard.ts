@@ -1,3 +1,4 @@
+
 import { ReactNode } from 'react';
 
 export interface HealthIndicator {
@@ -54,6 +55,7 @@ export interface HealthPulseItem {
   trend?: 'up' | 'down' | 'stable';
   trendPercentage?: number; // Added to show percentage improvement
   relatedTo?: string[];
+  systemExplanation?: string;
 }
 
 export interface OverviewItem {
