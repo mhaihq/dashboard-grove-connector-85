@@ -2,26 +2,17 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ChevronRight } from 'lucide-react';
-import { ClinicalRecommendation, JournalEntry } from '@/types/dashboard';
-import { ProgressJournal } from '@/components/dashboard/ProgressJournal';
-import { CarePlan } from '@/components/dashboard/CarePlan';
-import { Milestones } from '@/components/dashboard/Milestones';
+import { ClinicalRecommendation } from '@/types/dashboard';
 import RecommendationCard from '@/components/dashboard/RecommendationCard';
 
 interface PersonalRecommendationsTabProps {
   recommendations: ClinicalRecommendation[];
-  journalEntries: JournalEntry[];
-  carePlanItems: any[];
-  milestonesData: any;
   onRecommendationAction: (recommendation: ClinicalRecommendation) => void;
   onSwitchTab: () => void;
 }
 
 export const PersonalRecommendationsTab: React.FC<PersonalRecommendationsTabProps> = ({
   recommendations,
-  journalEntries,
-  carePlanItems,
-  milestonesData,
   onRecommendationAction,
   onSwitchTab
 }) => {
@@ -34,23 +25,6 @@ export const PersonalRecommendationsTab: React.FC<PersonalRecommendationsTabProp
           onAction={onRecommendationAction} 
         />
       ))}
-      
-      {/* Progress Journal, Care Plan, and Milestones sections */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
-        <div className="lg:col-span-1">
-          {journalEntries.length > 0 && <ProgressJournal entries={journalEntries} />}
-        </div>
-        
-        <div className="lg:col-span-2">
-          {carePlanItems.length > 0 && <CarePlan items={carePlanItems} />}
-        </div>
-      </div>
-      
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
-        <div className="lg:col-span-2">
-          {milestonesData && <Milestones data={milestonesData} />}
-        </div>
-      </div>
       
       <div className="flex justify-end">
         <Button 

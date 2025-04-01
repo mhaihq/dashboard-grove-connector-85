@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart } from 'lucide-react';
-import { ClinicalRecommendation, MedicareProgram, JournalEntry } from '@/types/dashboard';
+import { ClinicalRecommendation, MedicareProgram } from '@/types/dashboard';
 import { toast } from '@/hooks/use-toast';
 import PersonalRecommendationsTab from '@/components/dashboard/PersonalRecommendationsTab';
 import ClinicalGuidelinesTab from '@/components/dashboard/ClinicalGuidelinesTab';
@@ -12,18 +12,12 @@ interface HealthRecommendationsProps {
   recommendations: ClinicalRecommendation[];
   medicarePrograms: MedicareProgram[];
   onScheduleCall: () => void;
-  journalEntries?: JournalEntry[];
-  carePlanItems?: any[];
-  milestonesData?: any;
 }
 
 export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
   recommendations,
   medicarePrograms,
-  onScheduleCall,
-  journalEntries = [],
-  carePlanItems = [],
-  milestonesData = null
+  onScheduleCall
 }) => {
   const [activeTab, setActiveTab] = useState("recommendations");
 
@@ -84,9 +78,6 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
           <TabsContent value="recommendations">
             <PersonalRecommendationsTab 
               recommendations={personalRecommendations}
-              journalEntries={journalEntries}
-              carePlanItems={carePlanItems}
-              milestonesData={milestonesData}
               onRecommendationAction={handleAction}
               onSwitchTab={() => setActiveTab("guidelines")}
             />

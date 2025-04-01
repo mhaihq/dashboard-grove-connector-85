@@ -11,7 +11,6 @@ import { HealthRecommendations } from '@/components/dashboard/HealthRecommendati
 import { IntakeSummary } from '@/components/dashboard/IntakeSummary';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollText, Clipboard, Trophy, Calendar, Clock } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
   userInfo, welcome, userBackground, overview, 
   healthIndicators, journalEntries, carePlanItems, 
@@ -135,9 +134,6 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
           recommendations={clinicalRecommendations} 
           medicarePrograms={medicarePrograms}
           onScheduleCall={onScheduleCall}
-          journalEntries={journalEntries}
-          carePlanItems={carePlanItems}
-          milestonesData={milestonesData}
         />
       </div>
       
