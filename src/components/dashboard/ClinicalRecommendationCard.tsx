@@ -27,9 +27,9 @@ export const ClinicalRecommendationCard: React.FC<ClinicalRecommendationCardProp
   onAction
 }) => {
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-sm transition-all">
+    <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 bg-white">
       <div className="flex items-center bg-blue-50 p-4 border-b border-gray-200">
-        <div className="bg-white p-2 rounded-full mr-3 shadow-sm text-blue-600">
+        <div className="bg-white p-2.5 rounded-full mr-3 shadow-sm text-blue-600 flex items-center justify-center w-10 h-10">
           {getIcon(program.icon)}
         </div>
         <div>
@@ -38,41 +38,41 @@ export const ClinicalRecommendationCard: React.FC<ClinicalRecommendationCardProp
         </div>
       </div>
       
-      <div className="p-4">
-        <div className="mb-4">
-          <p className="text-gray-700 mb-3">{program.description}</p>
+      <div className="p-5">
+        <div className="mb-5">
+          <p className="text-gray-700 mb-4 leading-relaxed">{program.description}</p>
           
-          <div className="flex items-center mb-3">
+          <div className="flex items-center mb-4">
             {program.isEligible !== false ? (
-              <div className="flex items-center text-green-700">
+              <div className="flex items-center text-green-700 bg-green-50 px-3 py-1.5 rounded-full">
                 <CheckCircle className="h-4 w-4 mr-1.5" />
                 <span className="text-sm font-medium">You may be eligible</span>
               </div>
             ) : (
-              <div className="flex items-center text-amber-700">
+              <div className="flex items-center text-amber-700 bg-amber-50 px-3 py-1.5 rounded-full">
                 <AlertTriangle className="h-4 w-4 mr-1.5" />
                 <span className="text-sm font-medium">Eligibility unclear</span>
               </div>
             )}
           </div>
           
-          <div className="bg-blue-50 p-3 rounded-md border border-blue-100 mb-4">
-            <h4 className="text-sm font-medium text-blue-900 mb-1.5">Coverage includes:</h4>
-            <p className="text-sm text-blue-800">{program.coverage}</p>
+          <div className="bg-blue-50 p-4 rounded-xl border border-blue-100 mb-5">
+            <h4 className="text-sm font-medium text-blue-900 mb-2">Coverage includes:</h4>
+            <p className="text-sm text-blue-800 leading-relaxed">{program.coverage}</p>
           </div>
           
-          <div className="mb-3">
-            <h4 className="text-sm font-medium text-gray-900 mb-2">Benefits:</h4>
-            <ul className="space-y-1 pl-5 list-disc">
+          <div className="mb-4">
+            <h4 className="text-sm font-medium text-gray-900 mb-2.5">Benefits:</h4>
+            <ul className="space-y-2 pl-5 list-disc">
               {program.benefits.map((benefit, index) => (
                 <li key={index} className="text-sm text-gray-700">{benefit}</li>
               ))}
             </ul>
           </div>
           
-          <div className="p-3 bg-gray-50 rounded-md border border-gray-200 mb-4">
-            <h4 className="text-sm font-medium text-gray-900 mb-1">Eligibility criteria:</h4>
-            <p className="text-sm text-gray-700">{program.eligibility}</p>
+          <div className="p-4 bg-gray-50 rounded-xl border border-gray-200 mb-5">
+            <h4 className="text-sm font-medium text-gray-900 mb-1.5">Eligibility criteria:</h4>
+            <p className="text-sm text-gray-700 leading-relaxed">{program.eligibility}</p>
           </div>
         </div>
         
@@ -80,7 +80,7 @@ export const ClinicalRecommendationCard: React.FC<ClinicalRecommendationCardProp
           <Button 
             variant="outline" 
             size="sm"
-            className="border-blue-300 text-blue-700 hover:bg-blue-50"
+            className="border-blue-300 text-blue-700 hover:bg-blue-50 rounded-full px-4 shadow-sm"
             onClick={onAction}
           >
             <PhoneCall className="mr-1.5 h-3.5 w-3.5" />

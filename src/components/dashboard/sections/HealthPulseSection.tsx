@@ -17,6 +17,22 @@ interface HealthPulseSectionProps {
   };
 }
 
+// Define the enhanced version of HealthPulseItem with all the additional properties
+interface EnhancedHealthPulseItem extends HealthPulseItem {
+  trend: 'up' | 'down' | 'stable';
+  relatedTo: string[];
+  initialScore: number;
+  trendPercentage: number;
+  systemExplanation: string;
+  lastCheckInMention: boolean;
+  streakData: {
+    current: number;
+    target: number;
+    change: number;
+    status: 'improved' | 'declined' | 'stable';
+  };
+}
+
 export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
   data,
   mostImproved,
@@ -26,9 +42,9 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
   environmentTips
 }) => {
   // Enhance data with additional metrics for the new design
-  const enhancedData: HealthPulseItem[] = data.map(item => ({
+  const enhancedData: EnhancedHealthPulseItem[] = data.map(item => ({
     ...item,
-    trend: item.improving ? 'up' as const : 'stable' as const,
+    trend: item.improving ? 'up' : 'stable',
     relatedTo: ['sleep', 'nutrition'],
     initialScore: item.score - (item.improving ? 15 : 0),
     trendPercentage: item.improving ? 15 : 0,
@@ -40,19 +56,19 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
       current: Math.floor(Math.random() * 7) + 1,
       target: 7,
       change: Math.floor(Math.random() * 5) - 2,
-      status: Math.random() > 0.6 ? 'improved' as const : (Math.random() > 0.5 ? 'declined' as const : 'stable' as const)
+      status: Math.random() > 0.6 ? 'improved' : (Math.random() > 0.5 ? 'declined' : 'stable')
     }
   }));
   
   // Find the most significant improvements for weekly change summary
   const improvements = enhancedData
     .filter(item => item.trend === 'up')
-    .sort((a, b) => (b.trendPercentage || 0) - (a.trendPercentage || 0));
+    .sort((a, b) => b.trendPercentage - a.trendPercentage);
   
   // Calculate improved and declined areas for visualization
   const improvedAreas = improvements.map(item => ({
     area: item.area,
-    change: item.trendPercentage || 0
+    change: item.trendPercentage
   }));
   
   const needsAttentionAreas = enhancedData
@@ -113,22 +129,22 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
   ];
   
   return (
-    <Card className="shadow-sm hover:shadow-md transition-shadow">
-      <CardHeader className="pb-2">
+    <Card className="shadow-sm hover:shadow-md transition-shadow rounded-xl overflow-hidden">
+      <CardHeader className="pb-2 bg-gradient-to-br from-gray-50 to-white">
         <CardTitle className="flex items-center text-xl">
           <Activity className="w-5 h-5 text-blue-500 mr-2" />
           Your Weekly Health Pulse
         </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="mb-1">
+      <CardContent className="p-5">
+        <div className="mb-3">
           <p className="text-sm text-gray-600">
             A snapshot of how your habits and health are trending — drawn from your recent conversations.
           </p>
         </div>
         
         <HealthPulse 
-          data={enhancedData}
+          data={enhancedData as any /* Using type assertion to satisfy TypeScript */}
           mostImproved={mostImproved}
           focusArea={focusArea}
           positiveAreas={positiveAreas}
