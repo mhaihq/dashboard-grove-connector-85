@@ -1,18 +1,17 @@
 
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { AreaChart, Area, ResponsiveContainer } from 'recharts';
-import { BarChart, Bar } from 'recharts';
 import { 
   MessageSquare, 
   PlusCircle, 
   BookmarkPlus, 
-  RepeatCircle, 
+  Repeat,
   InfoIcon,
   Moon,
   Brain,
   Activity,
-  Droplets
+  Droplets,
+  PenLine
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { 
@@ -24,92 +23,89 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
-// Sample data for the charts
-const sleepData = [
-  { value: 68 }, { value: 72 }, { value: 70 }, { value: 69 }, 
-  { value: 75 }, { value: 90 }, { value: 82 }, { value: 79 }
-];
-
-const stressData = [
-  { value: 40 }, { value: 39 }, { value: 42 }, { value: 38 }, 
-  { value: 30 }, { value: 29 }, { value: 35 }, { value: 32 }
-];
-
-const exerciseData = [
-  { value: 2 }, { value: 3 }, { value: 2 }, { value: 4 }, 
-  { value: 3 }, { value: 5 }, { value: 4 }, { value: 3 }
-];
-
-const nutritionData = [
-  { value: 65 }, { value: 70 }, { value: 68 }, { value: 72 }, 
-  { value: 75 }, { value: 79 }, { value: 80 }, { value: 82 }
-];
-
-interface HealthInsightCardProps {
-  title: string;
+interface PatternInsightCardProps {
   insightTitle: string;
-  metric: string;
-  change: string;
-  changeType: 'positive' | 'negative' | 'cognitive';
-  changeValue: string;
-  condition: string;
-  date: string;
-  context: string;
-  data: Array<{ value: number }>;
-  chartType?: 'area' | 'bar';
-  color?: string;
+  pattern: string;
+  result: string;
+  suggestion: string;
+  status: 'positive' | 'negative' | 'cognitive' | 'curious';
+  category: 'sleep' | 'stress' | 'exercise' | 'nutrition' | 'hydration' | 'social';
   tooltipInfo?: string;
-  categoryIcon?: React.ReactNode;
+  tags?: string[];
 }
 
-const getColorByChangeType = (changeType: 'positive' | 'negative' | 'cognitive') => {
-  switch (changeType) {
-    case 'positive': return 'green';
-    case 'negative': return 'amber';
-    case 'cognitive': return 'purple';
-    default: return 'blue';
-  }
-};
-
-const getCategoryIcon = (metric: string) => {
-  switch (metric.toLowerCase()) {
-    case 'sleep quality':
+const getCategoryIcon = (category: string) => {
+  switch (category) {
+    case 'sleep':
       return <Moon className="w-5 h-5" />;
-    case 'stress level':
+    case 'stress':
       return <Activity className="w-5 h-5" />;
     case 'exercise':
       return <Activity className="w-5 h-5" />;
     case 'nutrition':
       return <Droplets className="w-5 h-5" />;
+    case 'hydration':
+      return <Droplets className="w-5 h-5" />;
+    case 'social':
+      return <MessageSquare className="w-5 h-5" />;
     default:
       return <Brain className="w-5 h-5" />;
   }
 };
 
-const HealthInsightCard: React.FC<HealthInsightCardProps> = ({
+const getStatusIcon = (status: 'positive' | 'negative' | 'cognitive' | 'curious') => {
+  switch (status) {
+    case 'positive': return '✅';
+    case 'negative': return '⚠️';
+    case 'cognitive': return '🧠';
+    case 'curious': return '💡';
+    default: return '✅';
+  }
+};
+
+const getStatusColor = (status: 'positive' | 'negative' | 'cognitive' | 'curious') => {
+  switch (status) {
+    case 'positive': return 'bg-green-100 text-green-800 border-green-200';
+    case 'negative': return 'bg-amber-100 text-amber-800 border-amber-200';
+    case 'cognitive': return 'bg-purple-100 text-purple-800 border-purple-200';
+    case 'curious': return 'bg-blue-100 text-blue-800 border-blue-200';
+    default: return 'bg-green-100 text-green-800 border-green-200';
+  }
+};
+
+const PatternInsightCard: React.FC<PatternInsightCardProps> = ({
   insightTitle,
-  metric,
-  change,
-  changeType,
-  changeValue,
-  condition,
-  date,
-  context,
-  data,
-  chartType = 'area',
-  color = '#33C3F0',
-  tooltipInfo = "This insight was found based on 3 weeks of conversation data.",
-  categoryIcon
+  pattern,
+  result,
+  suggestion,
+  status,
+  category,
+  tooltipInfo = "This insight was found based on your recent activity patterns.",
+  tags = []
 }) => {
-  const colorClass = getColorByChangeType(changeType);
+  const statusIcon = getStatusIcon(status);
+  const statusColor = getStatusColor(status);
+  const categoryIcon = getCategoryIcon(category);
   
   return (
     <Card className="overflow-hidden border-gray-200 shadow-sm hover:shadow-md transition-all duration-300">
       <CardContent className="p-6">
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex items-start justify-between mb-5">
           <div className="flex-1">
-            <h3 className="text-lg font-bold text-gray-900">{insightTitle}</h3>
-            <p className="text-sm text-gray-500 mt-1">{metric}</p>
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-lg font-bold">{statusIcon}</span>
+              <h3 className="text-lg font-bold text-gray-900">{insightTitle}</h3>
+            </div>
+            
+            {tags.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-1">
+                {tags.map((tag, idx) => (
+                  <span key={idx} className="text-xs px-2 py-0.5 bg-gray-100 text-gray-600 rounded-full">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            )}
           </div>
           
           <TooltipProvider>
@@ -124,92 +120,46 @@ const HealthInsightCard: React.FC<HealthInsightCardProps> = ({
           </TooltipProvider>
         </div>
         
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex-1">
-            <p className="text-gray-700 text-md leading-relaxed">
-              {condition} on <span className="font-medium">{date}</span> when {context}
-            </p>
-          </div>
-          
-          <div className={cn(
-            "flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center",
-            changeType === 'positive' ? 'bg-green-100' : 
-            changeType === 'negative' ? 'bg-amber-100' : 'bg-purple-100'
-          )}>
+        <div className="space-y-4 mb-5">
+          <div className="flex gap-2">
             <div className={cn(
-              "w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg",
-              changeType === 'positive' ? 'bg-green-500' : 
-              changeType === 'negative' ? 'bg-amber-500' : 'bg-purple-500'
+              "p-1.5 rounded-full flex-shrink-0 mt-0.5",
+              status === 'positive' ? 'bg-green-100' : 
+              status === 'negative' ? 'bg-amber-100' : 
+              status === 'cognitive' ? 'bg-purple-100' : 'bg-blue-100'
             )}>
-              {changeType === 'positive' ? '✓' : 
-               changeType === 'negative' ? '!' : '?'}
+              {categoryIcon}
+            </div>
+            <div>
+              <p className="text-gray-700 font-medium">Behavioral Pattern Detected:</p>
+              <p className="text-gray-600">{pattern}</p>
             </div>
           </div>
-        </div>
-        
-        <div className="flex items-center justify-between mb-6">
-          <div className="h-24 w-1/2 max-w-[200px]">
-            <ResponsiveContainer width="100%" height="100%">
-              {chartType === 'area' ? (
-                <AreaChart data={data}>
-                  <defs>
-                    <linearGradient id={`color${metric}`} x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor={color} stopOpacity={0.8}/>
-                      <stop offset="95%" stopColor={color} stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <Area 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke={color} 
-                    strokeWidth={2}
-                    fillOpacity={1} 
-                    fill={`url(#color${metric})`} 
-                  />
-                </AreaChart>
-              ) : (
-                <BarChart data={data}>
-                  <Bar dataKey="value" fill={color} radius={[4, 4, 0, 0]} />
-                </BarChart>
-              )}
-            </ResponsiveContainer>
+          
+          <div className="pl-8">
+            <p className="text-gray-700 font-medium">Observed Result:</p>
+            <p className="text-gray-600">{result}</p>
           </div>
           
-          <div className="space-y-2">
-            <Badge variant="outline" className={cn(
-              "text-xs py-1 px-2",
-              changeType === 'positive' ? 'bg-green-100 text-green-800 hover:bg-green-200' : 
-              changeType === 'negative' ? 'bg-amber-100 text-amber-800 hover:bg-amber-200' : 
-              'bg-purple-100 text-purple-800 hover:bg-purple-200'
-            )}>
-              {changeValue} {change}
-            </Badge>
+          <div className="pl-8">
+            <p className="text-gray-700 font-medium">Suggested Action:</p>
+            <p className="text-gray-600">{suggestion}</p>
           </div>
         </div>
         
-        <div className="flex justify-between items-center mt-6">
-          <div className="flex space-x-2">
-            {categoryIcon && (
-              <div className={cn(
-                "p-1 rounded-full",
-                changeType === 'positive' ? 'bg-green-100 text-green-500' : 
-                changeType === 'negative' ? 'bg-amber-100 text-amber-500' : 'bg-purple-100 text-purple-500'
-              )}>
-                {categoryIcon}
-              </div>
-            )}
-          </div>
-          
-          <div className="flex space-x-2">
-            <Button variant="outline" size="sm" className="text-xs">
-              <PlusCircle className="w-3.5 h-3.5 mr-1" />
-              Add to Focus
-            </Button>
-            <Button variant="ghost" size="sm" className="text-xs">
-              <BookmarkPlus className="w-3.5 h-3.5 mr-1" />
-              Save
-            </Button>
-          </div>
+        <div className="flex justify-end items-center mt-4 space-x-2">
+          <Button variant="outline" size="sm" className="text-sm">
+            <Repeat className="w-4 h-4 mr-1" />
+            Add to Plan
+          </Button>
+          <Button variant="ghost" size="sm" className="text-sm">
+            <BookmarkPlus className="w-4 h-4 mr-1" />
+            Save
+          </Button>
+          <Button variant="ghost" size="sm" className="text-sm">
+            <PenLine className="w-4 h-4 mr-1" />
+            Reflect
+          </Button>
         </div>
       </CardContent>
     </Card>
@@ -227,101 +177,52 @@ export const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   medicarePrograms,
   onScheduleCall
 }) => {
-  // Enhanced recommendations with Atomic Habits principles
-  const enhancedRecommendations = recommendations.map(rec => {
-    let atomicHabitsPrinciple = '';
-    let systemsThinking = '';
-    
-    // Add Atomic Habits principles based on recommendation type
-    if (rec.title.includes('Sleep')) {
-      atomicHabitsPrinciple = 'Environment Design';
-      systemsThinking = 'Creating a sleep-friendly environment makes good sleep automatic, not effortful';
-    } else if (rec.title.includes('Stress')) {
-      atomicHabitsPrinciple = 'Habit Stacking';
-      systemsThinking = 'Attaching stress relief to existing routines builds consistency without willpower';
-    } else if (rec.title.includes('Emotional')) {
-      atomicHabitsPrinciple = 'Implementation Intentions';
-      systemsThinking = 'Specifying when and where you\'ll manage emotions removes decision fatigue';
-    } else if (rec.title.includes('Energy')) {
-      atomicHabitsPrinciple = 'Make It Easy';
-      systemsThinking = 'Reducing friction in your environment leads to more consistent energy management';
-    }
-    
-    return {
-      ...rec,
-      atomicHabitsPrinciple,
-      systemsThinking
-    };
-  });
-
   return (
     <div>
       <h2 className="text-2xl font-semibold text-gray-900 mb-6">Health Insights</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <HealthInsightCard
+        <PatternInsightCard
           insightTitle="Better Sleep When Waking Early"
-          title="sum of"
-          metric="Sleep Quality"
-          change="spiked"
-          changeType="positive"
-          changeValue="+23%"
-          condition="Wake Time"
-          date="June 25"
-          context="you woke before 7am"
-          data={sleepData}
-          color="#33C3F0"
+          pattern="You woke before 7am on 3 days last week."
+          result="Your reported sleep quality improved by +23% on those days."
+          suggestion="Try keeping your wake time before 7am 3x next week."
+          status="positive"
+          category="sleep"
           tooltipInfo="This pattern was detected across 8 sleep journal entries."
-          categoryIcon={<Moon className="w-5 h-5" />}
+          tags={["Morning Routine", "Sleep Quality"]}
         />
         
-        <HealthInsightCard
+        <PatternInsightCard
           insightTitle="Stress Increases with Long Hours"
-          title="Avg of"
-          metric="Stress Level"
-          change="spiked"
-          changeType="negative"
-          changeValue="+43%"
-          condition="Work Hours"
-          date="February 23"
-          context="you worked over 8 hours"
-          data={stressData}
-          color="#FFB74D"
-          chartType="area"
+          pattern="You worked more than 8 hours on 4 days last week."
+          result="Your reported stress level was 43% higher on those days."
+          suggestion="Schedule at least 3 days with firm work boundaries under 8 hours."
+          status="negative"
+          category="stress"
           tooltipInfo="You also experienced this pattern last month during busy weeks."
-          categoryIcon={<Activity className="w-5 h-5" />}
+          tags={["Workload", "Stress Triggers"]}
         />
         
-        <HealthInsightCard
+        <PatternInsightCard
           insightTitle="Morning Exercise Boosts Consistency"
-          title="frequency of"
-          metric="Exercise"
-          change="increased"
-          changeType="positive"
-          changeValue="+78%"
-          condition="Morning Routine"
-          date="March 15"
-          context="you included stretching"
-          data={exerciseData}
-          color="#4CAF50"
-          chartType="bar"
+          pattern="You exercised before 9am on 3 days last week."
+          result="You were 78% more likely to complete your planned workout when starting early."
+          suggestion="Schedule 2-3 morning workout sessions this week."
+          status="positive"
+          category="exercise"
           tooltipInfo="Based on your activity tracking from the past 3 weeks."
-          categoryIcon={<Activity className="w-5 h-5" />}
+          tags={["Morning Routine", "Exercise"]}
         />
         
-        <HealthInsightCard
+        <PatternInsightCard
           insightTitle="Breakfast Improves Diet Quality"
-          title="quality of"
-          metric="Nutrition"
-          change="improved"
-          changeType="cognitive"
-          changeValue="+35%"
-          condition="Meal Pattern"
-          date="April 10"
-          context="you had breakfast"
-          data={nutritionData}
-          color="#9C27B0"
+          pattern="You ate breakfast within 1 hour of waking on 4 days."
+          result="Your overall nutrition quality was 35% better on days with early breakfast."
+          suggestion="Prepare simple breakfast options for 3-4 mornings this week."
+          status="cognitive"
+          category="nutrition"
           tooltipInfo="This insight combines your meal tracking and energy ratings."
-          categoryIcon={<Droplets className="w-5 h-5" />}
+          tags={["Morning Routine", "Nutrition"]}
         />
       </div>
     </div>
