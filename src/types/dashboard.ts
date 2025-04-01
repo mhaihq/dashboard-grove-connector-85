@@ -1,4 +1,3 @@
-
 import { ReactNode } from 'react';
 
 export interface HealthIndicator {
@@ -26,6 +25,10 @@ export interface HealthPulseItem {
   area: string;
   score: number;
   improving: boolean;
+  priority?: boolean;
+  tooltip?: string;
+  trend?: 'up' | 'down' | 'stable';
+  relatedTo?: string[];
 }
 
 export interface OverviewItem {

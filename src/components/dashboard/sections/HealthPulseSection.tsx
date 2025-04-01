@@ -18,10 +18,35 @@ export const HealthPulseSection: React.FC<HealthPulseSectionProps> = ({
   positiveAreas,
   totalAreas
 }) => {
+  // Add trend data and tooltips to the health pulse items
+  const enhancedData = data.map(item => {
+    // Sample trend data - in a real app, this would come from the backend
+    let trend: 'up' | 'down' | 'stable' = 'stable';
+    
+    if (item.area === mostImproved || item.improving) {
+      trend = 'up';
+    } else if (item.area === focusArea || item.priority) {
+      trend = 'down';
+    }
+    
+    // Add sample related dimensions
+    const relatedTo: string[] = [];
+    if (item.area === 'Sleep') relatedTo.push('Energy', 'Mood');
+    if (item.area === 'Exercise') relatedTo.push('Energy', 'Mood');
+    if (item.area === 'Nutrition') relatedTo.push('Energy');
+    if (item.area === 'Stress') relatedTo.push('Sleep', 'Mood');
+    
+    return {
+      ...item,
+      trend,
+      relatedTo
+    };
+  });
+  
   return (
     <div className="mb-16">
       <HealthPulse 
-        data={data}
+        data={enhancedData}
         mostImproved={mostImproved}
         focusArea={focusArea}
         positiveAreas={positiveAreas}
