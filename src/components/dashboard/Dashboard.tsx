@@ -15,7 +15,7 @@ import {
   healthIndicators, journalEntries, carePlanItems, 
   suggestedPrograms, medicarePrograms, milestones, functionalAreas,
   clinicalRecommendations
-} from '@/data/dashboardData';
+} from '@/data/index';
 import { HealthPulseItem } from '@/types/dashboard';
 
 interface DashboardProps {
