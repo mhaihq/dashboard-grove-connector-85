@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Clock, Milestone, CheckCircle2, Brain, FileSparkles, Sparkles, Stars, ArrowRight } from 'lucide-react';
+import { Clock, Milestone, CheckCircle2, Brain, FileText, Sparkles, Stars, ArrowRight } from 'lucide-react';
 import { JournalEntry } from '@/types/dashboard';
 
 interface JourneySoFarSectionProps {
@@ -65,7 +65,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       label: "Care Plan Adapted",
       description: "Goals personalized based on your check-ins and progress.",
       date: "March 15, 2025",
-      icon: <FileSparkles className="w-5 h-5 text-green-500" />,
+      icon: <FileText className="w-5 h-5 text-green-500" />,
       completed: true
     },
     {
