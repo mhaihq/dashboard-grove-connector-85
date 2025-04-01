@@ -78,7 +78,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
   
   return (
     <DashboardLayout>
-      {/* New Welcome Banner */}
+      {/* Banner with quick summary */}
       <WelcomeBanner
         userName={userInfo.name.split(' ')[0]}
         recentAchievement="Your morning walks are making a difference!"
@@ -90,18 +90,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         journeyProgress={35}
       />
       
-      {/* 1. Welcome & Check-in Section */}
-      <WelcomeSection 
-        userName={userInfo.name.split(' ')[0]}
-        lastCheckIn="March 15, 2025"
-        medicareStatus="Enrolled"
-        riskScore="Medium"
-        riskTrend="Improving"
-        journalEntries={journalEntries}
-        nextCheckInDate={nextCheckInDate}
-      />
-      
-      {/* 2. Health Pulse Chart */}
+      {/* A. Current Health Snapshot */}
       <HealthPulseSection 
         data={healthAssessmentData}
         mostImproved="Sleep"
@@ -110,52 +99,23 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         totalAreas={6}
       />
       
-      {/* 3. Active Goals */}
+      {/* B. Goals & Milestones */}
       <GoalsSection 
         carePlanItems={carePlanItems}
         nextCheckInDate={nextCheckInDate}
       />
       
-      {/* 4. Health Recommendations */}
+      {/* C. Recommendations (Systems) */}
       <RecommendationsSection 
         recommendations={clinicalRecommendations}
         medicarePrograms={medicarePrograms}
         onScheduleCall={onScheduleCall}
       />
       
-      {/* 5. Health Indicators */}
-      <HealthIndicatorsSection 
-        healthIndicators={healthIndicators}
-      />
-      
-      {/* 6. Journey So Far - Combined Progress & Milestones */}
+      {/* D. Your Journey So Far */}
       <JourneySoFarSection 
         journalEntries={journalEntries}
         milestonesData={milestonesData}
-      />
-      
-      {/* 7. Full Health Story */}
-      <HealthStorySection 
-        date="February 13, 2025"
-        welcomeMessage={welcome.message}
-        background={userBackground}
-        goals={overview.find(item => item.title === "Goals and Desires")?.items || []}
-        concerns={[
-          `Sleep disruption (rating: ${functionalAreas.find(area => area.key === 'sleep')?.rating}/5)`,
-          `Stress management (rating: ${functionalAreas.find(area => area.key === 'stressManagement')?.rating}/5)`,
-          `Emotional regulation (rating: ${functionalAreas.find(area => area.key === 'emotionalRegulation')?.rating}/5)`
-        ]}
-        overviewSections={overview}
-        detailedAssessment={{
-          sleep: {
-            observations: functionalAreas.find(area => area.key === 'sleep')?.observations || [],
-            quote: functionalAreas.find(area => area.key === 'sleep')?.evidence || ""
-          },
-          emotionalRegulation: {
-            observations: functionalAreas.find(area => area.key === 'emotionalRegulation')?.observations || [],
-            quote: functionalAreas.find(area => area.key === 'emotionalRegulation')?.evidence || ""
-          }
-        }}
       />
     </DashboardLayout>
   );

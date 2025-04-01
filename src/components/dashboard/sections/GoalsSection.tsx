@@ -25,12 +25,13 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
   
   return (
     <div className="mb-16">
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">B. Goals & Milestones</h2>
       <Card className="shadow-sm hover:shadow-md transition-shadow">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
             <CardTitle className="text-xl flex items-center">
               <List className="w-5 h-5 text-hana-green mr-2" />
-              Your Action Plan
+              Your SMART Goals
             </CardTitle>
             <div className="flex items-center text-sm">
               <span className="text-gray-500 mr-2">Overall Progress:</span>
@@ -43,17 +44,42 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
           <Tabs defaultValue="active" className="mb-6">
             <TabsList className="mb-4">
               <TabsTrigger value="active">{activeGoals} Active Goals</TabsTrigger>
-              <TabsTrigger value="analytics">Progress Analytics</TabsTrigger>
+              <TabsTrigger value="streaks">Streak Counters</TabsTrigger>
             </TabsList>
             
             <TabsContent value="active">
               <CarePlan items={carePlanItems} />
             </TabsContent>
             
-            <TabsContent value="analytics">
-              <div className="p-6 text-center text-gray-500 border border-dashed border-gray-200 rounded-lg">
-                <BarChart className="w-8 h-8 mx-auto text-gray-400 mb-2" />
-                <p>Detailed progress analytics will be available after 2 weeks of activity.</p>
+            <TabsContent value="streaks">
+              <div className="space-y-4">
+                <div className="border border-green-100 rounded-lg p-4 bg-green-50">
+                  <h3 className="font-medium text-green-800 mb-2">Active Streaks</h3>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-green-700">Morning walks</span>
+                      <span className="font-medium text-green-800">5 days</span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-green-700">Alcohol-free evenings</span>
+                      <span className="font-medium text-green-800">3 days</span>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="border border-amber-100 rounded-lg p-4 bg-amber-50">
+                  <h3 className="font-medium text-amber-800 mb-2">Next Milestones</h3>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-start">
+                      <span className="text-amber-500 mr-2">•</span>
+                      <span className="text-amber-700">Next milestone: 2 consecutive weeks meeting your gym goal!</span>
+                    </li>
+                    <li className="flex items-start">
+                      <span className="text-amber-500 mr-2">•</span>
+                      <span className="text-amber-700">You're 3 days away from a hydration streak.</span>
+                    </li>
+                  </ul>
+                </div>
               </div>
             </TabsContent>
           </Tabs>

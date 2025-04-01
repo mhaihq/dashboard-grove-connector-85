@@ -2,7 +2,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Trophy, TrendingUp } from 'lucide-react';
+import { Trophy, TrendingUp, Clock, ArrowRight } from 'lucide-react';
 import { JournalEntry } from '@/types/dashboard';
 
 interface JourneySoFarSectionProps {
@@ -31,73 +31,136 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   
   return (
     <div className="mb-16">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Progress Timeline</h2>
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">D. Your Journey So Far</h2>
+      
+      <Card className="shadow-sm hover:shadow-md transition-shadow mb-6">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg flex items-center">
+            <Clock className="w-5 h-5 mr-2 text-blue-500" />
+            Your Progress Path
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="relative py-4">
+            <div className="absolute top-0 bottom-0 left-[22px] w-1 bg-gray-200"></div>
+            
+            <div className="flex mb-8 relative z-10">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-blue-100 border-4 border-white text-blue-500 mr-4">
+                <span className="text-lg font-bold">1</span>
+              </div>
+              <div>
+                <h3 className="text-md font-medium text-gray-900">Intake (February 13, 2025)</h3>
+                <p className="text-sm text-gray-600 mt-1">Initial health assessment established your baseline scores across key health dimensions.</p>
+              </div>
+            </div>
+            
+            <div className="flex mb-8 relative z-10">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-green-100 border-4 border-white text-green-500 mr-4">
+                <span className="text-lg font-bold">2</span>
+              </div>
+              <div>
+                <h3 className="text-md font-medium text-gray-900">Now (March 15, 2025)</h3>
+                <p className="text-sm text-gray-600 mt-1">You've shown improvement in sleep quality and reduced alcohol consumption. Hydration remains an area for focus.</p>
+              </div>
+            </div>
+            
+            <div className="flex relative z-10">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gray-200 border-4 border-white text-gray-500 mr-4">
+                <span className="text-lg font-bold">3</span>
+              </div>
+              <div>
+                <h3 className="text-md font-medium text-gray-900">Future (Coming Soon)</h3>
+                <p className="text-sm text-gray-600 mt-1">Continued progress will unlock deeper insights and personalized recommendations.</p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Progress Card */}
+        {/* Call Summaries */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center">
               <TrendingUp className="w-5 h-5 mr-2 text-hana-green" />
-              Progress Snapshot
+              Recent Call Summaries
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div>
+              <div className="border border-gray-100 rounded-lg p-3">
                 <div className="flex justify-between mb-1">
-                  <span className="text-sm font-medium">Level {milestonesData.level}</span>
-                  <span className="text-sm text-gray-500">{milestonesData.levelName}</span>
+                  <span className="text-sm font-medium">March 15, 2025</span>
+                  <span className="text-xs text-gray-500">Weekly Check-in</span>
                 </div>
-                <Progress value={(milestonesData.weeklyPoints / (milestonesData.weeklyPoints + milestonesData.pointsToNextLevel)) * 100} />
-                <div className="flex justify-between mt-1">
-                  <span className="text-xs">{milestonesData.weeklyPoints} points</span>
-                  <span className="text-xs">{milestonesData.pointsToNextLevel} points to {milestonesData.nextLevel}</span>
-                </div>
+                <ul className="space-y-1 text-sm mt-2">
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    <span>Morning walks streak is making a difference in energy levels</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-amber-500 mr-2">!</span>
+                    <span>Discussed strategies for improving hydration throughout the day</span>
+                  </li>
+                </ul>
               </div>
               
-              <div className="pt-2">
-                <h4 className="text-sm font-medium mb-2">Recent Progress</h4>
-                <ul className="space-y-1 text-sm">
-                  {journalEntries
-                    .filter((entry: any) => entry.status === 'positive')
-                    .slice(0, 3)
-                    .map((entry: any, idx: number) => (
-                      <li key={idx} className="flex items-start">
-                        <span className="text-green-500 mr-2">✓</span>
-                        <span>{entry.text}</span>
-                      </li>
-                    ))}
+              <div className="border border-gray-100 rounded-lg p-3">
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm font-medium">March 8, 2025</span>
+                  <span className="text-xs text-gray-500">Weekly Check-in</span>
+                </div>
+                <ul className="space-y-1 text-sm mt-2">
+                  <li className="flex items-start">
+                    <span className="text-green-500 mr-2">✓</span>
+                    <span>Reached out to friend for coffee - social connection improving</span>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-amber-500 mr-2">!</span>
+                    <span>Sleep disrupted by work stress - implemented evening routine</span>
+                  </li>
                 </ul>
               </div>
             </div>
           </CardContent>
         </Card>
         
-        {/* Milestones Card */}
+        {/* Progress Highlights */}
         <Card>
           <CardHeader className="pb-2">
             <CardTitle className="text-lg flex items-center">
               <Trophy className="w-5 h-5 mr-2 text-amber-500" />
-              Achievements
+              Progress Highlights
             </CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              {milestonesData.achievements.map((achievement, idx) => (
-                <div key={idx}>
-                  <div className="flex items-center justify-between mb-1">
-                    <div className="flex items-center">
-                      {achievement.icon}
-                      <span className="text-sm font-medium ml-2">{achievement.title}</span>
+              {journalEntries
+                .filter((entry: any) => entry.status === 'positive')
+                .slice(0, 3)
+                .map((entry: any, idx: number) => (
+                  <div key={idx} className="border border-green-100 rounded-lg p-3 bg-green-50">
+                    <div className="flex justify-between mb-1">
+                      <span className="text-sm font-medium text-green-800">{entry.text}</span>
+                      <span className="text-xs text-green-700">{entry.date}</span>
                     </div>
-                    <span className={`text-xs ${achievement.unlocked ? 'text-green-600' : 'text-gray-500'}`}>
-                      {achievement.unlocked ? 'Unlocked' : `${Math.round(achievement.progress)}%`}
-                    </span>
+                    {entry.evidence && (
+                      <p className="text-sm text-green-700 mt-1">{entry.evidence}</p>
+                    )}
                   </div>
-                  <Progress value={achievement.progress} className="h-1.5" />
+                ))}
+              
+              <div className="pt-2">
+                <div className="flex justify-between mb-1">
+                  <span className="text-sm font-medium">Overall Progress</span>
+                  <span className="text-sm text-gray-500">{milestonesData.weeklyPoints} points earned</span>
                 </div>
-              ))}
+                <Progress value={(milestonesData.weeklyPoints / (milestonesData.weeklyPoints + milestonesData.pointsToNextLevel)) * 100} />
+                <div className="flex justify-between mt-1 text-xs text-gray-500">
+                  <span>Current: Level {milestonesData.level}</span>
+                  <span>Next: {milestonesData.pointsToNextLevel} points to {milestonesData.nextLevel}</span>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
