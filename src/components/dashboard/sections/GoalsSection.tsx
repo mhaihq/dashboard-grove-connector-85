@@ -24,39 +24,31 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
   const [showNotStarted, setShowNotStarted] = useState(false);
   const [showAllHabits, setShowAllHabits] = useState(false);
   
-  // Sort goals by priority and progress
   const sortedGoals = [...carePlanItems].sort((a, b) => {
-    // First by priority if available
     if (a.priority && b.priority) {
       const priorityOrder = { high: 1, medium: 2, low: 3 };
       return priorityOrder[a.priority] - priorityOrder[b.priority];
     }
     
-    // Then by progress (in-progress first, then started, then not-started)
     const statusOrder = { 'in-progress': 1, 'started': 2, 'not-started': 3, 'complete': 4 };
     return statusOrder[a.status] - statusOrder[b.status];
   });
   
-  // Get active goals (in-progress and started)
   const activeGoals = sortedGoals.filter(item => item.status === 'in-progress' || item.status === 'started');
   
-  // Get not-started goals
   const notStartedGoals = sortedGoals.filter(item => item.status === 'not-started');
   
-  // Calculate progress percentage for each goal
   const getProgressPercentage = (goal: CarePlanItem) => {
     if (goal.completedSteps === undefined || goal.totalSteps === undefined) return 0;
     return Math.round((goal.completedSteps / goal.totalSteps) * 100);
   };
   
-  // Get the progress color based on the percentage - using softer colors as requested
   const getProgressColor = (percentage: number) => {
     if (percentage >= 70) return 'bg-green-400';
     if (percentage >= 30) return 'bg-amber-400';
     return 'bg-red-300';
   };
   
-  // Get the icon component based on the icon string
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
       case 'moon': return <Thermometer className="w-5 h-5 text-indigo-500" />;
@@ -69,7 +61,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
     }
   };
   
-  // Get user-friendly names for the goals
   const getFriendlyName = (title: string) => {
     switch (title) {
       case "Sleep Restoration Protocol": return "Better Sleep Routine";
@@ -80,7 +71,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
     }
   };
   
-  // Get focus area tag for goals
   const getFocusTag = (title: string) => {
     if (title.includes("Sleep")) return "💧 Sleep";
     if (title.includes("Stress")) return "🧠 Focus";
@@ -89,14 +79,12 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
     return null;
   };
 
-  // Calculate streaks stats
   const activeStreakCount = activeStreaks.filter(streak => streak.status === 'improved' || streak.status === 'stable').length;
   const needsWorkStreakCount = activeStreaks.filter(streak => streak.status === 'declined').length;
   const consistencyPoints = activeStreaks.reduce((sum, streak) => sum + (streak.status === 'improved' ? 2 : streak.status === 'stable' ? 1 : 0), 0);
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {/* Panel A: This Week's Smart Goals */}
       <Card className="shadow-sm overflow-hidden border-gray-200 bg-white rounded-xl">
         <CardHeader className="pb-2 border-b border-gray-100 bg-gray-50">
           <div className="flex items-center justify-between">
@@ -150,7 +138,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
                           ></div>
                         </div>
                         
-                        {/* Only show insight if personalized */}
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -173,7 +160,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
             })}
           </div>
 
-          {/* Not Started Goals - Collapsible */}
           {notStartedGoals.length > 0 && (
             <Collapsible
               open={showNotStarted}
@@ -202,7 +188,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
             </Collapsible>
           )}
           
-          {/* Next Check-in Reminder */}
           {nextCheckInDate && (
             <div className="flex items-center justify-end text-xs text-gray-400 p-2 border-t border-gray-100">
               <Calendar className="w-3 h-3 mr-1 text-gray-400" />
@@ -212,7 +197,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
         </CardContent>
       </Card>
 
-      {/* Panel B: Your Momentum This Week */}
       <Card className="shadow-sm overflow-hidden border-gray-200 bg-white rounded-xl">
         <CardHeader className="pb-2 border-b border-gray-100 bg-gray-50">
           <div className="flex items-center justify-between">
@@ -225,48 +209,71 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
         
         <CardContent className="p-4">
           <div className="space-y-5">
-            {/* Display streaks in a 2x2 grid */}
             <div className="grid grid-cols-2 gap-4">
               {activeStreaks.slice(0, showAllHabits ? activeStreaks.length : 4).map((streak, index) => {
-                // Calculate circle progress percentage
                 const progressPercent = (streak.days / streak.target) * 100;
                 const strokeColor = streak.status === 'improved' ? '#4ade80' : // green
                                    streak.status === 'declined' ? '#f87171' : // red
                                    '#fbbf24'; // amber
+                const strokeWidth = 10; // Thicker stroke for more prominence
+                const size = 70; // Larger circle
+                const radius = (size - strokeWidth) / 2;
+                const circumference = 2 * Math.PI * radius;
+                const strokeDasharray = `${(circumference * progressPercent) / 100} ${circumference}`;
+                const rotation = -90; // Start from the top
                 
                 return (
-                  <div key={index} className="relative">
-                    <div className="mb-1.5">
+                  <div key={index} className="relative p-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:shadow-sm transition-all">
+                    <div className="mb-2">
                       <span className="font-medium text-sm text-gray-700 flex items-center">
-                        <span className="mr-2">{streak.icon}</span>
+                        <span className="text-xl mr-2">{streak.icon}</span>
                         {streak.habit}
                       </span>
                     </div>
                     
-                    <div className="flex items-center">
+                    <div className="flex items-center gap-3">
                       <TooltipProvider>
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <div className="relative w-12 h-12">
-                              {/* Background circle */}
-                              <div className="absolute inset-0 rounded-full bg-gray-100"></div>
-                              
-                              {/* Progress circle - using SVG for better control */}
-                              <svg className="absolute inset-0 w-full h-full transform -rotate-90">
+                            <div className="relative" style={{ width: `${size}px`, height: `${size}px` }}>
+                              <svg className="w-full h-full">
                                 <circle 
-                                  cx="24" 
-                                  cy="24" 
-                                  r="20" 
-                                  strokeWidth="6"
-                                  stroke={strokeColor}
+                                  cx={size/2} 
+                                  cy={size/2} 
+                                  r={radius}
                                   fill="transparent"
-                                  strokeDasharray={`${2 * Math.PI * 20 * progressPercent / 100} ${2 * Math.PI * 20}`}
+                                  stroke="#e5e7eb" 
+                                  strokeWidth={strokeWidth}
                                 />
                               </svg>
                               
-                              {/* Center text */}
-                              <div className="absolute inset-0 flex items-center justify-center text-xs font-medium">
-                                {streak.days}/{streak.target}
+                              <svg 
+                                className="absolute inset-0 w-full h-full" 
+                                style={{ transform: `rotate(${rotation}deg)` }}
+                              >
+                                <circle 
+                                  cx={size/2} 
+                                  cy={size/2} 
+                                  r={radius}
+                                  fill="transparent"
+                                  stroke={strokeColor}
+                                  strokeWidth={strokeWidth}
+                                  strokeDasharray={strokeDasharray}
+                                  strokeLinecap="round"
+                                  style={{ 
+                                    transition: "stroke-dasharray 0.5s ease-in-out",
+                                    filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.1))"
+                                  }}
+                                />
+                              </svg>
+                              
+                              <div className="absolute inset-0 flex items-center justify-center flex-col">
+                                <div className="text-lg font-bold" style={{ color: strokeColor }}>
+                                  {streak.days}
+                                </div>
+                                <div className="text-xs text-gray-500">
+                                  of {streak.target}
+                                </div>
                               </div>
                             </div>
                           </TooltipTrigger>
@@ -282,12 +289,18 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
                         </Tooltip>
                       </TooltipProvider>
                       
-                      <div className="ml-2">
-                        <p className="text-xs text-gray-600 whitespace-nowrap">
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-600 whitespace-nowrap">
                           {streak.supportedGoal}
                         </p>
-                        <p className="text-xs text-gray-500 mt-1">
-                          {streak.trend}
+                        <p className="text-xs flex items-center mt-1 font-medium">
+                          <span className={cn(
+                            streak.status === 'improved' ? 'text-green-600' : 
+                            streak.status === 'declined' ? 'text-red-600' : 
+                            'text-amber-600'
+                          )}>
+                            {streak.trend}
+                          </span>
                         </p>
                       </div>
                     </div>
@@ -305,7 +318,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
               </button>
             )}
             
-            {/* System Suggestion */}
             {systemSuggestion && (
               <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 mt-4">
                 <h3 className="text-sm font-medium text-blue-700 mb-1 flex items-center">
@@ -323,7 +335,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
               </div>
             )}
             
-            {/* Gamified Feedback */}
             <div className="mt-4 pt-3 border-t border-gray-100">
               <div className="grid grid-cols-3 gap-2 text-center">
                 <div className="bg-green-50 rounded-lg p-2">
