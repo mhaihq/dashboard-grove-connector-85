@@ -75,7 +75,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
     behavior: streakBehavior ? streakBehavior.relatedTo.replace('_', ' ') : 'morning walks'
   };
 
-  // Create active streaks for Goals section
+  // Create active streaks for Goals section - adding 2 more to get 4 total
   const activeStreaks: HabitStreak[] = [
     {
       habit: "Morning Walks",
@@ -94,6 +94,24 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       trend: "-2 days ↓",
       status: 'declined',
       supportedGoal: "Stress Management"
+    },
+    {
+      habit: "Daily Hydration",
+      icon: "💧",
+      days: 6,
+      target: 7,
+      trend: "+3 days ↑",
+      status: 'improved',
+      supportedGoal: "Afternoon Energy"
+    },
+    {
+      habit: "Evening Reflection",
+      icon: "📔",
+      days: 4,
+      target: 7,
+      trend: "Stable",
+      status: 'stable',
+      supportedGoal: "Mood Balancing"
     }
   ];
 
