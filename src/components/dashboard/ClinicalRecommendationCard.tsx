@@ -27,7 +27,7 @@ export const ClinicalRecommendationCard: React.FC<ClinicalRecommendationCardProp
   onAction
 }) => {
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-all duration-300 bg-white">
+    <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 bg-white">
       <div className="flex items-center bg-blue-50 p-4 border-b border-gray-200">
         <div className="bg-white p-2.5 rounded-full mr-3 shadow-sm text-blue-600 flex items-center justify-center w-10 h-10">
           {getIcon(program.icon)}

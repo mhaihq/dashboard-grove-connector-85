@@ -62,93 +62,95 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
   };
   
   return (
-    <Card className="shadow-sm hover:shadow-md transition-shadow">
-      <CardHeader className="pb-2">
+    <Card className="shadow-sm overflow-hidden border-gray-200 bg-white">
+      <CardHeader className="pb-2 border-b border-gray-100 bg-gray-50">
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <List className="w-5 h-5 text-green-600 mr-2" />
             <CardTitle className="text-xl font-medium text-gray-800">Where You're Headed</CardTitle>
           </div>
           <div className="text-sm text-gray-500">
-            A glance at the personal goals you've committed to
+            <span className="hidden md:inline">A glance at the personal goals you've committed to</span>
           </div>
         </div>
       </CardHeader>
       
-      <CardContent>
-        <div className="text-sm text-gray-600 mb-4">
+      <CardContent className="p-0">
+        <div className="text-sm text-gray-600 p-4 border-b border-gray-100 bg-gray-50">
           Personalized goals and how your habits support them
         </div>
         
         {/* Top Module: Active Goals */}
-        <div className="mb-6 space-y-4">
+        <div className="px-4 py-3 space-y-3">
           {activeGoals.slice(0, 3).map((goal, index) => {
             const progressPercentage = getProgressPercentage(goal);
             const progressColor = getProgressColor(progressPercentage);
             
             return (
-              <div key={index} className="border rounded-lg p-4 bg-white relative hover:shadow-sm transition-all duration-200">
+              <div key={index} className="rounded-xl p-4 bg-white border border-gray-200 shadow-sm hover:shadow-md transition-all duration-200">
                 <div className="flex items-start gap-3">
-                  <div className="mt-1">
+                  <div className="mt-1 bg-gray-50 p-2 rounded-full">
                     {getIconComponent(goal.icon)}
                   </div>
                   
                   <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-gray-800">{goal.title}</h3>
+                    <div className="flex items-center justify-between mb-1">
+                      <h3 className="font-semibold text-gray-800">{goal.title}</h3>
                       {goal.status === 'in-progress' && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-blue-100 text-blue-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
                           Active
                         </span>
                       )}
                       {goal.status === 'started' && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-amber-100 text-amber-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800">
                           Just Started
                         </span>
                       )}
                       {goal.status === 'not-started' && (
-                        <span className="inline-flex items-center px-2 py-1 rounded-full text-xs bg-gray-100 text-gray-800">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                           Not Started
                         </span>
                       )}
                     </div>
                     
-                    <p className="text-sm text-gray-600 mt-1">{goal.nextStep}</p>
+                    <p className="text-sm text-gray-600 mb-3">{goal.nextStep}</p>
                     
-                    <div className="mt-3">
-                      <div className="flex justify-between text-xs mb-1">
+                    <div>
+                      <div className="flex justify-between text-xs mb-1.5">
                         <span className="text-gray-500">
-                          Progress: {progressPercentage}% — 
+                          Progress: {progressPercentage}%
+                        </span>
+                        <span className="text-gray-500">
                           {goal.completedSteps && goal.totalSteps && 
-                            ` Tracked ${goal.completedSteps} out of ${goal.totalSteps} days`
+                            `${goal.completedSteps}/${goal.totalSteps} days`
                           }
                         </span>
                       </div>
-                      <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
+                      <div className="h-2.5 bg-gray-100 rounded-full overflow-hidden">
                         <div 
-                          className={cn("h-full", progressColor)}
+                          className={cn("h-full rounded-full", progressColor)}
                           style={{ width: `${progressPercentage}%` }}
                         ></div>
                       </div>
                       
                       {/* AI-generated insight based on goal */}
                       {goal.insights && (
-                        <p className="text-sm italic text-gray-600 mt-2">
+                        <p className="text-sm italic text-gray-600 mt-2 bg-gray-50 p-2 rounded-lg border border-gray-100">
                           "{goal.insights}"
                         </p>
                       )}
                       {!goal.insights && goal.status === 'in-progress' && (
-                        <p className="text-sm italic text-gray-600 mt-2">
+                        <p className="text-sm italic text-gray-600 mt-2 bg-gray-50 p-2 rounded-lg border border-gray-100">
                           "Reported better results on days you followed this."
                         </p>
                       )}
                       {!goal.insights && goal.status === 'started' && (
-                        <p className="text-sm italic text-gray-600 mt-2">
+                        <p className="text-sm italic text-gray-600 mt-2 bg-gray-50 p-2 rounded-lg border border-gray-100">
                           "Most helpful on high-stress days when used consistently."
                         </p>
                       )}
                       {!goal.insights && goal.status === 'not-started' && (
-                        <p className="text-sm italic text-gray-600 mt-2">
+                        <p className="text-sm italic text-gray-600 mt-2 bg-gray-50 p-2 rounded-lg border border-gray-100">
                           "Let's revisit this after building momentum with your other tools."
                         </p>
                       )}
@@ -162,36 +164,38 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
         
         {/* Middle Module: Micro-Habit Streaks */}
         {activeStreaks.length > 0 && (
-          <div className="mb-6">
-            <h3 className="text-sm font-medium text-gray-700 mb-3">Micro-Habit Streaks</h3>
-            <div className="bg-gray-50 rounded-lg p-4">
-              <div className="space-y-3">
+          <div className="px-4 py-3 border-t border-gray-100">
+            <h3 className="text-sm font-semibold text-gray-700 mb-3">Micro-Habit Streaks</h3>
+            <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+              <div className="space-y-4">
                 {activeStreaks.map((streak, index) => (
                   <div key={index} className="flex justify-between items-center">
                     <div className="flex items-center">
-                      <span className="mr-2 text-lg">{streak.icon}</span>
-                      <span className="text-sm text-gray-700">{streak.habit}</span>
+                      <div className="w-9 h-9 rounded-full bg-white border border-gray-200 shadow-sm flex items-center justify-center mr-3">
+                        <span className="text-lg">{streak.icon}</span>
+                      </div>
+                      <span className="text-sm text-gray-700 font-medium">{streak.habit}</span>
                     </div>
                     <div className="flex items-center">
-                      <span className={cn(
-                        "font-medium text-sm",
-                        streak.status === 'improved' ? "text-green-600" : 
-                        streak.status === 'declined' ? "text-red-600" : "text-amber-600"
+                      <div className={cn(
+                        "font-medium text-sm mr-2 px-2.5 py-0.5 rounded-full",
+                        streak.status === 'improved' ? "text-green-800 bg-green-100" : 
+                        streak.status === 'declined' ? "text-red-800 bg-red-100" : "text-amber-800 bg-amber-100"
                       )}>
                         {streak.days} {streak.days === 1 ? 'day' : 'days'} 
                         {streak.trend && (
                           <span className="ml-1">
-                            {streak.trend === '+1 day ↑' ? '✅' : 
-                             streak.trend === '-2 days ↓' ? '🔻' : '🟨'}
+                            {streak.trend === '+1 day ↑' ? '↑' : 
+                             streak.trend === '-2 days ↓' ? '↓' : '•'}
                           </span>
                         )}
-                      </span>
-                      <div className="ml-2 flex">
+                      </div>
+                      <div className="flex">
                         {[...Array(streak.target)].map((_, i) => (
                           <div 
                             key={i} 
                             className={cn(
-                              "w-2 h-2 rounded-full mr-0.5",
+                              "w-2.5 h-2.5 rounded-full mr-0.5",
                               i < streak.days ? 
                                 streak.status === 'improved' ? "bg-green-500" : 
                                 streak.status === 'declined' ? "bg-red-400" : "bg-amber-400"
@@ -214,11 +218,11 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
         
         {/* Bottom Module: Action Cue */}
         {systemSuggestion && (
-          <div className="border-t pt-4 border-gray-100">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">This Week's System Suggestion</h3>
-            <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
-              <p className="text-sm text-blue-800">
-                📌 "{systemSuggestion.suggestion}"
+          <div className="px-4 py-3 border-t border-gray-100">
+            <h3 className="text-sm font-semibold text-gray-700 mb-2">This Week's System Suggestion</h3>
+            <div className="bg-blue-50 rounded-xl p-4 border border-blue-100">
+              <p className="text-sm text-blue-800 font-medium">
+                {systemSuggestion.suggestion}
               </p>
               {systemSuggestion.basedOn && (
                 <p className="text-xs text-gray-600 mt-2">
@@ -231,7 +235,7 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
         
         {/* Next Check-in Reminder */}
         {nextCheckInDate && (
-          <div className="flex items-center text-sm text-gray-600 border-t pt-4 mt-4 border-gray-100">
+          <div className="flex items-center text-sm text-gray-600 p-4 border-t border-gray-100 bg-gray-50">
             <CheckCircle2 className="w-4 h-4 mr-2 text-green-600" />
             <span>Next Check-in: </span>
             <span className="font-medium ml-1">{nextCheckInDate}</span>
