@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Activity, Sparkles, TrendingUp, AlertTriangle, ArrowUp, ArrowDown, ArrowRight } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -40,7 +39,6 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
   positiveAreas,
   totalAreas
 }) => {
-  // Calculate most improved area and area to focus if not provided
   const improving = data.filter(item => item.improving);
   const needsWork = data.filter(item => !item.improving);
   
@@ -52,11 +50,9 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
     ? needsWork.reduce((prev, current) => (prev.score < current.score) ? prev : current).area
     : null);
   
-  // Count positive trends
   const calculatedPositiveCount = positiveAreas || data.filter(item => item.improving).length;
   const calculatedTotalAreas = totalAreas || data.length;
   
-  // Default tooltips if not provided
   const tooltips = {
     'Sleep': 'Quality and consistency of your rest patterns.',
     'Nutrition': 'Balance and quality of your dietary choices.',
@@ -68,16 +64,13 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
     'Social': 'Quality of your interpersonal connections.',
   };
   
-  // Format the data with softer gradient fills and tooltips
   const formattedData = data.map(item => {
-    // Generate a softer gradient fill based on priority and improvement
     let fillColor = item.priority 
       ? "url(#priorityGradient)" 
       : item.improving 
         ? "url(#improvingGradient)" 
         : "url(#neutralGradient)";
     
-    // Check if this is the most improved or focus area for highlighting
     const isMostImproved = item.area === calculatedMostImproved;
     const isFocusArea = item.area === calculatedFocusArea;
     
@@ -91,7 +84,6 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
     };
   });
 
-  // Determine connections between health dimensions
   const connections = [
     { source: 'Sleep', target: 'Energy' },
     { source: 'Exercise', target: 'Mood' },
@@ -100,7 +92,6 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
     { source: 'Hydration', target: 'Energy' }
   ];
 
-  // Helper function to get trend icon
   const getTrendIcon = (trend?: 'up' | 'down' | 'stable') => {
     switch (trend) {
       case 'up':
@@ -132,7 +123,6 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
           <div className="h-[260px] w-full">
             <ResponsiveContainer width="100%" height="100%">
               <RadarChart cx="50%" cy="50%" outerRadius="70%" data={formattedData}>
-                {/* Define gradients */}
                 <defs>
                   <linearGradient id="priorityGradient" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#f87171" stopOpacity={0.7} />
@@ -160,7 +150,6 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
                   </linearGradient>
                 </defs>
                 
-                {/* Connection lines between related dimensions */}
                 {connections.map((connection, idx) => {
                   const sourceIndex = formattedData.findIndex(item => item.area === connection.source);
                   const targetIndex = formattedData.findIndex(item => item.area === connection.target);
@@ -179,7 +168,7 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
                     return (
                       <Line 
                         key={idx} 
-                        type="straight" 
+                        type="linear" 
                         dataKey="score" 
                         stroke="url(#connectionGradient)" 
                         fill="none" 
