@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Moon, BatteryFull, Brain, Heart, Users, Activity, UtensilsCrossed, Weight, Shield, Coffee } from 'lucide-react';
 
@@ -69,25 +68,25 @@ export const healthIndicators = [
     title: "Sleep Quality",
     value: "Poor",
     change: "worsening",
-    icon: <Moon className="h-5 w-5 text-indigo-500" />
+    icon: () => <Moon className="h-5 w-5 text-indigo-500" />
   },
   {
     title: "Stress Level",
     value: "High",
     change: "improving",
-    icon: <Activity className="h-5 w-5 text-red-500" />
+    icon: () => <Activity className="h-5 w-5 text-red-500" />
   },
   {
     title: "Energy",
     value: "Variable",
     change: "stabilizing",
-    icon: <Brain className="h-5 w-5 text-amber-500" />
+    icon: () => <Brain className="h-5 w-5 text-amber-500" />
   },
   {
     title: "Medicare Status",
     value: "Enrolled",
     change: "stable",
-    icon: <Shield className="h-5 w-5 text-hana-green" />
+    icon: () => <Shield className="h-5 w-5 text-hana-green" />
   }
 ];
 
@@ -119,25 +118,25 @@ export const journalEntries = [
 export const carePlanItems = [
   {
     title: "Sleep Restoration Protocol",
-    icon: <Moon className="w-5 h-5 text-indigo-500" />,
+    icon: () => <Moon className="w-5 h-5 text-indigo-500" />,
     status: "in-progress",
     description: "A structured approach to improve sleep quality and mental wind-down."
   },
   {
     title: "Stress Management Toolkit",
-    icon: <Activity className="w-5 h-5 text-red-500" />,
+    icon: () => <Activity className="w-5 h-5 text-red-500" />,
     status: "started",
     description: "Alternative stress relief methods to replace alcohol use."
   },
   {
     title: "Emotional Regulation Framework",
-    icon: <Heart className="w-5 h-5 text-pink-500" />,
+    icon: () => <Heart className="w-5 h-5 text-pink-500" />,
     status: "not-started",
     description: "Structured approach to understanding and managing emotional responses."
   },
   {
     title: "Social Check-In",
-    icon: <Users className="w-5 h-5 text-blue-500" />,
+    icon: () => <Users className="w-5 h-5 text-blue-500" />,
     status: "complete",
     description: "Regular connection with support system."
   }

@@ -6,7 +6,7 @@ interface HealthIndicator {
   title: string;
   value: string;
   change: string;
-  icon: React.ReactNode;
+  icon: () => React.ReactNode;
 }
 
 interface KeyHealthIndicatorsProps {
@@ -23,7 +23,7 @@ export const KeyHealthIndicators: React.FC<KeyHealthIndicatorsProps> = ({
           <CardHeader className="pb-2">
             <div className="flex justify-between items-center">
               <CardTitle className="text-sm font-medium text-gray-500">{indicator.title}</CardTitle>
-              {indicator.icon}
+              {indicator.icon()}
             </div>
           </CardHeader>
           <CardContent>

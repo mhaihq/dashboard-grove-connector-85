@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 
 interface CarePlanItem {
   title: string;
-  icon: React.ReactNode;
+  icon: () => React.ReactNode;
   status: 'not-started' | 'started' | 'in-progress' | 'complete';
   description: string;
 }
@@ -49,7 +49,7 @@ export const CarePlan: React.FC<CarePlanProps> = ({ items }) => {
               className="border border-gray-100 rounded-lg p-4 hover:shadow-md transition-all hover:border-gray-200 bg-white cursor-pointer"
             >
               <div className="flex items-center gap-2 mb-2">
-                {item.icon}
+                {item.icon()}
                 <h3 className="font-medium text-gray-900">{item.title}</h3>
               </div>
               

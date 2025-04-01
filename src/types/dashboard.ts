@@ -5,12 +5,12 @@ export interface HealthIndicator {
   title: string;
   value: string;
   change: string;
-  icon: ReactNode;
+  icon: () => ReactNode;
 }
 
 export interface CarePlanItem {
   title: string;
-  icon: ReactNode;
+  icon: () => ReactNode;
   status: "not-started" | "started" | "in-progress" | "complete";
   description: string;
 }
