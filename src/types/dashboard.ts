@@ -51,7 +51,7 @@ export interface Milestone {
 export interface HealthPulseItem {
   area: string;
   score: number;
-  initialScore?: number; // Added for comparing with previous state
+  initialScore?: number; // Optional to fix the type error
   improving: boolean;
   priority?: boolean;
   tooltip?: string;
@@ -110,6 +110,8 @@ export interface ClinicalRecommendation {
   whyItMatters?: string;
   timeToResults?: string;
   quickTip?: string;
+  atomicHabitsPrinciple?: string;
+  systemsThinking?: string;
 }
 
 export interface MedicareProgram {
