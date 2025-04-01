@@ -56,6 +56,13 @@ export interface HealthPulseItem {
   trendPercentage?: number; // Added to show percentage improvement
   relatedTo?: string[];
   systemExplanation?: string;
+  lastCheckInMention?: boolean; // Added to track if mentioned in recent check-ins
+  streakData?: {
+    current: number;
+    target: number;
+    change: number;
+    status: 'improved' | 'declined' | 'stable';
+  }; // Added for habit tracking
 }
 
 export interface OverviewItem {
