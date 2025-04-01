@@ -78,7 +78,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
   return (
     <>
       {/* 1. Welcome & Health Pulse (Top) */}
-      <div className="mb-8">
+      <div className="mb-12">
         <DashboardWelcome 
           userName={userInfo.name.split(' ')[0]}
           lastCheckIn="March 15, 2025"
@@ -98,7 +98,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       </div>
       
       {/* Health Pulse Chart */}
-      <div className="mb-8">
+      <div className="mb-12">
         <HealthPulse 
           data={healthAssessmentData}
           mostImproved="Sleep"
@@ -109,7 +109,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       </div>
       
       {/* 2. Current Care Plan - Moved out */}
-      <div className="mb-8">
+      <div className="mb-12">
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
             <CardTitle className="text-xl">
@@ -129,7 +129,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       </div>
       
       {/* 3. Health Wellbeing Recommendations - Moved here and split */}
-      <div className="mb-8">
+      <div className="mb-12">
         <HealthRecommendations 
           recommendations={clinicalRecommendations} 
           medicarePrograms={medicarePrograms}
@@ -138,12 +138,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       </div>
       
       {/* 4. Functional Area Breakdown */}
-      <div className="mb-8">
+      <div className="mb-12">
         <KeyHealthIndicators healthIndicators={healthIndicators} />
       </div>
       
       {/* 5. Your Journey So Far with combined Progress & Milestones */}
-      <div className="mb-8">
+      <div className="mb-12">
         <Card className="shadow-sm hover:shadow-md transition-shadow">
           <CardHeader className="pb-2">
             <CardTitle className="text-xl">
@@ -176,6 +176,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
                 </div>
                 <Milestones data={milestonesData} />
               </div>
+            </div>
+            
+            <div className="mt-6 border-t pt-4 text-xs text-gray-500 flex justify-end">
+              <span className="mr-2">Was this section helpful?</span>
+              <button className="text-gray-500 hover:text-gray-700">👍</button>
+              <button className="ml-2 text-gray-500 hover:text-gray-700">👎</button>
             </div>
           </CardContent>
         </Card>
@@ -212,6 +218,12 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
                 }
               }}
             />
+            
+            <div className="mt-6 border-t pt-4 text-xs text-gray-500 flex justify-end">
+              <span className="mr-2">Was this section helpful?</span>
+              <button className="text-gray-500 hover:text-gray-700">👍</button>
+              <button className="ml-2 text-gray-500 hover:text-gray-700">👎</button>
+            </div>
           </CardContent>
         </Card>
       </div>

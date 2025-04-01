@@ -2,11 +2,12 @@
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { BarChart } from 'lucide-react';
+import { BarChart, ThumbsUp, ThumbsDown } from 'lucide-react';
 import { ClinicalRecommendation, MedicareProgram } from '@/types/dashboard';
 import { toast } from '@/hooks/use-toast';
 import PersonalRecommendationsTab from '@/components/dashboard/PersonalRecommendationsTab';
 import ClinicalGuidelinesTab from '@/components/dashboard/ClinicalGuidelinesTab';
+import { Button } from '@/components/ui/button';
 
 interface HealthRecommendationsProps {
   recommendations: ClinicalRecommendation[];
@@ -20,6 +21,7 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
   onScheduleCall
 }) => {
   const [activeTab, setActiveTab] = useState("recommendations");
+  const [feedbackGiven, setFeedbackGiven] = useState(false);
 
   // Handle recommendation actions
   const handleAction = (recommendation: ClinicalRecommendation) => {
@@ -40,6 +42,15 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
         onScheduleCall();
         break;
     }
+  };
+
+  // Handle feedback
+  const handleFeedback = (isPositive: boolean) => {
+    setFeedbackGiven(true);
+    toast({
+      title: "Thanks for your feedback!",
+      description: "Your input helps us improve your recommendations.",
+    });
   };
 
   // Filter recommendations into personal and clinical categories
@@ -92,6 +103,32 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
             />
           </TabsContent>
         </Tabs>
+        
+        <div className="mt-4 border-t pt-3 text-xs text-gray-500 flex justify-end">
+          {!feedbackGiven ? (
+            <div className="flex items-center gap-2">
+              <span>Was this section helpful?</span>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="p-1 h-auto" 
+                onClick={() => handleFeedback(true)}
+              >
+                <ThumbsUp className="h-4 w-4" />
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="p-1 h-auto" 
+                onClick={() => handleFeedback(false)}
+              >
+                <ThumbsDown className="h-4 w-4" />
+              </Button>
+            </div>
+          ) : (
+            <span>Thanks for your feedback!</span>
+          )}
+        </div>
       </CardContent>
     </Card>
   );

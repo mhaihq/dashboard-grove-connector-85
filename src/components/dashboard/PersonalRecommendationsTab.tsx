@@ -26,7 +26,12 @@ export const PersonalRecommendationsTab: React.FC<PersonalRecommendationsTabProp
         />
       ))}
       
-      <div className="flex justify-end">
+      <div className="flex justify-between mt-6">
+        <div className="text-sm">
+          <Button variant="ghost" size="sm" className="text-gray-500 hover:text-gray-700">
+            Was this helpful? <span className="ml-1">👍</span><span className="ml-1">👎</span>
+          </Button>
+        </div>
         <Button 
           variant="link" 
           className="text-hana-green hover:text-green-700"
