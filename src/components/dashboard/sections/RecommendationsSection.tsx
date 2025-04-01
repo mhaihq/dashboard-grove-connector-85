@@ -56,12 +56,12 @@ const HealthInsightCard: React.FC<HealthInsightCardProps> = ({
 }) => {
   return (
     <Card className="overflow-hidden border-gray-200 shadow-sm hover:shadow transition-all duration-300">
-      <CardContent className="p-8">
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className={`bg-${changeType === 'positive' ? 'blue' : 'amber'}-100 p-2.5 rounded-full`}>
-              <div className={`bg-${changeType === 'positive' ? 'blue' : 'amber'}-500 w-8 h-8 rounded-full flex items-center justify-center`}>
-                <svg viewBox="0 0 24 24" width="20" height="20" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
+      <CardContent className="p-6">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-2">
+            <div className={`bg-${changeType === 'positive' ? 'blue' : 'amber'}-100 p-2 rounded-full`}>
+              <div className={`bg-${changeType === 'positive' ? 'blue' : 'amber'}-500 w-6 h-6 rounded-full flex items-center justify-center`}>
+                <svg viewBox="0 0 24 24" width="18" height="18" stroke="white" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
                   <circle cx="12" cy="12" r="10" />
                   <circle cx="12" cy="12" r="6" />
                   <circle cx="12" cy="12" r="2" />
@@ -69,19 +69,19 @@ const HealthInsightCard: React.FC<HealthInsightCardProps> = ({
               </div>
             </div>
             <div className="flex-1">
-              <div className="h-5 w-3/4 bg-gray-200 rounded"></div>
-              <div className="h-4 w-1/2 bg-gray-200 rounded mt-1.5"></div>
+              <div className="h-4 w-3/4 bg-gray-200 rounded"></div>
+              <div className="h-3 w-1/2 bg-gray-200 rounded mt-1"></div>
             </div>
           </div>
-          <div className="flex space-x-2">
-            <div className="h-2.5 w-2.5 bg-gray-200 rounded-full"></div>
-            <div className="h-2.5 w-2.5 bg-gray-200 rounded-full"></div>
-            <div className="h-2.5 w-2.5 bg-gray-200 rounded-full"></div>
+          <div className="flex space-x-1">
+            <div className="h-2 w-2 bg-gray-200 rounded-full"></div>
+            <div className="h-2 w-2 bg-gray-200 rounded-full"></div>
+            <div className="h-2 w-2 bg-gray-200 rounded-full"></div>
           </div>
         </div>
         
-        <div className="mt-10">
-          <p className="text-gray-700 text-2xl leading-relaxed">
+        <div className="mt-8">
+          <p className="text-gray-700 text-xl">
             The <span className="font-medium">{title}</span> of <span className="text-blue-500">{metric}</span> <span className={cn(
               "font-medium",
               changeType === 'positive' ? 'text-blue-500' : 'text-amber-500'
@@ -89,9 +89,9 @@ const HealthInsightCard: React.FC<HealthInsightCardProps> = ({
           </p>
         </div>
         
-        <div className="flex items-center justify-between mt-6">
-          <div className="h-24">
-            <ResponsiveContainer width={200} height={90}>
+        <div className="flex items-center justify-between mt-4">
+          <div className="h-16">
+            <ResponsiveContainer width={160} height={60}>
               {chartType === 'area' ? (
                 <AreaChart data={data}>
                   <defs>
@@ -116,22 +116,22 @@ const HealthInsightCard: React.FC<HealthInsightCardProps> = ({
             </ResponsiveContainer>
           </div>
           <div className={cn(
-            "text-5xl font-bold",
+            "text-4xl font-bold",
             changeType === 'positive' ? 'text-blue-500' : 'text-amber-500'
           )}>
             {changeValue}
           </div>
         </div>
         
-        <div className="h-px bg-gray-200 w-full my-6"></div>
+        <div className="h-px bg-gray-200 w-full my-4"></div>
         
         <div className="flex justify-between items-center">
-          <div className="h-5 w-32 bg-gray-200 rounded"></div>
-          <div className="flex space-x-6">
-            <MessageSquare className="w-6 h-6 text-gray-400" />
-            <Eye className="w-6 h-6 text-gray-400" />
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <User className="w-6 h-6 text-blue-500" />
+          <div className="h-4 w-24 bg-gray-200 rounded"></div>
+          <div className="flex space-x-4">
+            <MessageSquare className="w-5 h-5 text-gray-400" />
+            <Eye className="w-5 h-5 text-gray-400" />
+            <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+              <User className="w-5 h-5 text-blue-500" />
             </div>
           </div>
         </div>
@@ -180,8 +180,8 @@ export const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
 
   return (
     <div>
-      <h2 className="text-3xl font-semibold text-gray-900 mb-6">Health Insights</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <h2 className="text-2xl font-semibold text-gray-900 mb-4">Health Insights</h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <HealthInsightCard
           title="sum of"
           metric="Sleep Quality"
