@@ -25,7 +25,6 @@ export const GoalsSection: React.FC<GoalsSectionProps> = ({
   
   return (
     <div className="mb-16">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">B. Goals & Milestones</h2>
       <Card className="shadow-sm hover:shadow-md transition-shadow">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">

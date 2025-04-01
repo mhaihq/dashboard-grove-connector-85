@@ -11,13 +11,10 @@ import { HealthPulseItem } from '@/types/dashboard';
 
 // Import our components
 import DashboardLayout from '@/components/dashboard/DashboardLayout';
-import WelcomeSection from '@/components/dashboard/sections/WelcomeSection';
 import HealthPulseSection from '@/components/dashboard/sections/HealthPulseSection';
 import GoalsSection from '@/components/dashboard/sections/GoalsSection';
 import RecommendationsSection from '@/components/dashboard/sections/RecommendationsSection';
-import HealthIndicatorsSection from '@/components/dashboard/sections/HealthIndicatorsSection';
 import JourneySoFarSection from '@/components/dashboard/sections/JourneySoFarSection';
-import HealthStorySection from '@/components/dashboard/sections/HealthStorySection';
 import WelcomeBanner from '@/components/dashboard/WelcomeBanner';
 
 interface DashboardProps {
@@ -47,7 +44,7 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       icon: <Trophy className="w-5 h-5 text-gray-400" />
     }))
   };
-
+  
   // Get relevant life events for context
   const notableLifeChanges = overview.find(section => 
     section.title === "Notable Life Changes"
@@ -91,32 +88,44 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
       />
       
       {/* A. Current Health Snapshot */}
-      <HealthPulseSection 
-        data={healthAssessmentData}
-        mostImproved="Sleep"
-        focusArea="Hydration"
-        positiveAreas={4}
-        totalAreas={6}
-      />
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">A. Current Health Snapshot</h2>
+        <HealthPulseSection 
+          data={healthAssessmentData}
+          mostImproved="Sleep"
+          focusArea="Hydration"
+          positiveAreas={4}
+          totalAreas={6}
+        />
+      </div>
       
       {/* B. Goals & Milestones */}
-      <GoalsSection 
-        carePlanItems={carePlanItems}
-        nextCheckInDate={nextCheckInDate}
-      />
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">B. Goals & Milestones</h2>
+        <GoalsSection 
+          carePlanItems={carePlanItems}
+          nextCheckInDate={nextCheckInDate}
+        />
+      </div>
       
       {/* C. Recommendations (Systems) */}
-      <RecommendationsSection 
-        recommendations={clinicalRecommendations}
-        medicarePrograms={medicarePrograms}
-        onScheduleCall={onScheduleCall}
-      />
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">C. Recommendations (Systems)</h2>
+        <RecommendationsSection 
+          recommendations={clinicalRecommendations}
+          medicarePrograms={medicarePrograms}
+          onScheduleCall={onScheduleCall}
+        />
+      </div>
       
       {/* D. Your Journey So Far */}
-      <JourneySoFarSection 
-        journalEntries={journalEntries}
-        milestonesData={milestonesData}
-      />
+      <div className="mb-8">
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">D. Your Journey So Far</h2>
+        <JourneySoFarSection 
+          journalEntries={journalEntries}
+          milestonesData={milestonesData}
+        />
+      </div>
     </DashboardLayout>
   );
 };

@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -31,8 +30,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   
   return (
     <div className="mb-16">
-      <h2 className="text-xl font-semibold mb-4 text-gray-800">D. Your Journey So Far</h2>
-      
       <Card className="shadow-sm hover:shadow-md transition-shadow mb-6">
         <CardHeader className="pb-2">
           <CardTitle className="text-lg flex items-center">
