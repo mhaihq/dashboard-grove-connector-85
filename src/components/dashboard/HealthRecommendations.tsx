@@ -129,7 +129,7 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
               </div>
             </div>
             
-            <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {behavioralInsights.map((insight, index) => (
                 <BehavioralInsightCard 
                   key={index}
@@ -151,12 +151,27 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
               </div>
             </div>
             
-            <div className="space-y-4">
-              {medicarePrograms.slice(0, 3).map((program, index) => (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {medicarePrograms.slice(0, 2).map((program, index) => (
                 <ClinicalRecommendationCard
                   key={index}
                   program={program}
                   onAction={() => onScheduleCall()}
+                />
+              ))}
+              
+              {recommendations.slice(0, 2).map((recommendation, index) => (
+                <ClinicalRecommendationCard
+                  key={`rec-${index}`}
+                  program={{
+                    ...recommendation,
+                    name: recommendation.title,
+                    description: recommendation.description,
+                    benefits: recommendation.steps,
+                    coverage: recommendation.whyItMatters,
+                    isEligible: true
+                  }}
+                  onAction={() => handleRecommendationAction(recommendation)}
                 />
               ))}
             </div>
