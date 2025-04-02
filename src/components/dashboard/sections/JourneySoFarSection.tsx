@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Progress } from '@/components/ui/progress';
 import { CalendarAppointment } from '@/components/CalendarAppointment';
 import { Calendar as CalendarIcon, Milestone, CheckCircle2, Brain, FileText, Sparkles, Stars, ArrowRight, ChevronRight, ChevronLeft, Info } from 'lucide-react';
 import { format, addDays, startOfMonth, endOfMonth, eachDayOfInterval, isToday, isSameMonth, isSameDay } from 'date-fns';
@@ -28,22 +29,19 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   journalEntries,
   milestonesData
 }) => {
-  // Get current date and set date range for the Gantt chart
   const today = new Date();
   const [calendarDate, setCalendarDate] = useState(today);
   
-  // Define start and end dates for the Gantt chart (past 2 months to future 4 months)
-  const startDate = new Date(2025, 1, 1); // Feb 1, 2025
-  const endDate = new Date(2025, 7, 31);  // Aug 31, 2025
+  const startDate = new Date(2025, 1, 1);
+  const endDate = new Date(2025, 7, 31);
   
-  // Define the milestone stages for the health journey roadmap
   const journeyMilestones = [
     {
       stage: 1,
       label: "Intake Complete",
       description: "Initial assessment done. We know your baseline.",
-      startDate: new Date(2025, 1, 13), // Feb 13, 2025
-      endDate: new Date(2025, 1, 19),   // Feb 19, 2025
+      startDate: new Date(2025, 1, 13),
+      endDate: new Date(2025, 1, 19),
       icon: <CheckCircle2 className="w-5 h-5 text-green-500" />,
       completed: true,
       color: "green",
@@ -53,8 +51,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       stage: 2,
       label: "AI Follow-Ups Started",
       description: "You're now receiving weekly check-ins.",
-      startDate: new Date(2025, 1, 20), // Feb 20, 2025
-      endDate: new Date(2025, 2, 5),    // March 5, 2025
+      startDate: new Date(2025, 1, 20),
+      endDate: new Date(2025, 2, 5),
       icon: <CalendarIcon className="w-5 h-5 text-blue-500" />,
       completed: true,
       color: "blue",
@@ -64,8 +62,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       stage: 3,
       label: "First Habit Momentum",
       description: "You're showing consistency with morning walks (5-day streak).",
-      startDate: new Date(2025, 2, 1),  // March 1, 2025
-      endDate: new Date(2025, 2, 10),   // March 10, 2025
+      startDate: new Date(2025, 2, 1),
+      endDate: new Date(2025, 2, 10),
       icon: <Sparkles className="w-5 h-5 text-amber-500" />,
       completed: true,
       color: "amber",
@@ -79,8 +77,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       stage: 4,
       label: "First Insight Unlocked",
       description: "System detected: your sleep is better when you avoid screens at night.",
-      startDate: new Date(2025, 2, 5),  // March 5, 2025
-      endDate: new Date(2025, 2, 15),   // March 15, 2025
+      startDate: new Date(2025, 2, 5),
+      endDate: new Date(2025, 2, 15),
       icon: <Brain className="w-5 h-5 text-purple-500" />,
       completed: true,
       color: "purple",
@@ -94,8 +92,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       stage: 5,
       label: "Care Plan Adapted",
       description: "Goals personalized based on your check-ins and progress.",
-      startDate: new Date(2025, 2, 15), // March 15, 2025
-      endDate: new Date(2025, 3, 15),   // April 15, 2025
+      startDate: new Date(2025, 2, 15),
+      endDate: new Date(2025, 3, 15),
       icon: <FileText className="w-5 h-5 text-green-500" />,
       completed: false,
       inProgress: true,
@@ -108,8 +106,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       stage: 6,
       label: "Sustained Progress",
       description: "Over 4 weeks of engagement with notable wins.",
-      startDate: new Date(2025, 3, 1),  // April 1, 2025
-      endDate: new Date(2025, 4, 15),   // May 15, 2025
+      startDate: new Date(2025, 3, 1),
+      endDate: new Date(2025, 4, 15),
       icon: <Stars className="w-5 h-5 text-amber-500" />,
       completed: false,
       color: "amber",
@@ -120,8 +118,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       stage: 7,
       label: "Next Step",
       description: "Specialist review of your progress and adjustments to your care path.",
-      startDate: new Date(2025, 4, 1),  // May 1, 2025
-      endDate: new Date(2025, 5, 15),   // June 15, 2025
+      startDate: new Date(2025, 4, 1),
+      endDate: new Date(2025, 5, 15),
       icon: <Milestone className="w-5 h-5 text-blue-500" />,
       completed: false,
       color: "blue",
@@ -130,10 +128,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
     }
   ];
 
-  // Calculate the user's current position in the journey
-  const currentStage = 5; // They've completed stages 1-4 and are on stage 5
-  
-  // Generate journey summary text
+  const currentStage = 5;
+
   const generateJourneySummary = () => {
     const completedCount = journeyMilestones.filter(m => m.completed).length;
     const inProgressCount = journeyMilestones.filter(m => m.inProgress).length;
@@ -149,8 +145,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   };
   
   const journeySummary = generateJourneySummary();
-  
-  // Helper to calculate width percentage for Gantt bars based on date range
+
   const calculateWidthPercentage = (start: Date, end: Date) => {
     const totalDuration = endDate.getTime() - startDate.getTime();
     const taskStart = Math.max(start.getTime(), startDate.getTime());
@@ -160,7 +155,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
     return (taskDuration / totalDuration) * 100;
   };
   
-  // Helper to calculate left position percentage for Gantt bars
   const calculateLeftPercentage = (start: Date) => {
     const totalDuration = endDate.getTime() - startDate.getTime();
     const taskStartOffset = Math.max(start.getTime() - startDate.getTime(), 0);
@@ -168,7 +162,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
     return (taskStartOffset / totalDuration) * 100;
   };
   
-  // Generate month labels for the timeline
   const monthLabels = [];
   let currentMonth = startOfMonth(startDate);
   const lastMonth = startOfMonth(endDate);
@@ -178,7 +171,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
     currentMonth = startOfMonth(addDays(endOfMonth(currentMonth), 1));
   }
   
-  // Prepare month boundaries for grid lines
   const monthBoundaries = [];
   currentMonth = startOfMonth(startDate);
   
@@ -191,23 +183,19 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
     currentMonth = startOfMonth(addDays(endOfMonth(currentMonth), 1));
   }
   
-  // Calculate the position of "today" marker
   const todayPosition = calculateLeftPercentage(today);
   
-  // Function to handle dependency lines
   const renderDependencyLines = () => {
     return journeyMilestones.map(milestone => {
       return milestone.dependencies.map(depId => {
         const dependencyMilestone = journeyMilestones.find(m => m.stage === depId);
         if (!dependencyMilestone) return null;
         
-        // Calculate positions
         const fromX = calculateLeftPercentage(dependencyMilestone.endDate);
         const toX = calculateLeftPercentage(milestone.startDate);
-        const fromY = (dependencyMilestone.stage - 1) * 100 + 50; // Center of dependency milestone
-        const toY = (milestone.stage - 1) * 100 + 50; // Center of current milestone
+        const fromY = (dependencyMilestone.stage - 1) * 100 + 50;
+        const toY = (milestone.stage - 1) * 100 + 50;
         
-        // Simple straight line for now
         return (
           <svg 
             key={`dep-${depId}-to-${milestone.stage}`}
@@ -256,22 +244,18 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        {/* Journey Summary */}
         <div className="mb-6 bg-blue-50 rounded-lg p-4 border border-blue-100">
           <h3 className="text-md font-medium text-blue-800 mb-2">Your Journey So Far</h3>
           <p className="text-sm text-blue-700 mb-2">{journeySummary.text}</p>
           <p className="text-xs text-blue-600 italic">Current focus: {journeySummary.currentMilestone}</p>
         </div>
         
-        {/* Gantt Chart Timeline Header */}
         <div className="relative mb-2 mt-8 border-b border-gray-200">
           <div className="flex">
-            {/* Left sidebar for milestone names - using smaller width (1/6) */}
             <div className="w-1/6 pr-2 flex-shrink-0">
               <div className="h-8 font-medium text-sm text-gray-700">Milestone</div>
             </div>
             
-            {/* Timeline header with month labels - increased width to 5/6 */}
             <div className="w-5/6 relative">
               <div className="flex justify-between absolute w-full">
                 {monthLabels.map((month, idx) => (
@@ -288,9 +272,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
           </div>
         </div>
         
-        {/* Gantt Chart Container */}
         <div className="relative overflow-x-auto">
-          {/* Month boundary lines */}
           {monthBoundaries.map((month, idx) => (
             <div 
               key={`month-line-${idx}`}
@@ -304,7 +286,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
             />
           ))}
           
-          {/* Today marker */}
           <div 
             className="absolute h-full border-l-2 border-red-500 z-10"
             style={{ 
@@ -318,12 +299,10 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
             </div>
           </div>
           
-          {/* Render dependency lines */}
           <div className="relative">
             {renderDependencyLines()}
           </div>
           
-          {/* Milestone rows */}
           {journeyMilestones.map((milestone, index) => {
             const leftPos = calculateLeftPercentage(milestone.startDate);
             const barWidth = calculateWidthPercentage(milestone.startDate, milestone.endDate);
@@ -333,7 +312,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                 "flex items-start py-4 border-b border-gray-100",
                 milestone.currentPosition && "bg-blue-50"
               )}>
-                {/* Left sidebar with milestone info - using smaller width (1/6) */}
                 <div className="w-1/6 pr-2 flex items-start">
                   <div className="flex flex-col">
                     <div className="flex items-center">
@@ -351,7 +329,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                   </div>
                 </div>
                 
-                {/* Right side with Gantt bar - increased width to 5/6 */}
                 <div className="w-5/6 relative h-14">
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -363,12 +340,10 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                           top: '8px',
                           backgroundColor: milestone.completed ? 'transparent' : 
                                           milestone.inProgress ? 'transparent' : 
-                                          '#f3f4f6' // gray-100
+                                          '#f3f4f6'
                         }}
                       >
-                        {/* Progress bar container with background */}
                         <div className="w-full h-full rounded-lg overflow-hidden bg-gray-100">
-                          {/* Colored progress indicator */}
                           <div 
                             className={cn(
                               "h-full rounded-lg transition-all",
@@ -383,7 +358,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                               boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)'
                             }}
                           >
-                            {/* Label inside the bar if enough width */}
                             {barWidth > 15 && (
                               <div className="absolute inset-0 flex items-center justify-start px-3">
                                 <span className={cn(
@@ -449,7 +423,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                     </TooltipContent>
                   </Tooltip>
                   
-                  {/* Date labels if bar is too small */}
                   {barWidth <= 15 && (
                     <div className="absolute text-xs text-gray-500" style={{ left: `${leftPos + barWidth + 0.5}%`, top: '10px' }}>
                       {format(milestone.startDate, 'MM/dd')}
@@ -461,7 +434,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
           })}
         </div>
         
-        {/* Legend */}
         <div className="mt-6 flex flex-wrap gap-4 justify-start">
           <div className="flex items-center">
             <div className="w-3 h-3 bg-green-500 rounded-sm mr-2"></div>
@@ -487,7 +459,6 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
           </div>
         </div>
         
-        {/* Quote at the bottom */}
         <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-3">
           <p className="text-sm text-gray-700 italic">
             "Small changes consistently applied create remarkable results over time."
