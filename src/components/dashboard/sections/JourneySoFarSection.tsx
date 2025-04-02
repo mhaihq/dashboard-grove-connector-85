@@ -248,19 +248,19 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
             <span className="text-sm font-medium">Your Journey Progress</span>
             <span className="text-sm text-gray-500">{currentStage} of {journeyMilestones.length} milestones</span>
           </div>
-          <Progress value={progressPercentage} className="h-2" />
+          <Progress value={progressPercentage} className="h-3" />
         </div>
         
         {/* Gantt Chart Timeline Header */}
         <div className="relative mb-2 mt-8 border-b border-gray-200">
           <div className="flex">
-            {/* Left sidebar for milestone names - reduced width from 1/3 to 1/4 */}
-            <div className="w-1/4 pr-4 flex-shrink-0">
+            {/* Left sidebar for milestone names - using even smaller width (1/5) */}
+            <div className="w-1/5 pr-4 flex-shrink-0">
               <div className="h-8 font-medium text-sm text-gray-700">Milestone</div>
             </div>
             
-            {/* Timeline header with month labels - increased width from 2/3 to 3/4 */}
-            <div className="w-3/4 relative">
+            {/* Timeline header with month labels - increased width to 4/5 */}
+            <div className="w-4/5 relative">
               <div className="flex justify-between absolute w-full">
                 {monthLabels.map((month, idx) => (
                   <div 
@@ -321,10 +321,10 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                 "flex items-start py-4 border-b border-gray-100",
                 milestone.currentPosition && "bg-blue-50"
               )}>
-                {/* Left sidebar with milestone info - reduced width from 1/3 to 1/4 */}
-                <div className="w-1/4 pr-4 flex items-start">
+                {/* Left sidebar with milestone info - using even smaller width (1/5) */}
+                <div className="w-1/5 pr-4 flex items-start">
                   <div className={cn(
-                    "flex items-center justify-center w-8 h-8 rounded-full mr-3 flex-shrink-0",
+                    "flex items-center justify-center w-8 h-8 rounded-full mr-2 flex-shrink-0",
                     milestone.completed ? `bg-${milestone.color}-100 text-${milestone.color}-500` : 
                     milestone.inProgress ? `bg-${milestone.color}-100 text-${milestone.color}-500` :
                     "bg-gray-100 text-gray-500"
@@ -336,22 +336,22 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                     <h3 className="text-sm font-medium text-gray-900 flex items-center">
                       {milestone.label}
                       {milestone.currentPosition && 
-                        <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full whitespace-nowrap">
+                        <span className="ml-1 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full whitespace-nowrap">
                           You are here
                         </span>
                       }
                     </h3>
-                    <p className="text-xs text-gray-600 mt-0.5">{milestone.description}</p>
+                    <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{milestone.description}</p>
                   </div>
                 </div>
                 
-                {/* Right side with Gantt bar - increased width from 2/3 to 3/4 */}
-                <div className="w-3/4 relative h-14">
+                {/* Right side with Gantt bar - increased width to 4/5 */}
+                <div className="w-4/5 relative h-14">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div 
                         className={cn(
-                          "absolute h-8 rounded-md transition-all hover:brightness-95",
+                          "absolute h-10 rounded-md transition-all hover:brightness-95",
                           milestone.completed ? `bg-${milestone.color}-500` :
                           milestone.inProgress ? `bg-${milestone.color}-200` :
                           "bg-gray-200"
@@ -359,7 +359,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                         style={{ 
                           left: `${leftPos}%`, 
                           width: `${barWidth}%`, 
-                          top: '10px'
+                          top: '8px'
                         }}
                       >
                         {/* Progress indicator for in-progress tasks */}
@@ -401,7 +401,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                         {milestone.inProgress && (
                           <div className="mt-2">
                             <div className="text-xs mb-1">Progress: {milestone.progressPercent}%</div>
-                            <Progress value={milestone.progressPercent} className="h-1.5" />
+                            <Progress value={milestone.progressPercent} className="h-2" />
                           </div>
                         )}
                         
