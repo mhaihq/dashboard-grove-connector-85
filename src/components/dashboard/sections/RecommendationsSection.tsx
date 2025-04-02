@@ -147,20 +147,7 @@ const PatternInsightCard: React.FC<PatternInsightCardProps> = ({
           </div>
         </div>
         
-        <div className="flex justify-end items-center mt-4 space-x-2">
-          <Button variant="outline" size="sm" className="text-sm">
-            <Repeat className="w-4 h-4 mr-1" />
-            Add to Plan
-          </Button>
-          <Button variant="ghost" size="sm" className="text-sm">
-            <BookmarkPlus className="w-4 h-4 mr-1" />
-            Save
-          </Button>
-          <Button variant="ghost" size="sm" className="text-sm">
-            <PenLine className="w-4 h-4 mr-1" />
-            Reflect
-          </Button>
-        </div>
+        {/* Removed the button container div that was here */}
       </CardContent>
     </Card>
   );
