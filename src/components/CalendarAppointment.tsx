@@ -11,6 +11,7 @@ interface CalendarAppointmentProps {
   status: 'booked' | 'missed';
   recurrenceType?: string;
   recurrenceFrequency?: string;
+  type?: 'Vacation' | 'Education' | 'Sick Leave' | 'Public Holiday';
 }
 
 export const CalendarAppointment: React.FC<CalendarAppointmentProps> = ({
@@ -18,10 +19,31 @@ export const CalendarAppointment: React.FC<CalendarAppointmentProps> = ({
   time,
   status,
   recurrenceType,
-  recurrenceFrequency
+  recurrenceFrequency,
+  type = 'Vacation'
 }) => {
   const isPast = date < new Date();
   const isToday = new Date().toDateString() === date.toDateString();
+  
+  const getTypeColor = () => {
+    switch(type) {
+      case 'Vacation': return 'border-green-200 bg-green-50';
+      case 'Education': return 'border-pink-200 bg-pink-50';
+      case 'Sick Leave': return 'border-amber-200 bg-amber-50';
+      case 'Public Holiday': return 'border-purple-200 bg-purple-50';
+      default: return 'border-gray-200 bg-gray-50';
+    }
+  };
+  
+  const getTypeTextColor = () => {
+    switch(type) {
+      case 'Vacation': return 'text-green-800';
+      case 'Education': return 'text-pink-800';
+      case 'Sick Leave': return 'text-amber-800';
+      case 'Public Holiday': return 'text-purple-800';
+      default: return 'text-gray-800';
+    }
+  };
   
   const getStatusIcon = () => {
     if (status === 'missed') return <PhoneMissed className="h-5 w-5 text-red-500" />;
@@ -30,8 +52,8 @@ export const CalendarAppointment: React.FC<CalendarAppointmentProps> = ({
   };
   
   const getStatusText = () => {
-    if (status === 'missed') return 'Missed Call';
-    if (isToday) return 'Today\'s Appointment';
+    if (status === 'missed') return 'Missed';
+    if (isToday) return 'Today';
     if (isPast) return 'Completed';
     return 'Upcoming';
   };
@@ -39,9 +61,7 @@ export const CalendarAppointment: React.FC<CalendarAppointmentProps> = ({
   return (
     <div className={cn(
       "border rounded-lg p-4 transition-all hover:shadow-md",
-      status === 'missed' ? "border-red-200 bg-red-50" : 
-      isToday ? "border-amber-200 bg-amber-50" :
-      isPast ? "border-gray-200 bg-gray-50" : "border-green-200 bg-green-50"
+      getTypeColor()
     )}>
       <div className="flex items-start justify-between mb-2">
         <div className="flex items-center">
@@ -55,6 +75,12 @@ export const CalendarAppointment: React.FC<CalendarAppointmentProps> = ({
             {getStatusText()}
           </span>
         </div>
+        <span className={cn(
+          "text-sm font-medium",
+          getTypeTextColor()
+        )}>
+          {type}
+        </span>
       </div>
       
       <div className="space-y-2">
