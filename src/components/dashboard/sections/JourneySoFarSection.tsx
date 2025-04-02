@@ -3,7 +3,6 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Clock, Milestone, CheckCircle2, Brain, FileText, Sparkles, Stars, ArrowRight } from 'lucide-react';
-import { JournalEntry } from '@/types/dashboard';
 
 interface JourneySoFarSectionProps {
   journalEntries: any[]; 
@@ -50,7 +49,11 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       description: "You're showing consistency with morning walks (5-day streak).",
       date: "March 5, 2025",
       icon: <Sparkles className="w-5 h-5 text-amber-500" />,
-      completed: true
+      completed: true,
+      highlight: {
+        text: "Environmental Win: Moving your phone charger away from your bed helped establish this habit.",
+        color: "amber"
+      }
     },
     {
       stage: 4,
@@ -58,7 +61,11 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       description: "System detected: your sleep is better when you avoid screens at night.",
       date: "March 10, 2025",
       icon: <Brain className="w-5 h-5 text-purple-500" />,
-      completed: true
+      completed: true,
+      highlight: {
+        text: "AI Pattern Discovery: \"We noticed your sleep quality improves by 30% when you avoid screens 1 hour before bed.\"",
+        color: "purple"
+      }
     },
     {
       stage: 5,
@@ -66,7 +73,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
       description: "Goals personalized based on your check-ins and progress.",
       date: "March 15, 2025",
       icon: <FileText className="w-5 h-5 text-green-500" />,
-      completed: true
+      completed: true,
+      currentPosition: true
     },
     {
       stage: 6,
@@ -91,84 +99,74 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
   const progressPercentage = (currentStage / journeyMilestones.length) * 100;
   
   return (
-    <div>
-      <Card className="shadow-sm hover:shadow-md transition-shadow mb-6">
-        <CardHeader className="pb-2">
-          <CardTitle className="flex items-center">
-            <Milestone className="w-5 h-5 mr-2 text-blue-500" />
-            <span className="text-gray-700">Health Journey Roadmap</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {/* Progress indicator */}
-          <div className="mb-4">
-            <div className="flex justify-between items-center mb-1">
-              <span className="text-sm font-medium">Your Journey Progress</span>
-              <span className="text-sm text-gray-500">{currentStage} of {journeyMilestones.length} milestones</span>
-            </div>
-            <Progress value={progressPercentage} className="h-2" />
+    <Card className="shadow-sm hover:shadow-md transition-shadow mb-6">
+      <CardHeader className="pb-2">
+        <CardTitle className="flex items-center">
+          <Milestone className="w-5 h-5 mr-2 text-blue-500" />
+          <span className="text-gray-700">Health Journey Roadmap</span>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {/* Progress indicator */}
+        <div className="mb-4">
+          <div className="flex justify-between items-center mb-1">
+            <span className="text-sm font-medium">Your Journey Progress</span>
+            <span className="text-sm text-gray-500">{currentStage} of {journeyMilestones.length} milestones</span>
           </div>
+          <Progress value={progressPercentage} className="h-2" />
+        </div>
+        
+        {/* Timeline display with vertical line and milestone points */}
+        <div className="relative py-4">
+          {/* Vertical timeline line */}
+          <div className="absolute top-0 bottom-0 left-[22px] w-1 bg-gray-200"></div>
           
-          {/* Timeline display */}
-          <div className="relative py-4">
-            {/* Vertical timeline line */}
-            <div className="absolute top-0 bottom-0 left-[22px] w-1 bg-gray-200"></div>
-            
-            {/* Milestone points */}
-            {journeyMilestones.map((milestone, index) => (
-              <div key={index} className={`flex mb-8 relative z-10 ${index === currentStage - 1 ? "animate-pulse" : ""}`}>
-                <div className={`flex items-center justify-center w-12 h-12 rounded-full ${
-                  milestone.completed 
-                    ? "bg-green-100 border-4 border-white text-green-500" 
-                    : "bg-gray-200 border-4 border-white text-gray-500"
-                } mr-4`}>
-                  <span className="text-lg font-bold">{milestone.stage}</span>
-                </div>
-                <div className={milestone.completed ? "" : "opacity-60"}>
-                  <h3 className="text-md font-medium text-gray-900 flex items-center">
-                    {milestone.label}
-                    {index === currentStage - 1 && 
-                      <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
-                        You are here
-                      </span>
-                    }
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">{milestone.description}</p>
-                  <div className="flex items-center mt-1">
-                    <span className="text-xs text-gray-500 mr-2">{milestone.date}</span>
-                    {milestone.icon}
-                  </div>
-                  
-                  {/* Special highlights for completed milestones */}
-                  {milestone.completed && milestone.stage === 3 && (
-                    <div className="mt-2 bg-amber-50 rounded-md p-2">
-                      <p className="text-xs text-amber-700">
-                        <span className="font-medium">Environmental Win:</span> Moving your phone charger away from your bed helped establish this habit.
-                      </p>
-                    </div>
-                  )}
-                  
-                  {milestone.completed && milestone.stage === 4 && (
-                    <div className="mt-2 bg-purple-50 rounded-md p-2">
-                      <p className="text-xs text-purple-700">
-                        <span className="font-medium">AI Pattern Discovery:</span> "We noticed your sleep quality improves by 30% when you avoid screens 1 hour before bed."
-                      </p>
-                    </div>
-                  )}
-                </div>
+          {/* Milestone points */}
+          {journeyMilestones.map((milestone, index) => (
+            <div key={index} className={`flex mb-8 relative z-10 ${index === currentStage - 1 ? "animate-pulse" : ""}`}>
+              <div className={`flex items-center justify-center w-12 h-12 rounded-full ${
+                milestone.completed 
+                  ? "bg-green-100 border-4 border-white text-green-500" 
+                  : "bg-gray-200 border-4 border-white text-gray-500"
+              } mr-4`}>
+                <span className="text-lg font-bold">{milestone.stage}</span>
               </div>
-            ))}
-          </div>
-          
-          {/* Quote at the bottom */}
-          <div className="mt-2 bg-gray-50 border border-gray-200 rounded-lg p-3">
-            <p className="text-sm text-gray-700 italic">
-              "Small changes consistently applied create remarkable results over time."
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+              <div className={milestone.completed ? "" : "opacity-60"}>
+                <h3 className="text-md font-medium text-gray-900 flex items-center">
+                  {milestone.label}
+                  {milestone.currentPosition && 
+                    <span className="ml-2 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full">
+                      You are here
+                    </span>
+                  }
+                </h3>
+                <p className="text-sm text-gray-600 mt-1">{milestone.description}</p>
+                <div className="flex items-center mt-1">
+                  <span className="text-xs text-gray-500 mr-2">{milestone.date}</span>
+                  {milestone.icon}
+                </div>
+                
+                {/* Display highlight boxes for special milestones */}
+                {milestone.highlight && (
+                  <div className={`mt-2 bg-${milestone.highlight.color}-50 rounded-md p-2`}>
+                    <p className={`text-xs text-${milestone.highlight.color}-700`}>
+                      {milestone.highlight.text}
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Quote at the bottom */}
+        <div className="mt-2 bg-gray-50 border border-gray-200 rounded-lg p-3">
+          <p className="text-sm text-gray-700 italic">
+            "Small changes consistently applied create remarkable results over time."
+          </p>
+        </div>
+      </CardContent>
+    </Card>
   );
 };
 
