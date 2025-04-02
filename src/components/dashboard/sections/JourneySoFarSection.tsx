@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -133,7 +134,23 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
 
   // Calculate the user's current position in the journey
   const currentStage = 5; // They've completed stages 1-4 and are on stage 5
-  const progressPercentage = (currentStage / journeyMilestones.length) * 100;
+  
+  // Generate journey summary text
+  const generateJourneySummary = () => {
+    const completedCount = journeyMilestones.filter(m => m.completed).length;
+    const inProgressCount = journeyMilestones.filter(m => m.inProgress).length;
+    const remainingCount = journeyMilestones.length - completedCount - inProgressCount;
+    
+    let currentFocus = journeyMilestones.find(m => m.currentPosition)?.label || "Care Plan Adaptation";
+    
+    return {
+      text: `You've completed ${completedCount} milestones on your health journey with ${inProgressCount} in progress and ${remainingCount} ahead. Currently focusing on ${currentFocus}.`,
+      progress: (completedCount / journeyMilestones.length) * 100,
+      currentMilestone: currentFocus
+    };
+  };
+  
+  const journeySummary = generateJourneySummary();
   
   // Helper to calculate width percentage for Gantt bars based on date range
   const calculateWidthPercentage = (start: Date, end: Date) => {
@@ -241,19 +258,23 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
         </div>
       </CardHeader>
       <CardContent>
-        {/* Progress indicator */}
-        <div className="mb-4">
-          <div className="flex justify-between items-center mb-1">
-            <span className="text-sm font-medium">Your Journey Progress</span>
-            <span className="text-sm text-gray-500">{currentStage} of {journeyMilestones.length} milestones</span>
+        {/* Journey Summary */}
+        <div className="mb-6 bg-blue-50 rounded-lg p-4 border border-blue-100">
+          <h3 className="text-md font-medium text-blue-800 mb-2">Your Journey So Far</h3>
+          <p className="text-sm text-blue-700 mb-3">{journeySummary.text}</p>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="flex-grow">
+              <Progress value={journeySummary.progress} className="h-2.5" />
+            </div>
+            <span className="text-xs text-blue-700 font-medium">{Math.round(journeySummary.progress)}%</span>
           </div>
-          <Progress value={progressPercentage} className="h-3" />
+          <p className="text-xs text-blue-600 italic">Current focus: {journeySummary.currentMilestone}</p>
         </div>
         
         {/* Gantt Chart Timeline Header */}
         <div className="relative mb-2 mt-8 border-b border-gray-200">
           <div className="flex">
-            {/* Left sidebar for milestone names - using even smaller width (1/6) */}
+            {/* Left sidebar for milestone names - using smaller width (1/6) */}
             <div className="w-1/6 pr-2 flex-shrink-0">
               <div className="h-8 font-medium text-sm text-gray-700">Milestone</div>
             </div>
@@ -320,26 +341,20 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                 "flex items-start py-4 border-b border-gray-100",
                 milestone.currentPosition && "bg-blue-50"
               )}>
-                {/* Left sidebar with milestone info - using even smaller width (1/6) */}
+                {/* Left sidebar with milestone info - using smaller width (1/6) */}
                 <div className="w-1/6 pr-2 flex items-start">
-                  <div className={cn(
-                    "flex items-center justify-center w-7 h-7 rounded-full mr-1.5 flex-shrink-0",
-                    milestone.completed ? `bg-${milestone.color}-100 text-${milestone.color}-500` : 
-                    milestone.inProgress ? `bg-${milestone.color}-100 text-${milestone.color}-500` :
-                    "bg-gray-100 text-gray-500"
-                  )}>
-                    <span className="text-sm font-bold">{milestone.stage}</span>
-                  </div>
-                  
                   <div className="flex flex-col">
-                    <h3 className="text-sm font-medium text-gray-900 flex items-center">
-                      {milestone.label}
-                      {milestone.currentPosition && 
-                        <span className="ml-1 px-1.5 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full whitespace-nowrap">
-                          You are here
-                        </span>
-                      }
-                    </h3>
+                    <div className="flex items-center">
+                      <span className="mr-2">{milestone.icon}</span>
+                      <h3 className="text-sm font-medium text-gray-900">
+                        {milestone.label}
+                        {milestone.currentPosition && 
+                          <span className="ml-1 px-1.5 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full whitespace-nowrap">
+                            You are here
+                          </span>
+                        }
+                      </h3>
+                    </div>
                     <p className="text-xs text-gray-600 mt-0.5 line-clamp-2">{milestone.description}</p>
                   </div>
                 </div>
