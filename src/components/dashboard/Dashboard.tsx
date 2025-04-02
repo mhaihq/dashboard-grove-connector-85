@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   userInfo, welcome, userBackground, overview, 
@@ -190,9 +189,9 @@ export const Dashboard: React.FC<DashboardProps> = ({ onScheduleCall }) => {
         />
       </div>
       
-      {/* D. Your Journey So Far - Updated heading to match new design */}
+      {/* D. Your Health Journey Roadmap */}
       <div className="mb-8">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Your Health Journey</h2>
+        <h2 className="text-xl font-semibold mb-4 text-gray-800">Health Journey Roadmap</h2>
         <JourneySoFarSection 
           journalEntries={journalEntries}
           milestonesData={milestonesData}
