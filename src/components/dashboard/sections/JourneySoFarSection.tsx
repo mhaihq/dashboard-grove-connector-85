@@ -1,7 +1,5 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { CalendarAppointment } from '@/components/CalendarAppointment';
 import { Calendar as CalendarIcon, Milestone, CheckCircle2, Brain, FileText, Sparkles, Stars, ArrowRight, ChevronRight, ChevronLeft, Info } from 'lucide-react';
 import { format, addDays, startOfMonth, endOfMonth, eachDayOfInterval, isToday, isSameMonth, isSameDay } from 'date-fns';
@@ -261,13 +259,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
         {/* Journey Summary */}
         <div className="mb-6 bg-blue-50 rounded-lg p-4 border border-blue-100">
           <h3 className="text-md font-medium text-blue-800 mb-2">Your Journey So Far</h3>
-          <p className="text-sm text-blue-700 mb-3">{journeySummary.text}</p>
-          <div className="flex items-center gap-2 mb-2">
-            <div className="flex-grow">
-              <Progress value={journeySummary.progress} className="h-2.5" />
-            </div>
-            <span className="text-xs text-blue-700 font-medium">{Math.round(journeySummary.progress)}%</span>
-          </div>
+          <p className="text-sm text-blue-700 mb-2">{journeySummary.text}</p>
           <p className="text-xs text-blue-600 italic">Current focus: {journeySummary.currentMilestone}</p>
         </div>
         
