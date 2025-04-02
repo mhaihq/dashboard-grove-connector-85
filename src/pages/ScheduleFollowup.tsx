@@ -5,8 +5,8 @@ import { DashboardHeader } from '@/components/DashboardHeader';
 import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Clock, Calendar as CalendarIcon, CheckCircle, Repeat, Check, X, PhoneCall, PhoneMissed, Bell, ChevronLeft, ChevronRight, Filter } from 'lucide-react';
-import { format, addDays, startOfWeek, endOfWeek, eachDayOfInterval, isSameDay, addWeeks, subWeeks } from 'date-fns';
+import { Clock, Calendar as CalendarIcon, CheckCircle, Repeat, Check, X, PhoneCall, PhoneMissed, Bell } from 'lucide-react';
+import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { toast } from '@/hooks/use-toast';
 import {
@@ -38,92 +38,43 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { CalendarAppointment } from '@/components/CalendarAppointment';
 
-type AppointmentType = 'Vacation' | 'Education' | 'Sick Leave' | 'Public Holiday';
-
 interface Appointment {
   date: Date;
   time: string;
   status: 'booked' | 'missed';
   recurrenceType?: string;
   recurrenceFrequency?: string;
-  type?: AppointmentType;
 }
 
 const ScheduleFollowup = () => {
   const userName = "Matteo";
   const userEmail = "matteo@matteowastaken.com";
   
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [recurrenceType, setRecurrenceType] = useState<string>("one-time");
   const [recurrenceFrequency, setRecurrenceFrequency] = useState<string>("weekly");
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [timeInput, setTimeInput] = useState<string>("");
-  const [currentWeekStart, setCurrentWeekStart] = useState<Date>(startOfWeek(new Date(), { weekStartsOn: 1 }));
-  const [appointmentType, setAppointmentType] = useState<AppointmentType>("Vacation");
-  const [activeFilters, setActiveFilters] = useState<AppointmentType[]>(["Vacation", "Education", "Sick Leave", "Public Holiday"]);
-  const [viewMode, setViewMode] = useState<'Week' | '2 Weeks'>('Week');
   
   const [appointments, setAppointments] = useState<Appointment[]>([
     {
-      date: addDays(currentWeekStart, 1),
+      date: new Date(new Date().setDate(new Date().getDate() - 3)),
       time: '10:00 AM',
-      status: 'booked',
-      type: 'Vacation'
+      status: 'missed'
     },
     {
-      date: addDays(currentWeekStart, 2),
-      time: '11:00 AM',
-      status: 'booked',
-      type: 'Education'
-    },
-    {
-      date: addDays(currentWeekStart, 3),
-      time: '09:00 AM',
-      status: 'booked',
-      type: 'Sick Leave'
-    },
-    {
-      date: addDays(currentWeekStart, 4),
+      date: new Date(new Date().setDate(new Date().getDate() + 7)),
       time: '02:00 PM',
       status: 'booked',
-      type: 'Public Holiday'
+      recurrenceType: 'one-time'
     },
     {
-      date: addDays(currentWeekStart, 5),
-      time: '03:00 PM',
-      status: 'booked',
-      type: 'Vacation'
-    },
-    {
-      date: addDays(currentWeekStart, 8),
-      time: '10:00 AM',
-      status: 'booked',
-      type: 'Education'
-    },
-    {
-      date: addDays(currentWeekStart, 9),
-      time: '01:00 PM',
-      status: 'booked',
-      type: 'Public Holiday'
-    },
-    {
-      date: addDays(currentWeekStart, 10),
+      date: new Date(new Date().setDate(new Date().getDate() + 14)),
       time: '11:00 AM',
       status: 'booked',
-      type: 'Vacation'
-    },
-    {
-      date: addDays(currentWeekStart, 12),
-      time: '10:00 AM',
-      status: 'booked',
-      type: 'Public Holiday'
-    },
-    {
-      date: addDays(currentWeekStart, 13),
-      time: '03:00 PM',
-      status: 'booked',
-      type: 'Vacation'
+      recurrenceType: 'recurring',
+      recurrenceFrequency: 'weekly'
     }
   ]);
   
@@ -147,8 +98,7 @@ const ScheduleFollowup = () => {
       time: selectedTime,
       status: 'booked',
       recurrenceType: recurrenceType,
-      recurrenceFrequency: recurrenceType === 'recurring' ? recurrenceFrequency : undefined,
-      type: appointmentType
+      recurrenceFrequency: recurrenceType === 'recurring' ? recurrenceFrequency : undefined
     };
     
     setAppointments([...appointments, newAppointment]);
@@ -159,7 +109,7 @@ const ScheduleFollowup = () => {
     
     toast({
       title: "Appointment scheduled",
-      description: `Your ${appointmentType} has been scheduled for ${format(date, 'MMMM d, yyyy')} at ${selectedTime}${recurrenceMessage}`,
+      description: `Your follow-up has been scheduled for ${format(date, 'MMMM d, yyyy')} at ${selectedTime}${recurrenceMessage}`,
       action: (
         <Button size="sm" variant="outline" className="gap-1">
           <CheckCircle className="h-4 w-4" />
@@ -177,55 +127,29 @@ const ScheduleFollowup = () => {
     }
   };
 
-  const nextWeek = () => {
-    setCurrentWeekStart(addWeeks(currentWeekStart, 1));
-  };
-
-  const prevWeek = () => {
-    setCurrentWeekStart(subWeeks(currentWeekStart, 1));
-  };
-
-  const toggleFilter = (filter: AppointmentType) => {
-    if (activeFilters.includes(filter)) {
-      setActiveFilters(activeFilters.filter(f => f !== filter));
-    } else {
-      setActiveFilters([...activeFilters, filter]);
-    }
-  };
-
-  const clearAllFilters = () => {
-    setActiveFilters([]);
-  };
-
-  const resetAllFilters = () => {
-    setActiveFilters(["Vacation", "Education", "Sick Leave", "Public Holiday"]);
-  };
-
-  const daysToShow = viewMode === 'Week' ? 7 : 14;
-  const currentWeekDays = eachDayOfInterval({
-    start: currentWeekStart,
-    end: addDays(currentWeekStart, daysToShow - 1)
-  });
-
-  const filteredAppointments = appointments.filter(appointment => 
-    appointment.type && activeFilters.includes(appointment.type)
-  );
-
-  const filterColors = {
-    'Vacation': 'bg-green-100 text-green-800 border-green-200',
-    'Education': 'bg-pink-100 text-pink-800 border-pink-200',
-    'Sick Leave': 'bg-amber-100 text-amber-800 border-amber-200',
-    'Public Holiday': 'bg-purple-100 text-purple-800 border-purple-200'
-  };
-
-  const getAppointmentTypeColor = (type: AppointmentType) => {
-    switch(type) {
-      case 'Vacation': return 'bg-green-100 border-green-200';
-      case 'Education': return 'bg-pink-100 border-pink-200';
-      case 'Sick Leave': return 'bg-amber-100 border-amber-200';
-      case 'Public Holiday': return 'bg-purple-100 border-purple-200';
-      default: return 'bg-gray-100 border-gray-200';
-    }
+  const renderCalendarContent = (day: Date) => {
+    const dayAppointments = appointments.filter(
+      app => app.date.getDate() === day.getDate() && 
+             app.date.getMonth() === day.getMonth() && 
+             app.date.getFullYear() === day.getFullYear()
+    );
+    
+    if (dayAppointments.length === 0) return null;
+    
+    return (
+      <div className="absolute bottom-0 left-0 w-full flex justify-center">
+        {dayAppointments.map((appointment, idx) => (
+          <div 
+            key={idx} 
+            className={cn(
+              "h-1.5 w-1.5 rounded-full mx-0.5",
+              appointment.status === 'booked' ? "bg-green-500" : "bg-red-500"
+            )} 
+            title={`${appointment.time} - ${appointment.status === 'booked' ? 'Scheduled' : 'Missed'}`}
+          />
+        ))}
+      </div>
+    );
   };
 
   return (
@@ -239,225 +163,130 @@ const ScheduleFollowup = () => {
         />
         
         <main className="p-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-2xl font-bold text-gray-900">Schedule Follow-up</h1>
-              <div className="flex items-center gap-3">
-                <ToggleGroup 
-                  type="single" 
-                  value={viewMode} 
-                  onValueChange={(value) => {
-                    if (value) setViewMode(value as 'Week' | '2 Weeks');
-                  }}
-                  className="border rounded-md"
-                >
-                  <ToggleGroupItem value="Week" className="px-4">Week</ToggleGroupItem>
-                  <ToggleGroupItem value="2 Weeks" className="px-4">2 Weeks</ToggleGroupItem>
-                </ToggleGroup>
-              </div>
-            </div>
+          <div className="max-w-6xl mx-auto">
+            <h1 className="text-2xl font-bold text-gray-900 mb-6">Schedule Follow-up</h1>
             
-            <Card className="shadow-sm mb-6">
-              <CardHeader className="pb-0">
-                <div className="flex flex-wrap items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Button variant="outline" size="sm" onClick={prevWeek}>
-                      <ChevronLeft className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="sm" onClick={nextWeek}>
-                      <ChevronRight className="h-4 w-4" />
-                    </Button>
-                    <div className="text-lg font-medium">
-                      {format(currentWeekStart, 'MMMM d')} — {format(addDays(currentWeekStart, daysToShow - 1), 'MMMM d, yyyy')}
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center mt-2 md:mt-0">
-                    <div className="flex flex-wrap gap-2 mr-3">
-                      {(["Vacation", "Education", "Sick Leave", "Public Holiday"] as AppointmentType[]).map((filter) => (
-                        <Button
-                          key={filter}
-                          variant="outline"
-                          size="sm"
-                          onClick={() => toggleFilter(filter)}
-                          className={cn(
-                            "border rounded-full px-3 py-1 text-xs font-medium",
-                            activeFilters.includes(filter) ? filterColors[filter] : "bg-white text-gray-500"
-                          )}
-                        >
-                          {activeFilters.includes(filter) && <span className="mr-1">•</span>}
-                          {filter}
-                          {activeFilters.includes(filter) && (
-                            <X className="ml-1 h-3 w-3" />
-                          )}
-                        </Button>
-                      ))}
-                      {activeFilters.length > 0 && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={clearAllFilters}
-                          className="border rounded-full px-3 py-1 text-xs font-medium bg-white text-gray-500"
-                        >
-                          Clear all
-                        </Button>
-                      )}
-                      {activeFilters.length === 0 && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={resetAllFilters}
-                          className="border rounded-full px-3 py-1 text-xs font-medium bg-white text-gray-500"
-                        >
-                          Show all
-                        </Button>
-                      )}
-                    </div>
-                    
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button variant="outline" size="sm" className="gap-1">
-                          <Filter className="h-4 w-4" />
-                          Add filter
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-48 p-2">
-                        <div className="space-y-2">
-                          {(["Vacation", "Education", "Sick Leave", "Public Holiday"] as AppointmentType[]).map((filter) => (
-                            <div key={filter} className="flex items-center">
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={() => toggleFilter(filter)}
-                                className="w-full justify-start text-sm"
-                              >
-                                <input
-                                  type="checkbox"
-                                  checked={activeFilters.includes(filter)}
-                                  onChange={() => {}}
-                                  className="mr-2"
-                                />
-                                {filter}
-                              </Button>
-                            </div>
-                          ))}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <CardTitle>Select a Date</CardTitle>
+                  <CardDescription>Choose your preferred follow-up date</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="p-3 relative">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-2">
+                        <div className="flex items-center">
+                          <div className="h-3 w-3 rounded-full bg-green-500 mr-1.5"></div>
+                          <span className="text-sm text-gray-600">Booked</span>
                         </div>
-                      </PopoverContent>
-                    </Popover>
+                        <div className="flex items-center ml-4">
+                          <div className="h-3 w-3 rounded-full bg-red-500 mr-1.5"></div>
+                          <span className="text-sm text-gray-600">Missed</span>
+                        </div>
+                      </div>
+                    </div>
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={handleDateSelect}
+                      disabled={(date) => date < new Date() || date > new Date(new Date().setMonth(new Date().getMonth() + 2))}
+                      className="rounded-md border pointer-events-auto"
+                      components={{
+                        DayContent: ({ date: day }) => (
+                          <div className="relative w-full h-full flex items-center justify-center">
+                            {day.getDate()}
+                            {renderCalendarContent(day)}
+                          </div>
+                        ),
+                      }}
+                    />
                   </div>
-                </div>
-              </CardHeader>
+                </CardContent>
+              </Card>
               
-              <CardContent className="pt-4">
-                <div className="rounded-lg border overflow-hidden">
-                  {/* Day headers */}
-                  <div className="grid grid-cols-7 border-b bg-gray-50 text-sm font-medium text-gray-500">
-                    {["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"].map((day, i) => (
-                      <div key={day} className={cn(
-                        "py-2 text-center", 
-                        i < 5 ? "border-r" : ""
-                      )}>
-                        {i+1} {day}
+              <Card className="shadow-sm">
+                <CardHeader>
+                  <CardTitle>Appointment Information</CardTitle>
+                  <CardDescription>Your scheduled follow-up details</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {date ? (
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon className="h-5 w-5 text-gray-500" />
+                        <span className="text-lg font-medium">{format(date, 'MMMM d, yyyy')}</span>
                       </div>
-                    ))}
-                  </div>
-                  
-                  {/* Calendar grid */}
-                  <div className={cn(
-                    "grid",
-                    viewMode === 'Week' ? "grid-cols-7" : "grid-cols-7"
-                  )}>
-                    {currentWeekDays.slice(0, 7).map((day, i) => (
-                      <div 
-                        key={i} 
-                        className={cn(
-                          "min-h-[150px] p-1 border-b border-r relative",
-                          isSameDay(day, new Date()) && "bg-blue-50"
-                        )}
-                        onClick={() => handleDateSelect(day)}
-                      >
-                        <div className="sticky top-0 bg-white/90 backdrop-blur-sm z-10 mb-1">
-                          <span className="text-xs text-gray-500">
-                            {format(day, 'd')}
-                          </span>
+                      
+                      {selectedTime && (
+                        <div className="flex items-center gap-2">
+                          <Clock className="h-5 w-5 text-gray-500" />
+                          <span className="text-lg font-medium">{selectedTime}</span>
                         </div>
-                        <div className="space-y-1">
-                          {filteredAppointments
-                            .filter(a => isSameDay(a.date, day))
-                            .map((appointment, idx) => (
-                              <div 
-                                key={idx}
-                                className={cn(
-                                  "text-xs p-1 rounded-md border cursor-pointer",
-                                  appointment.type && getAppointmentTypeColor(appointment.type)
-                                )}
-                              >
-                                <div className="font-medium">
-                                  {appointment.type}
-                                </div>
-                                <div className="text-gray-600">{appointment.time}</div>
-                              </div>
-                            ))
-                          }
+                      )}
+                      
+                      {recurrenceType === "recurring" && (
+                        <div className="flex items-center gap-2">
+                          <Repeat className="h-5 w-5 text-gray-500" />
+                          <span className="text-lg font-medium">Recurring {recurrenceFrequency}</span>
                         </div>
-                      </div>
-                    ))}
-                  </div>
-                  
-                  {viewMode === '2 Weeks' && (
-                    <div className="grid grid-cols-7">
-                      {currentWeekDays.slice(7, 14).map((day, i) => (
-                        <div 
-                          key={i+7}
-                          className={cn(
-                            "min-h-[150px] p-1 border-b border-r relative",
-                            isSameDay(day, new Date()) && "bg-blue-50"
-                          )}
-                          onClick={() => handleDateSelect(day)}
-                        >
-                          <div className="sticky top-0 bg-white/90 backdrop-blur-sm z-10 mb-1">
-                            <span className="text-xs text-gray-500">
-                              {format(day, 'd')}
-                            </span>
-                          </div>
-                          <div className="space-y-1">
-                            {filteredAppointments
-                              .filter(a => isSameDay(a.date, day))
-                              .map((appointment, idx) => (
-                                <div 
-                                  key={idx}
-                                  className={cn(
-                                    "text-xs p-1 rounded-md border cursor-pointer",
-                                    appointment.type && getAppointmentTypeColor(appointment.type)
-                                  )}
-                                >
-                                  <div className="font-medium">
-                                    {appointment.type}
-                                  </div>
-                                  <div className="text-gray-600">{appointment.time}</div>
-                                </div>
-                              ))
-                            }
-                          </div>
-                        </div>
-                      ))}
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-gray-500">
+                      <CalendarIcon className="mx-auto h-12 w-12 opacity-30 mb-3" />
+                      <p>Please select a date to schedule your follow-up</p>
                     </div>
                   )}
-                </div>
-              </CardContent>
-              
-              <CardFooter className="flex justify-center pt-0">
-                <Button
-                  onClick={() => {
-                    setDate(new Date());
-                    setIsModalOpen(true);
-                  }}
-                  className="bg-hana-green hover:bg-hana-green/90 text-white"
-                >
-                  Schedule New Appointment
-                </Button>
-              </CardFooter>
-            </Card>
+                </CardContent>
+                {date && (
+                  <CardFooter className="flex justify-end gap-2">
+                    <Button variant="ghost" onClick={() => {
+                      setDate(undefined);
+                      setSelectedTime(null);
+                    }}>
+                      Cancel
+                    </Button>
+                    <Button 
+                      onClick={() => setIsModalOpen(true)}
+                      className="bg-hana-green hover:bg-hana-green/90 text-white"
+                    >
+                      {selectedTime ? 'Edit Appointment' : 'Schedule Appointment'}
+                    </Button>
+                  </CardFooter>
+                )}
+              </Card>
+
+              <Card className="shadow-sm lg:col-span-2">
+                <CardHeader>
+                  <CardTitle>Upcoming Appointments</CardTitle>
+                  <CardDescription>Your scheduled and past follow-ups</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {appointments.length === 0 ? (
+                      <div className="text-center py-8 text-gray-500">
+                        <PhoneCall className="mx-auto h-12 w-12 opacity-30 mb-3" />
+                        <p>No appointments scheduled yet</p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {appointments.map((appointment, index) => (
+                          <CalendarAppointment
+                            key={index}
+                            date={appointment.date}
+                            time={appointment.time}
+                            status={appointment.status}
+                            recurrenceType={appointment.recurrenceType}
+                            recurrenceFrequency={appointment.recurrenceFrequency}
+                          />
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </div>
         </main>
       </div>
@@ -475,7 +304,7 @@ const ScheduleFollowup = () => {
           </div>
           
           <DialogHeader>
-            <DialogTitle className="text-xl">New Appointment</DialogTitle>
+            <DialogTitle className="text-xl">New Event</DialogTitle>
           </DialogHeader>
           
           <div className="space-y-6 py-4">
@@ -536,28 +365,6 @@ const ScheduleFollowup = () => {
                 </Select>
               </div>
               <div className="pl-7 text-sm text-gray-500">(15 min duration)</div>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex items-center">
-                <label className="text-sm font-medium">Appointment Type</label>
-              </div>
-              <div className="flex">
-                <Select 
-                  value={appointmentType} 
-                  onValueChange={(value: AppointmentType) => setAppointmentType(value)}
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="Vacation">Vacation</SelectItem>
-                    <SelectItem value="Education">Education</SelectItem>
-                    <SelectItem value="Sick Leave">Sick Leave</SelectItem>
-                    <SelectItem value="Public Holiday">Public Holiday</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
             </div>
             
             <div className="space-y-2">
