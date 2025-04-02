@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
@@ -254,13 +253,13 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
         {/* Gantt Chart Timeline Header */}
         <div className="relative mb-2 mt-8 border-b border-gray-200">
           <div className="flex">
-            {/* Left sidebar for milestone names - using even smaller width (1/5) */}
-            <div className="w-1/5 pr-4 flex-shrink-0">
+            {/* Left sidebar for milestone names - using even smaller width (1/6) */}
+            <div className="w-1/6 pr-2 flex-shrink-0">
               <div className="h-8 font-medium text-sm text-gray-700">Milestone</div>
             </div>
             
-            {/* Timeline header with month labels - increased width to 4/5 */}
-            <div className="w-4/5 relative">
+            {/* Timeline header with month labels - increased width to 5/6 */}
+            <div className="w-5/6 relative">
               <div className="flex justify-between absolute w-full">
                 {monthLabels.map((month, idx) => (
                   <div 
@@ -321,10 +320,10 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                 "flex items-start py-4 border-b border-gray-100",
                 milestone.currentPosition && "bg-blue-50"
               )}>
-                {/* Left sidebar with milestone info - using even smaller width (1/5) */}
-                <div className="w-1/5 pr-4 flex items-start">
+                {/* Left sidebar with milestone info - using even smaller width (1/6) */}
+                <div className="w-1/6 pr-2 flex items-start">
                   <div className={cn(
-                    "flex items-center justify-center w-8 h-8 rounded-full mr-2 flex-shrink-0",
+                    "flex items-center justify-center w-7 h-7 rounded-full mr-1.5 flex-shrink-0",
                     milestone.completed ? `bg-${milestone.color}-100 text-${milestone.color}-500` : 
                     milestone.inProgress ? `bg-${milestone.color}-100 text-${milestone.color}-500` :
                     "bg-gray-100 text-gray-500"
@@ -336,7 +335,7 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                     <h3 className="text-sm font-medium text-gray-900 flex items-center">
                       {milestone.label}
                       {milestone.currentPosition && 
-                        <span className="ml-1 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full whitespace-nowrap">
+                        <span className="ml-1 px-1.5 py-0.5 bg-blue-100 text-blue-800 text-xs rounded-full whitespace-nowrap">
                           You are here
                         </span>
                       }
@@ -345,42 +344,53 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                   </div>
                 </div>
                 
-                {/* Right side with Gantt bar - increased width to 4/5 */}
-                <div className="w-4/5 relative h-14">
+                {/* Right side with Gantt bar - increased width to 5/6 */}
+                <div className="w-5/6 relative h-14">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div 
-                        className={cn(
-                          "absolute h-10 rounded-md transition-all hover:brightness-95",
-                          milestone.completed ? `bg-${milestone.color}-500` :
-                          milestone.inProgress ? `bg-${milestone.color}-200` :
-                          "bg-gray-200"
-                        )}
+                        className="absolute h-10 rounded-lg overflow-hidden shadow-sm transition-all hover:shadow-md"
                         style={{ 
                           left: `${leftPos}%`, 
                           width: `${barWidth}%`, 
-                          top: '8px'
+                          top: '8px',
+                          backgroundColor: milestone.completed ? 'transparent' : 
+                                          milestone.inProgress ? 'transparent' : 
+                                          '#f3f4f6' // gray-100
                         }}
                       >
-                        {/* Progress indicator for in-progress tasks */}
-                        {milestone.inProgress && milestone.progressPercent > 0 && (
+                        {/* Progress bar container with background */}
+                        <div className="w-full h-full rounded-lg overflow-hidden bg-gray-100">
+                          {/* Colored progress indicator */}
                           <div 
-                            className={`h-full rounded-l-md bg-${milestone.color}-500`}
-                            style={{ width: `${milestone.progressPercent}%` }}
-                          />
-                        )}
-                        
-                        {/* Label inside the bar if enough width */}
-                        {barWidth > 15 && (
-                          <div className="absolute inset-0 flex items-center justify-start px-3">
-                            <span className={cn(
-                              "text-xs font-medium whitespace-nowrap",
-                              milestone.completed || milestone.inProgress ? "text-white" : "text-gray-700"
-                            )}>
-                              {format(milestone.startDate, 'MMM d')} - {format(milestone.endDate, 'MMM d')}
-                            </span>
+                            className={cn(
+                              "h-full rounded-lg transition-all",
+                              milestone.completed ? `bg-${milestone.color}-500` :
+                              milestone.inProgress && milestone.progressPercent ? `bg-${milestone.color}-500` :
+                              milestone.inProgress ? `bg-${milestone.color}-200` : 
+                              "bg-gray-200"
+                            )}
+                            style={{ 
+                              width: milestone.inProgress && milestone.progressPercent ? 
+                                    `${milestone.progressPercent}%` : '100%',
+                              boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.1)'
+                            }}
+                          >
+                            {/* Label inside the bar if enough width */}
+                            {barWidth > 15 && (
+                              <div className="absolute inset-0 flex items-center justify-start px-3">
+                                <span className={cn(
+                                  "text-xs font-medium whitespace-nowrap",
+                                  milestone.completed || 
+                                  (milestone.inProgress && milestone.progressPercent > 50) ? 
+                                  "text-white" : "text-gray-700"
+                                )}>
+                                  {format(milestone.startDate, 'MMM d')} - {format(milestone.endDate, 'MMM d')}
+                                </span>
+                              </div>
+                            )}
                           </div>
-                        )}
+                        </div>
                       </div>
                     </TooltipTrigger>
                     <TooltipContent className="p-0 overflow-hidden">
