@@ -169,7 +169,9 @@ export const HealthRecommendations: React.FC<HealthRecommendationsProps> = ({
                     description: recommendation.description,
                     benefits: recommendation.steps,
                     coverage: recommendation.whyItMatters,
-                    isEligible: true
+                    isEligible: true,
+                    originalName: recommendation.title,
+                    eligibility: "Talk to your healthcare provider to determine eligibility."
                   }}
                   onAction={() => handleRecommendationAction(recommendation)}
                 />
