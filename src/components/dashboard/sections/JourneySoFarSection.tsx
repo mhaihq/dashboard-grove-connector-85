@@ -254,13 +254,13 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
         {/* Gantt Chart Timeline Header */}
         <div className="relative mb-2 mt-8 border-b border-gray-200">
           <div className="flex">
-            {/* Left sidebar for milestone names */}
-            <div className="w-1/3 pr-4 flex-shrink-0">
+            {/* Left sidebar for milestone names - reduced width from 1/3 to 1/4 */}
+            <div className="w-1/4 pr-4 flex-shrink-0">
               <div className="h-8 font-medium text-sm text-gray-700">Milestone</div>
             </div>
             
-            {/* Timeline header with month labels */}
-            <div className="w-2/3 relative">
+            {/* Timeline header with month labels - increased width from 2/3 to 3/4 */}
+            <div className="w-3/4 relative">
               <div className="flex justify-between absolute w-full">
                 {monthLabels.map((month, idx) => (
                   <div 
@@ -321,8 +321,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                 "flex items-start py-4 border-b border-gray-100",
                 milestone.currentPosition && "bg-blue-50"
               )}>
-                {/* Left sidebar with milestone info */}
-                <div className="w-1/3 pr-4 flex items-start">
+                {/* Left sidebar with milestone info - reduced width from 1/3 to 1/4 */}
+                <div className="w-1/4 pr-4 flex items-start">
                   <div className={cn(
                     "flex items-center justify-center w-8 h-8 rounded-full mr-3 flex-shrink-0",
                     milestone.completed ? `bg-${milestone.color}-100 text-${milestone.color}-500` : 
@@ -345,8 +345,8 @@ export const JourneySoFarSection: React.FC<JourneySoFarSectionProps> = ({
                   </div>
                 </div>
                 
-                {/* Right side with Gantt bar */}
-                <div className="w-2/3 relative h-14">
+                {/* Right side with Gantt bar - increased width from 2/3 to 3/4 */}
+                <div className="w-3/4 relative h-14">
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <div 
