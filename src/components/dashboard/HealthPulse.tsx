@@ -144,6 +144,20 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
     }
   };
 
+  // Define color schemes for the chart
+  const currentColors = {
+    stroke: "#1C6E4A",
+    fill: "#34d399",
+    fillOpacity: 0.6
+  };
+  
+  const previousColors = {
+    stroke: "#6366f1",
+    fill: "#a5b4fc",
+    fillOpacity: 0.4,
+    strokeDasharray: "4 4"
+  };
+
   return (
     <TooltipProvider>
       <div className="grid grid-cols-1 gap-6">
@@ -192,6 +206,16 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
                       <stop offset="0%" stopColor="#fb7185" stopOpacity={0.7} />
                       <stop offset="100%" stopColor="#f43f5e" stopOpacity={0.5} />
                     </linearGradient>
+                    {/* New gradient for Previous data */}
+                    <linearGradient id="previousGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#a5b4fc" stopOpacity={0.7} />
+                      <stop offset="100%" stopColor="#6366f1" stopOpacity={0.4} />
+                    </linearGradient>
+                    {/* New gradient for Current data */}
+                    <linearGradient id="currentGradient" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#34d399" stopOpacity={0.7} />
+                      <stop offset="100%" stopColor="#10b981" stopOpacity={0.5} />
+                    </linearGradient>
                   </defs>
                   
                   <PolarGrid stroke="#e5e7eb" strokeDasharray="3 3" />
@@ -231,31 +255,41 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
                   <Radar
                     name="2 Weeks Ago"
                     dataKey="initialScore"
-                    stroke="#94a3b8"
-                    fill="#94a3b8"
-                    fillOpacity={0.2}
+                    stroke={previousColors.stroke}
+                    fill="url(#previousGradient)"
+                    fillOpacity={previousColors.fillOpacity}
                     strokeWidth={1.5}
-                    strokeDasharray="4 4"
+                    strokeDasharray={previousColors.strokeDasharray}
                   />
                   <Radar
                     name="Current"
                     dataKey="score"
-                    stroke="#1C6E4A"
-                    fillOpacity={0.45}
+                    stroke={currentColors.stroke}
+                    fill="url(#currentGradient)"
+                    fillOpacity={currentColors.fillOpacity}
                     strokeWidth={2}
                   />
                   <Legend 
                     align="center" 
                     verticalAlign="top"
-                    height={30}
-                    wrapperStyle={{ fontSize: '12px' }}
-                    payload={[
-                      { value: 'Current', color: '#1C6E4A' },
-                      { value: '2 Weeks Ago', color: '#94a3b8' }
-                    ]}
+                    height={36}
+                    wrapperStyle={{ fontSize: '12px', paddingBottom: '8px' }}
+                    formatter={(value, entry) => {
+                      const { color } = entry;
+                      return (
+                        <span className="flex items-center gap-1.5">
+                          <span 
+                            className="inline-block w-3 h-3 rounded-sm" 
+                            style={{ backgroundColor: value === "Current" ? currentColors.stroke : previousColors.stroke }}
+                          />
+                          <span className="font-medium">{value}</span>
+                        </span>
+                      );
+                    }}
                   />
                   <RechartsTooltip 
                     formatter={(value, name) => [`${value}/100`, name]}
+                    labelFormatter={(label) => label}
                     contentStyle={{ 
                       backgroundColor: 'white', 
                       borderRadius: '8px',
@@ -263,6 +297,14 @@ export const HealthPulse: React.FC<HealthPulseProps> = ({
                       boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
                       padding: '8px 12px',
                       fontSize: '12px'
+                    }}
+                    itemStyle={(index) => ({
+                      color: index === 0 ? previousColors.stroke : currentColors.stroke,
+                      fontWeight: 500
+                    })}
+                    wrapperStyle={{
+                      zIndex: 100,
+                      opacity: 0.95
                     }}
                   />
                 </RadarChart>
